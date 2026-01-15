@@ -6,28 +6,25 @@
 /**
  * Shuffles answers with the correct answer for voting.
  * Groups duplicate answers together.
+ * Includes answers from players who left mid-game.
  * @param {object} gameState - Current game state
  * @returns {Array} Shuffled array of answers
  */
 function getShuffledAnswers(gameState) {
   const answerMap = new Map(); // text -> {ids: [], text, isCorrect}
 
-  // Group player answers by text (case-insensitive since they're already capitalized)
-  gameState.players.forEach(player => {
-    if (gameState.submittedAnswers[player.id]) {
-      const answerText = gameState.submittedAnswers[player.id];
-
-      if (answerMap.has(answerText)) {
-        // Duplicate answer - add this player's ID to the group
-        answerMap.get(answerText).ids.push(player.id);
-      } else {
-        // New unique answer
-        answerMap.set(answerText, {
-          ids: [player.id],
-          text: answerText,
-          isCorrect: false
-        });
-      }
+  // Process all submitted answers (includes answers from left players)
+  Object.entries(gameState.submittedAnswers).forEach(([playerId, answerText]) => {
+    if (answerMap.has(answerText)) {
+      // Duplicate answer - add this player's ID to the group
+      answerMap.get(answerText).ids.push(playerId);
+    } else {
+      // New unique answer
+      answerMap.set(answerText, {
+        ids: [playerId],
+        text: answerText,
+        isCorrect: false
+      });
     }
   });
 

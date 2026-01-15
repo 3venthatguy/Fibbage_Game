@@ -44,21 +44,6 @@ class GameRoom {
   }
 
   /**
-   * Reconnects a player to the room.
-   * @param {string} socketId - New socket ID
-   * @param {string} playerId - Player ID to reconnect
-   * @returns {Player|null} Reconnected player or null
-   */
-  reconnectPlayer(socketId, playerId) {
-    const player = this.gameState.getPlayer(playerId);
-    if (player) {
-      player.reconnect(socketId);
-      return player;
-    }
-    return null;
-  }
-
-  /**
    * Starts the game.
    * @param {string} hostSocketId - Socket ID of the host
    * @returns {GameState} Updated game state
@@ -191,19 +176,22 @@ class GameRoom {
       throw new Error('Player not found');
     }
 
-    // Validate voted for player exists (if not 'correct')
+    // Validate voted for player exists (active or left) if not 'correct'
     // For duplicate answers, votedForId might be comma-separated IDs
     if (votedForId !== 'correct') {
       // Check if it's a comma-separated list (duplicate answer)
       if (votedForId.includes(',')) {
         const playerIds = votedForId.split(',');
-        const allExist = playerIds.every(id => this.gameState.getPlayer(id) !== undefined);
+        const allExist = playerIds.every(id =>
+          this.gameState.getPlayer(id) !== undefined ||
+          this.gameState.getLeftPlayer(id) !== null
+        );
         if (!allExist) {
           throw new Error('Player not found');
         }
       } else {
-        // Single player ID
-        const votedFor = this.gameState.getPlayer(votedForId);
+        // Single player ID - check both active and left players
+        const votedFor = this.gameState.getPlayer(votedForId) || this.gameState.getLeftPlayer(votedForId);
         if (!votedFor) {
           throw new Error('Player not found');
         }
@@ -279,27 +267,47 @@ class GameRoom {
   /**
    * Handles player disconnect.
    * @param {string} playerId - ID of disconnected player
+   * @returns {object|null} Disconnect info including phase-specific data
    */
   handleDisconnect(playerId) {
     const player = this.gameState.getPlayer(playerId);
-    if (player) {
-      const playerName = player.name;
-      // Remove the player entirely from the game so their name can be reused
-      this.gameState.removePlayer(playerId);
+    if (!player) return null;
+
+    const playerName = player.name;
+    const phase = this.gameState.phase;
+
+    if (phase === 'lobby') {
+      // In lobby: remove entirely so name can be reused
+      this.gameState.removePlayer(playerId, false);
       logPlayerRemoved(playerName, this.gameState.roomCode);
+      return { phase, playerName };
+    } else {
+      // In active game: mark as left (keeps answer, blocks name, removes from active players)
+      this.gameState.markPlayerLeft(playerId);
+      logPlayerRemoved(playerName + ' (left mid-game)', this.gameState.roomCode);
+
+      // Return phase info so caller can emit appropriate events
+      const activePlayers = this.gameState.players;
+      return {
+        phase,
+        playerName,
+        playerCount: activePlayers.length,
+        submittedCount: activePlayers.filter(p => this.gameState.submittedAnswers[p.id]).length,
+        votedCount: activePlayers.filter(p => this.gameState.votes[p.id]).length
+      };
     }
   }
 
   /**
-   * Transfers host to another connected player.
+   * Transfers host to another player.
    * @param {string} oldHostSocketId - Old host socket ID
    */
   transferHostIfNeeded(oldHostSocketId) {
     if (this.gameState.hostId === oldHostSocketId) {
-      const connectedPlayers = this.gameState.getConnectedPlayers();
-      if (connectedPlayers.length > 0) {
-        this.gameState.transferHost(connectedPlayers[0].socketId);
-        logHostTransfer(connectedPlayers[0].name, this.gameState.roomCode);
+      const players = this.gameState.players;
+      if (players.length > 0) {
+        this.gameState.transferHost(players[0].socketId);
+        logHostTransfer(players[0].name, this.gameState.roomCode);
       }
     }
   }

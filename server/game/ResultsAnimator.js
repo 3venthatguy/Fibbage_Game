@@ -30,21 +30,33 @@ class ResultsAnimator {
   async playResultsSequence(results) {
     const { correctAnswer, explanation, roundScores, totalScores, votes, voteCounts } = results;
 
-    // Group players by their answers to handle duplicates
-    const answerGroups = new Map(); // answer text -> {playerIds: [], playerNames: [], text: string}
+    // Group all submitted answers to handle duplicates (includes left players)
+    const answerGroups = new Map(); // answer text -> {playerIds: [], playerNames: [], text: string, leftPlayerIds: []}
 
-    this.gameState.players.forEach(player => {
-      const answer = this.gameState.submittedAnswers[player.id];
+    // Process all submitted answers (from both active and left players)
+    Object.entries(this.gameState.submittedAnswers).forEach(([playerId, answer]) => {
       if (answer && answer !== correctAnswer) {
         if (!answerGroups.has(answer)) {
           answerGroups.set(answer, {
             playerIds: [],
             playerNames: [],
-            text: answer
+            text: answer,
+            leftPlayerIds: [] // Track which players left
           });
         }
-        answerGroups.get(answer).playerIds.push(player.id);
-        answerGroups.get(answer).playerNames.push(player.name);
+        const group = answerGroups.get(answer);
+        group.playerIds.push(playerId);
+
+        // Get player name - check active players first, then left players
+        const activePlayer = this.gameState.getPlayer(playerId);
+        const leftPlayer = this.gameState.getLeftPlayer(playerId);
+
+        if (activePlayer) {
+          group.playerNames.push(activePlayer.name);
+        } else if (leftPlayer) {
+          group.playerNames.push(leftPlayer.name + ' (left)');
+          group.leftPlayerIds.push(playerId);
+        }
       }
     });
 
@@ -54,18 +66,20 @@ class ResultsAnimator {
       const combinedId = group.playerIds.length === 1 ? group.playerIds[0] : group.playerIds.join(',');
       const combinedName = group.playerNames.join(' & ');
 
-      // Calculate total points for all players who submitted this answer
-      const totalPoints = group.playerIds.reduce((sum, playerId) => sum + (roundScores[playerId] || 0), 0);
+      // Calculate total points for all active players who submitted this answer (left players don't get points)
+      const activePlayerIds = group.playerIds.filter(pid => !group.leftPlayerIds.includes(pid));
+      const totalPoints = activePlayerIds.reduce((sum, playerId) => sum + (roundScores[playerId] || 0), 0);
 
       return {
         playerId: combinedId,
         playerName: combinedName,
         playerIds: group.playerIds, // Store individual player IDs for display
-        playerNames: group.playerNames, // Store individual names
+        playerNames: group.playerNames, // Store individual names (with "(left)" suffix for left players)
+        leftPlayerIds: group.leftPlayerIds, // Track which players left
         answerText: group.text,
         voters: this.getVotersForAnswer(combinedId, votes),
         pointsEarned: totalPoints,
-        pointsPerPlayer: group.playerIds.length > 1 ? roundScores[group.playerIds[0]] || 0 : totalPoints // For showing split points
+        pointsPerPlayer: activePlayerIds.length > 0 ? roundScores[activePlayerIds[0]] || 0 : 0 // For showing split points
       };
     });
 
@@ -195,7 +209,7 @@ class ResultsAnimator {
    * @param {number} index - Index in sequence
    */
   async revealFakeAnswer(fakeAnswer, index) {
-    const { playerId, playerName, answerText, voters, pointsEarned, playerIds, playerNames, pointsPerPlayer } = fakeAnswer;
+    const { playerId, playerName, answerText, voters, pointsEarned, playerIds, playerNames, pointsPerPlayer, leftPlayerIds = [] } = fakeAnswer;
 
     // Skip animation for answers with no votes - they just sit on the board
     if (voters.length === 0) {
@@ -251,10 +265,13 @@ class ResultsAnimator {
     });
     await this.delay(this.timings.authorRevealDuration);
 
-    // Phase 6: Score Update - update each player's score individually
+    // Phase 6: Score Update - update each active player's score individually (skip left players)
     if (pointsEarned > 0 && playerIds && playerIds.length > 0) {
-      // For duplicate answers, emit score updates for each player
+      // For duplicate answers, emit score updates for each active player
       for (const pid of playerIds) {
+        // Skip left players - they don't get points
+        if (leftPlayerIds.includes(pid)) continue;
+
         const player = this.gameState.getPlayer(pid);
         if (player) {
           this.io.to(this.roomCode).emit('results:updateScore', {

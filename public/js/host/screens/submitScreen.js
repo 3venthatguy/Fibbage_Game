@@ -85,3 +85,31 @@ function showAllAnswersSubmitted() {
   const submitStatus = document.getElementById('submitStatus');
   submitStatus.textContent = 'All answers submitted!';
 }
+
+/**
+ * Re-renders submit checkmarks when player count changes (disconnect/reconnect).
+ * @param {number} totalPlayers - Total number of connected players
+ * @param {number} submittedCount - Number of players who have submitted
+ */
+function rerenderSubmitCheckmarks(totalPlayers, submittedCount) {
+  const submitCheckmarks = document.getElementById('submitCheckmarks');
+  if (!submitCheckmarks) return;
+
+  submitCheckmarks.innerHTML = '';
+  for (let i = 0; i < totalPlayers; i++) {
+    const checkmark = document.createElement('div');
+    checkmark.className = 'checkmark' + (i < submittedCount ? ' submitted' : '');
+    checkmark.textContent = '\u2713';
+    submitCheckmarks.appendChild(checkmark);
+  }
+
+  // Update the status text as well
+  const submitStatus = document.getElementById('submitStatus');
+  if (submitStatus) {
+    if (submittedCount === totalPlayers && totalPlayers > 0) {
+      submitStatus.textContent = 'All answers submitted!';
+    } else {
+      submitStatus.textContent = `${submittedCount}/${totalPlayers} players submitted`;
+    }
+  }
+}

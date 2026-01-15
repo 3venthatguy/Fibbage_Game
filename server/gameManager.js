@@ -25,7 +25,7 @@ class GameManager {
     const roomCode = generateRoomCode(this.rooms);
     const selectedQuestionIds = this.generateRandomQuestionIds();
 
-    const questionLoader = (id) => questions.find(q => q.id === id);
+    const questionLoader = (index) => questions[index];
     const gameRoom = new GameRoom(roomCode, hostSocketId, selectedQuestionIds, questionLoader);
 
     this.rooms.set(roomCode, gameRoom);
@@ -79,21 +79,21 @@ class GameManager {
   }
 
   /**
-   * Generates random question IDs for a game.
-   * @returns {Array} Array of question IDs
+   * Generates random question indices for a game.
+   * @returns {Array} Array of question indices
    */
   generateRandomQuestionIds() {
-    const availableIds = questions.map(q => q.id);
-    const selectedIds = [];
-    const count = Math.min(config.QUESTIONS_PER_GAME, availableIds.length);
+    const availableIndices = questions.map((_, index) => index);
+    const selectedIndices = [];
+    const count = Math.min(config.QUESTIONS_PER_GAME, availableIndices.length);
 
     for (let i = 0; i < count; i++) {
-      const randomIndex = Math.floor(Math.random() * availableIds.length);
-      selectedIds.push(availableIds[randomIndex]);
-      availableIds.splice(randomIndex, 1);
+      const randomIndex = Math.floor(Math.random() * availableIndices.length);
+      selectedIndices.push(availableIndices[randomIndex]);
+      availableIndices.splice(randomIndex, 1);
     }
 
-    return selectedIds;
+    return selectedIndices;
   }
 
   /**

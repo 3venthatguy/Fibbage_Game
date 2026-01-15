@@ -25,6 +25,12 @@ function setupHostSocketHandlers(socket, state) {
       console.error('Room code display element not found!');
     }
 
+    // Update persistent room code display
+    const persistentRoomCode = document.getElementById('persistentRoomCode');
+    if (persistentRoomCode) {
+      persistentRoomCode.textContent = code;
+    }
+
     // Update game title
     const gameTitleElement = document.getElementById('gameTitle');
     if (gameTitleElement) {
@@ -45,6 +51,17 @@ function setupHostSocketHandlers(socket, state) {
     updateStartButton(state.players.length);
     // Play pop sound when a player joins
     playSoundEffect('pop', AUDIO_CONFIG.SFX_PLAYER_JOIN_VOLUME);
+  });
+
+  socket.on('playerDisconnected', (data) => {
+    console.log('[SocketHandlers] Player disconnected:', data);
+    if (data.phase === 'submit') {
+      // Re-render checkmarks with new player count
+      rerenderSubmitCheckmarks(data.totalPlayers, data.submittedCount);
+    } else if (data.phase === 'voting') {
+      // Re-render voting checkmarks with new player count
+      rerenderVotingCheckmarks(data.totalPlayers, data.voteCount);
+    }
   });
 
   socket.on('gameStarted', () => {

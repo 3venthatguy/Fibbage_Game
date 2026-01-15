@@ -41,6 +41,13 @@ function setupRoomEvents(io, socket, gameManager) {
         return;
       }
 
+      // Check if game is in progress
+      if (gameState.phase !== 'lobby') {
+        socket.emit('error', 'Game already in progress');
+        return;
+      }
+
+      // Normal lobby join
       const player = gameManager.joinRoom(roomCode, playerName, socket.id);
       socket.join(roomCode);
 
@@ -54,7 +61,7 @@ function setupRoomEvents(io, socket, gameManager) {
         phase: gameState.phase,
         currentQuestionIndex: gameState.currentQuestionIndex,
         totalQuestions: gameState.selectedQuestionIds.length || 8,
-        playerId: player.id,  // Include the player's own ID
+        playerId: player.id,
         gameTitle: config.GAME_TITLE,
         gameRules: config.GAME_RULES
       });

@@ -24,9 +24,11 @@ function setupPlayerEvents(io, socket, gameManager) {
       const gameState = gameManager.submitAnswer(roomCode, socketData.playerId, answer);
 
       // Notify all players of submission count
+      const playerCount = gameState.players.length;
+      const submittedCount = gameState.players.filter(p => gameState.submittedAnswers[p.id]).length;
       io.to(roomCode).emit('answerSubmitted', {
-        submittedCount: Object.keys(gameState.submittedAnswers).length,
-        totalPlayers: gameState.players.length
+        submittedCount,
+        totalPlayers: playerCount
       });
 
       // If all submitted, notify transition
@@ -87,10 +89,11 @@ function setupPlayerEvents(io, socket, gameManager) {
       const gameState = gameManager.submitVote(roomCode, socketData.playerId, votedForId);
 
       // Notify all players of vote count
-      const voteCount = Object.keys(gameState.votes).length;
+      const playerCount = gameState.players.length;
+      const voteCount = gameState.players.filter(p => gameState.votes[p.id]).length;
       io.to(roomCode).emit('voteSubmitted', {
         voteCount,
-        totalPlayers: gameState.players.length,
+        totalPlayers: playerCount,
         votedForId: votedForId
       });
 

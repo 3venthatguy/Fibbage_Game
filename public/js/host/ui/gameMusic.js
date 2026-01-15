@@ -30,6 +30,10 @@ const playingMusicFiles = [
   'sounds/playing/LoonBoon.mp3',
   'sounds/playing/ColdIsland.mp3',
   'sounds/playing/TimeMachine.mp3',
+  'sounds/playing/DuelOfFates.mp3',
+  'sounds/playing/Lacrimos.mp3',
+  'sounds/playing/PumpItUp.mp3',
+  'sounds/playing/Caravan.mp3',
   'sounds/playing/Forcast.mp3'
 ];
 

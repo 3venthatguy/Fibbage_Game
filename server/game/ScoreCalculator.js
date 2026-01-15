@@ -7,6 +7,7 @@ const config = require('../config');
 /**
  * Calculates results and scores for the current round.
  * Handles duplicate answers by splitting points among players who submitted the same lie.
+ * Also handles answers from players who left mid-game (they don't get score but their lies still fool people).
  * @param {object} gameState - Current game state
  * @returns {object} Results data including scores and vote counts
  */
@@ -15,22 +16,27 @@ function calculateResults(gameState) {
   const roundScores = {};
   const voteCounts = {};
 
-  // Initialize scores and vote counts
+  // Initialize scores and vote counts for active players
   gameState.players.forEach(player => {
     roundScores[player.id] = 0;
     voteCounts[player.id] = 0;
   });
 
-  // Group players by their answers to identify duplicates
-  const answerGroups = new Map(); // answer text -> array of player IDs
-  gameState.players.forEach(player => {
-    const answer = gameState.submittedAnswers[player.id];
-    if (answer) {
-      if (!answerGroups.has(answer)) {
-        answerGroups.set(answer, []);
-      }
-      answerGroups.get(answer).push(player.id);
+  // Also initialize for left players who submitted answers (for vote count tracking)
+  gameState.leftPlayers.forEach((leftPlayer, playerId) => {
+    if (gameState.submittedAnswers[playerId]) {
+      roundScores[playerId] = 0; // They won't get points but we track for display
+      voteCounts[playerId] = 0;
     }
+  });
+
+  // Group all submitted answers by text to identify duplicates (includes left players)
+  const answerGroups = new Map(); // answer text -> array of player IDs
+  Object.entries(gameState.submittedAnswers).forEach(([playerId, answer]) => {
+    if (!answerGroups.has(answer)) {
+      answerGroups.set(answer, []);
+    }
+    answerGroups.get(answer).push(playerId);
   });
 
   // Calculate scores for each player

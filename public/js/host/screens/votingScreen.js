@@ -99,3 +99,31 @@ function showAllVotesSubmitted() {
     votingStatus.textContent = 'All votes submitted!';
   }
 }
+
+/**
+ * Re-renders voting checkmarks when player count changes (disconnect/reconnect).
+ * @param {number} totalPlayers - Total number of connected players
+ * @param {number} voteCount - Number of players who have voted
+ */
+function rerenderVotingCheckmarks(totalPlayers, voteCount) {
+  const votingCheckmarks = document.getElementById('votingCheckmarks');
+  if (!votingCheckmarks) return;
+
+  votingCheckmarks.innerHTML = '';
+  for (let i = 0; i < totalPlayers; i++) {
+    const checkmark = document.createElement('div');
+    checkmark.className = 'checkmark' + (i < voteCount ? ' submitted' : '');
+    checkmark.textContent = '\u2713';
+    votingCheckmarks.appendChild(checkmark);
+  }
+
+  // Update the status text as well
+  const votingStatus = document.getElementById('votingStatus');
+  if (votingStatus) {
+    if (voteCount === totalPlayers && totalPlayers > 0) {
+      votingStatus.textContent = 'All votes submitted!';
+    } else {
+      votingStatus.textContent = `${voteCount}/${totalPlayers} players voted`;
+    }
+  }
+}

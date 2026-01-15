@@ -10,6 +10,7 @@ class GameState {
     this.roomCode = roomCode;
     this.hostId = hostId;
     this.players = [];
+    this.leftPlayers = new Map(); // playerId -> {name, id} for players who left mid-game
     this.phase = 'lobby';
     this.currentQuestionIndex = -1;
     this.currentQuestion = null;
@@ -28,19 +29,23 @@ class GameState {
   }
 
   /**
-   * Checks if all players have submitted answers.
+   * Checks if all active players have submitted answers.
    * @returns {boolean} True if all submitted, false otherwise
    */
   isSubmitPhaseComplete() {
-    return Object.keys(this.submittedAnswers).length === this.players.length;
+    if (this.players.length === 0) return false;
+    const submittedCount = this.players.filter(p => this.submittedAnswers[p.id]).length;
+    return submittedCount === this.players.length;
   }
 
   /**
-   * Checks if all players have voted.
+   * Checks if all active players have voted.
    * @returns {boolean} True if all voted, false otherwise
    */
   isVotingPhaseComplete() {
-    return Object.keys(this.votes).length === this.players.length;
+    if (this.players.length === 0) return false;
+    const votedCount = this.players.filter(p => this.votes[p.id]).length;
+    return votedCount === this.players.length;
   }
 
   /**
@@ -61,12 +66,23 @@ class GameState {
   }
 
   /**
-   * Checks if a player name already exists.
+   * Checks if a player name already exists (including players who left mid-game).
    * @param {string} name - Name to check
    * @returns {boolean} True if exists, false otherwise
    */
   hasPlayerName(name) {
-    return this.players.some(p => p.name.toLowerCase() === name.toLowerCase());
+    const lowerName = name.toLowerCase();
+    // Check active players
+    if (this.players.some(p => p.name.toLowerCase() === lowerName)) {
+      return true;
+    }
+    // Check players who left mid-game (name is blocked)
+    for (const leftPlayer of this.leftPlayers.values()) {
+      if (leftPlayer.name.toLowerCase() === lowerName) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -154,29 +170,84 @@ class GameState {
   }
 
   /**
-   * Gets connected players.
-   * @returns {Array} Array of connected players
+   * Gets connected players (now returns all players since we remove disconnected ones).
+   * @returns {Array} Array of players
    */
   getConnectedPlayers() {
-    return this.players.filter(p => p.connected);
+    return this.players;
   }
 
   /**
    * Removes a player from the game.
    * @param {string} playerId - Player ID to remove
+   * @param {boolean} keepAnswer - If true, keep their submitted answer (for mid-game disconnects)
    * @returns {boolean} True if player was removed, false otherwise
    */
-  removePlayer(playerId) {
+  removePlayer(playerId, keepAnswer = false) {
     const index = this.players.findIndex(p => p.id === playerId);
     if (index !== -1) {
+      const player = this.players[index];
       this.players.splice(index, 1);
-      // Clean up player's submitted answer if any
-      delete this.submittedAnswers[playerId];
-      // Clean up player's vote if any
+
+      if (!keepAnswer) {
+        // Clean up player's submitted answer if any (lobby disconnect)
+        delete this.submittedAnswers[playerId];
+      }
+      // Always clean up player's vote
       delete this.votes[playerId];
       return true;
     }
     return false;
+  }
+
+  /**
+   * Marks a player as having left mid-game.
+   * Removes from active players but keeps their name blocked and answer preserved.
+   * @param {string} playerId - Player ID
+   * @returns {object|null} The left player info or null
+   */
+  markPlayerLeft(playerId) {
+    const player = this.getPlayer(playerId);
+    if (!player) return null;
+
+    // Store in leftPlayers map for name blocking and results display
+    this.leftPlayers.set(playerId, {
+      id: player.id,
+      name: player.name,
+      score: player.score
+    });
+
+    // Remove from active players but keep their answer
+    this.removePlayer(playerId, true);
+
+    // Clean up their vote (they can't vote anymore)
+    delete this.votes[playerId];
+
+    return this.leftPlayers.get(playerId);
+  }
+
+  /**
+   * Gets info about a player who left mid-game.
+   * @param {string} playerId - Player ID
+   * @returns {object|null} Left player info or null
+   */
+  getLeftPlayer(playerId) {
+    return this.leftPlayers.get(playerId) || null;
+  }
+
+  /**
+   * Gets player name by ID, checking both active and left players.
+   * @param {string} playerId - Player ID
+   * @returns {string|null} Player name or null
+   */
+  getPlayerName(playerId) {
+    const activePlayer = this.getPlayer(playerId);
+    if (activePlayer) return activePlayer.name;
+
+    const leftPlayer = this.leftPlayers.get(playerId);
+    if (leftPlayer) return leftPlayer.name + ' (left)';
+
+    return null;
   }
 
   /**
