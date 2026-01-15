@@ -1,0 +1,16 @@
+{
+  "name": "economics-fibbage",
+  "version": "1.0.0",
+  "description": "A multiplayer Fibbage-style economics trivia game",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "keywords": ["game", "trivia", "multiplayer", "economics"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1"
+  }
+}

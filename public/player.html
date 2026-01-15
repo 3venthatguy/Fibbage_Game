@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fibbage - Player</title>
+  <link rel="stylesheet" href="css/player.css">
+  <link rel="stylesheet" href="css/player-animations.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <!-- Player Name Badge (shown after joining) -->
+  <div class="player-name-badge" id="playerNameBadge" style="display: none;"></div>
+
+  <div class="container">
+    <!-- Join Screen -->
+    <div id="joinScreen" class="join-screen">
+      <h1 id="joinGameTitle">Fibbage</h1>
+      <div class="input-group">
+        <label for="roomCodeInput">Room Code</label>
+        <input type="text" id="roomCodeInput" placeholder="ABCD" maxlength="4" autocomplete="off">
+      </div>
+      <div class="input-group">
+        <label for="playerNameInput">Your Name</label>
+        <input type="text" id="playerNameInput" placeholder="Enter your name" maxlength="20" autocomplete="off">
+      </div>
+      <button class="join-button" id="joinButton" disabled>Join Game</button>
+    </div>
+
+    <!-- Lobby Screen -->
+    <div id="lobbyScreen" class="lobby-screen">
+      <h1 id="lobbyGameTitle" style="font-size: 36px; margin-bottom: 20px;">Fibbage</h1>
+      <div class="room-code-display" id="roomCodeDisplay">----</div>
+      <div class="players-list" id="playersList"></div>
+      <div class="waiting-message">Waiting for host to start...</div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-screen">
+      <div class="question-number" id="questionNumber">Question 1 of 8</div>
+      <div class="timer-display" id="timerDisplay">30</div>
+      <div class="question-display" id="questionDisplay"></div>
+
+      <!-- Reading Phase -->
+      <div id="readingPhase" class="reading-phase" style="display: none;">
+        <div class="reading-progress-bar" id="readingProgressBar"></div>
+        <div class="reading-message">Read the question...</div>
+      </div>
+
+      <!-- Submit Phase -->
+      <div id="submitPhase" class="submit-phase" style="display: none;">
+        <input type="text" class="answer-input" id="answerInput" placeholder="Enter your fake answer..." maxlength="100" autocomplete="off">
+        <div class="char-counter" id="charCounter">0/100 characters</div>
+        <button class="submit-button" id="submitButton" disabled>Submit Answer</button>
+        <div class="waiting-message" id="submitWaiting" style="display: none;">Waiting for other players...</div>
+      </div>
+
+      <!-- Voting Phase -->
+      <div id="votingPhase" class="voting-phase" style="display: none;">
+        <h2 style="font-size: 28px; margin-bottom: 20px;">Vote for the correct answer!</h2>
+        <div class="answers-list" id="answersList"></div>
+        <div class="waiting-message" id="votingWaiting" style="display: none;">Waiting for other players...</div>
+      </div>
+
+      <!-- Watch Screen (After Voting) -->
+      <div id="watchScreen" class="watch-screen" style="display: none;">
+        <div class="watch-screen-content">
+          <div class="watch-screen-icon">👀</div>
+          <div class="watch-screen-message">Look at the TV!</div>
+          <div class="watch-screen-submessage">Watch the main screen for results</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="game-over-screen">
+      <h1>Game Over!</h1>
+      <div class="final-leaderboard" id="finalLeaderboard"></div>
+      <div class="thanks-message" id="thanksMessage"></div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message" id="errorMessage"></div>
+  </div>
+
+  <!-- UI Utilities -->
+  <script src="js/player/ui/uiUpdater.js"></script>
+  <script src="js/player/ui/timer.js"></script>
+
+  <!-- Screen Modules -->
+  <script src="js/player/screens/joinScreen.js"></script>
+  <script src="js/player/screens/lobbyScreen.js"></script>
+  <script src="js/player/screens/submitScreen.js"></script>
+  <script src="js/player/screens/votingScreen.js"></script>
+  <script src="js/player/screens/resultsScreen.js"></script>
+  <script src="js/player/screens/gameOverScreen.js"></script>
+
+  <!-- Socket Handlers -->
+  <script src="js/player/socketHandlers.js"></script>
+
+  <!-- Main Initialization -->
+  <script src="js/player/playerMain.js"></script>
+</body>
+</html>
