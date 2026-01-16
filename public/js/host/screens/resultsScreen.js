@@ -73,8 +73,8 @@ function showResultsPhase() {
     } else {
       // Clear content but keep structure
       answersRevealArea.innerHTML = '';
-      // CRITICAL: Reset display to block so animations are visible for all questions
-      answersRevealArea.style.display = 'block';
+      // CRITICAL: Reset display to flex so animations are visible for all questions
+      answersRevealArea.style.display = 'flex';
 
       document.getElementById('correctAnswerArea').innerHTML = '';
       document.getElementById('correctAnswerArea').style.display = 'none';
@@ -144,8 +144,6 @@ function initializeResultsSequence(answersData) {
       card.appendChild(answerText);
 
       // Apply base styles
-      card.style.maxWidth = '600px';
-      card.style.display = 'block';
       card.style.opacity = '1';
 
       // Append to reveal area

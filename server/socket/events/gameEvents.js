@@ -63,9 +63,10 @@ function setupGameEvents(io, socket, gameManager) {
 
         io.to(roomCode).emit('gameOver', { finalScores });
       } else {
-        // Next question
-        setTimeout(() => {
-          // Restart the timer NOW (after the delay) so it syncs with the client
+        // Next question - immediate transition (no delay)
+        const delay = config.NEXT_QUESTION_DELAY || 0;
+        const emitNextQuestion = () => {
+          // Restart the timer NOW so it syncs with the client
           gameState.startTimer(config.READING_PHASE_DURATION);
 
           io.to(roomCode).emit('newQuestion', {
@@ -81,7 +82,13 @@ function setupGameEvents(io, socket, gameManager) {
           });
 
           startTimerBroadcast(io, roomCode, gameManager);
-        }, config.GAME_START_DELAY);
+        };
+
+        if (delay > 0) {
+          setTimeout(emitNextQuestion, delay);
+        } else {
+          emitNextQuestion();
+        }
       }
     } catch (error) {
       socket.emit('error', error.message);

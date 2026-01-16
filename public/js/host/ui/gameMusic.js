@@ -25,13 +25,10 @@ const playingMusicFiles = [
   'sounds/playing/Kerfuffle.mp3',
   'sounds/playing/Piano_Black.mp3',
   'sounds/playing/Windmill_Isle.mp3',
-  'sounds/playing/bongos.mp3',
   'sounds/playing/botanic_panic.mp3',
   'sounds/playing/LoonBoon.mp3',
   'sounds/playing/ColdIsland.mp3',
   'sounds/playing/TimeMachine.mp3',
-  'sounds/playing/DuelOfFates.mp3',
-  'sounds/playing/Lacrimos.mp3',
   'sounds/playing/PumpItUp.mp3',
   'sounds/playing/Caravan.mp3',
   'sounds/playing/Forcast.mp3'

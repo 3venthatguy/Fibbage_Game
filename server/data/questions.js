@@ -96,7 +96,7 @@ const questions = [
     explanation: "The NFT (non-fungible token) craze reached new heights when Beeple's digital collage 'Everydays: The First 5000 Days' sold for $69 million at Christie's auction house. I've even got like 5 pictures of it saved on my hard drive!"
   },
   {
-    question: "The concept of _____ in economics was popularized by French economist FRÉDÉRIC BASTIAT.",
+    question: "The concept of _____ in economics was popularized by French economist Frederic Bastiat.",
     answer: "OPORTUNITY COST",
     explanation: "Frédéric Bastiat, a 19th-century French economist, is credited with popularizing the concept of opportunity cost, emphasizing the value of foregone alternatives in decision-making. He was also a master of witty economic essays."
   },

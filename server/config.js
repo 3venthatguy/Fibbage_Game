@@ -15,17 +15,18 @@ module.exports = {
 
   // Game configuration
   MIN_PLAYERS: 2,
-  QUESTIONS_PER_GAME: 8,
+  QUESTIONS_PER_GAME: 6,
   MAX_PLAYER_NAME_LENGTH: 20,
   MAX_ANSWER_LENGTH: 100,
 
   // Phase durations (in seconds)
   READING_PHASE_DURATION: 8,
-  SUBMIT_PHASE_DURATION: 30,
+  SUBMIT_PHASE_DURATION: 35,
   VOTING_PHASE_DURATION: 20,
 
   // Transition delays (in milliseconds)
   GAME_START_DELAY: 2000,
+  NEXT_QUESTION_DELAY: 0, // No delay when advancing to next question from leaderboard
   VOTING_TRANSITION_DELAY: 1000,
   RESULTS_TRANSITION_DELAY: 3000, // Increased to allow time_to_vote.mp3 to play + 2s delay
   AUTO_ADVANCE_DELAY: 3000,
