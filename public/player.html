@@ -81,11 +81,27 @@
 
     <!-- Error Message -->
     <div class="error-message" id="errorMessage"></div>
+
+    <!-- Multiplier Announcement Overlay -->
+    <div id="multiplierOverlay" class="multiplier-overlay" style="display: none;">
+      <div class="multiplier-content">
+        <div class="multiplier-emojis" id="multiplierEmojis"></div>
+        <div class="multiplier-subtitle" id="multiplierSubtitle"></div>
+        <div class="multiplier-title" id="multiplierTitle"></div>
+        <div class="multiplier-description" id="multiplierDescription"></div>
+        <div class="multiplier-emojis" id="multiplierEmojisBottom"></div>
+      </div>
+      <div class="multiplier-particles" id="multiplierParticles"></div>
+    </div>
   </div>
+
+  <!-- Client Config (must load first) -->
+  <script src="js/config.js"></script>
 
   <!-- UI Utilities -->
   <script src="js/player/ui/uiUpdater.js"></script>
   <script src="js/player/ui/timer.js"></script>
+  <script src="js/player/ui/multiplierAnnouncement.js"></script>
 
   <!-- Screen Modules -->
   <script src="js/player/screens/joinScreen.js"></script>

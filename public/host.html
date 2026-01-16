@@ -68,6 +68,18 @@
 
     <!-- Error Message -->
     <div class="error-message" id="errorMessage"></div>
+
+    <!-- Multiplier Announcement Overlay -->
+    <div id="multiplierOverlay" class="multiplier-overlay" style="display: none;">
+      <div class="multiplier-content">
+        <div class="multiplier-emojis" id="multiplierEmojis"></div>
+        <div class="multiplier-subtitle" id="multiplierSubtitle"></div>
+        <div class="multiplier-title" id="multiplierTitle"></div>
+        <div class="multiplier-description" id="multiplierDescription"></div>
+        <div class="multiplier-emojis" id="multiplierEmojisBottom"></div>
+      </div>
+      <div class="multiplier-particles" id="multiplierParticles"></div>
+    </div>
   </div>
 
   <!-- Audio Configuration (must load first) -->
@@ -78,6 +90,7 @@
   <script src="js/host/ui/timer.js"></script>
   <script src="js/host/ui/gameMusic.js"></script>
   <script src="js/host/ui/soundEffects.js"></script>
+  <script src="js/host/ui/multiplierAnnouncement.js"></script>
 
   <!-- Screen Modules -->
   <script src="js/host/screens/lobbyScreen.js"></script>

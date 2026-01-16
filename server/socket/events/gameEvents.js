@@ -63,8 +63,9 @@ function setupGameEvents(io, socket, gameManager) {
 
         io.to(roomCode).emit('gameOver', { finalScores });
       } else {
-        // Next question - immediate transition (no delay)
-        const delay = config.NEXT_QUESTION_DELAY || 0;
+        // Check if we should show a multiplier announcement
+        const multiplierAnnouncement = gameState.shouldShowMultiplierAnnouncement();
+
         const emitNextQuestion = () => {
           // Restart the timer NOW so it syncs with the client
           gameState.startTimer(config.READING_PHASE_DURATION);
@@ -72,7 +73,8 @@ function setupGameEvents(io, socket, gameManager) {
           io.to(roomCode).emit('newQuestion', {
             question: gameState.currentQuestion.question,
             questionIndex: gameState.currentQuestionIndex,
-            totalQuestions: gameState.selectedQuestionIds.length
+            totalQuestions: gameState.selectedQuestionIds.length,
+            multiplier: gameState.getCurrentMultiplier()
           });
 
           console.log('[GameEvents] Emitting phaseChange to reading (nextQuestion)');
@@ -84,10 +86,32 @@ function setupGameEvents(io, socket, gameManager) {
           startTimerBroadcast(io, roomCode, gameManager);
         };
 
-        if (delay > 0) {
-          setTimeout(emitNextQuestion, delay);
+        if (multiplierAnnouncement) {
+          // Calculate total announcement duration from config
+          const announcementDuration =
+            config.MULTIPLIER_ANIMATION_TIMINGS.fadeToBlack +
+            config.MULTIPLIER_ANIMATION_TIMINGS.textZoomIn +
+            config.MULTIPLIER_ANIMATION_TIMINGS.holdDuration +
+            config.MULTIPLIER_ANIMATION_TIMINGS.fadeOut;
+
+          console.log(`[GameEvents] Showing multiplier announcement: ${multiplierAnnouncement.type} (${multiplierAnnouncement.multiplier}x)`);
+
+          // Emit the multiplier announcement event
+          io.to(roomCode).emit('multiplierAnnouncement', {
+            type: multiplierAnnouncement.type,
+            multiplier: multiplierAnnouncement.multiplier
+          });
+
+          // Wait for announcement to complete before showing next question
+          setTimeout(emitNextQuestion, announcementDuration);
         } else {
-          emitNextQuestion();
+          // No announcement needed - proceed immediately
+          const delay = config.NEXT_QUESTION_DELAY || 0;
+          if (delay > 0) {
+            setTimeout(emitNextQuestion, delay);
+          } else {
+            emitNextQuestion();
+          }
         }
       }
     } catch (error) {

@@ -298,4 +298,12 @@ function setupHostSocketHandlers(socket, state) {
   socket.on('error', (message) => {
     showError(message);
   });
+
+  // Multiplier announcement event
+  socket.on('multiplierAnnouncement', (data) => {
+    console.log('[SocketHandlers] Multiplier announcement:', data);
+    if (typeof showMultiplierAnnouncement === 'function') {
+      showMultiplierAnnouncement(data);
+    }
+  });
 }

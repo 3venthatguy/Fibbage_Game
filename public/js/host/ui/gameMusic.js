@@ -31,6 +31,7 @@ const playingMusicFiles = [
   'sounds/playing/TimeMachine.mp3',
   'sounds/playing/PumpItUp.mp3',
   'sounds/playing/Caravan.mp3',
+  'sounds/playing/Sepia.mp3',
   'sounds/playing/Forcast.mp3'
 ];
 

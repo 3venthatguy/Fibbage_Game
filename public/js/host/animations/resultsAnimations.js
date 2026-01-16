@@ -93,6 +93,9 @@ export function showVoters(container, voters) {
  * @param {Array} options.authorIds - Array of individual player IDs (for duplicates)
  * @param {number} options.pointsPerPlayer - Points each player gets (for duplicates)
  * @param {Array} options.playerScores - Array of player scores (for looking up totals)
+ * @param {number} options.multiplier - Current point multiplier (1, 2, or 3)
+ * @param {number} options.baseFoolPlayerPoints - Base points for fooling (before multiplier)
+ * @param {number} options.foolPlayerPoints - Actual points for fooling (after multiplier)
  * @returns {Promise} Promise that resolves when animation completes
  */
 export function revealAuthor(container, authorName, pointsEarned, options = {}) {
@@ -127,9 +130,16 @@ export function revealAuthor(container, authorName, pointsEarned, options = {}) 
     header.appendChild(headerWon);
     table.appendChild(header);
 
+    // Get multiplier info from options (default to 1x if not provided)
+    const multiplier = options.multiplier || 1;
+    const foolPlayerPoints = options.foolPlayerPoints || 500;
+    const voterCount = options.voterCount || 1;
+
     // Handle duplicate answers - create a row for each author
     if (options.isDuplicate && options.authorNames && options.authorNames.length > 1 && options.authorIds) {
-      // Each player gets +250 when multiple players fooled with the same answer
+      // Points are split among co-authors
+      const pointsPerAuthor = Math.round(foolPlayerPoints / options.authorNames.length);
+
       options.authorNames.forEach((individualName, index) => {
         const row = document.createElement('div');
         row.className = 'author-table-row';
@@ -141,16 +151,15 @@ export function revealAuthor(container, authorName, pointsEarned, options = {}) 
 
         const pointsCell = document.createElement('div');
         pointsCell.className = 'author-table-points';
-        // Show multiplier only if 2+ voters
-        const voterCount = options.voterCount || 1;
-        pointsCell.textContent = voterCount >= 2 ? `+250 x${voterCount}` : '+250';
+        // Show points with voter count multiplier if 2+ voters
+        pointsCell.textContent = voterCount >= 2 ? `+${pointsPerAuthor} x${voterCount}` : `+${pointsPerAuthor}`;
 
         row.appendChild(nameCell);
         row.appendChild(pointsCell);
         table.appendChild(row);
       });
     } else {
-      // Single author gets +500
+      // Single author gets full points
       const row = document.createElement('div');
       row.className = 'author-table-row';
 
@@ -160,9 +169,8 @@ export function revealAuthor(container, authorName, pointsEarned, options = {}) 
 
       const pointsCell = document.createElement('div');
       pointsCell.className = 'author-table-points';
-      // Show multiplier only if 2+ voters
-      const voterCount = options.voterCount || 1;
-      pointsCell.textContent = voterCount >= 2 ? `+500 x${voterCount}` : '+500';
+      // Show points with voter count multiplier if 2+ voters
+      pointsCell.textContent = voterCount >= 2 ? `+${foolPlayerPoints} x${voterCount}` : `+${foolPlayerPoints}`;
 
       row.appendChild(nameCell);
       row.appendChild(pointsCell);

@@ -28,7 +28,13 @@ class ResultsAnimator {
    * @param {object} results - Results data from ScoreCalculator
    */
   async playResultsSequence(results) {
-    const { correctAnswer, explanation, roundScores, totalScores, votes, voteCounts } = results;
+    const { correctAnswer, explanation, roundScores, totalScores, votes, voteCounts, multiplier, baseFoolPlayerPoints, foolPlayerPoints, correctVotePoints } = results;
+
+    // Store multiplier info for use in other methods
+    this.multiplier = multiplier || 1;
+    this.baseFoolPlayerPoints = baseFoolPlayerPoints || 500;
+    this.foolPlayerPoints = foolPlayerPoints || 500;
+    this.correctVotePoints = correctVotePoints || 1000;
 
     // Group all submitted answers to handle duplicates (includes left players)
     const answerGroups = new Map(); // answer text -> {playerIds: [], playerNames: [], text: string, leftPlayerIds: []}
@@ -261,7 +267,10 @@ class ResultsAnimator {
       isDuplicate: playerIds && playerIds.length > 1,
       pointsEarned: pointsEarned,
       pointsPerPlayer: pointsPerPlayer, // Points each player gets (for split points display)
-      voterCount: voters.length
+      voterCount: voters.length,
+      multiplier: this.multiplier,
+      baseFoolPlayerPoints: this.baseFoolPlayerPoints,
+      foolPlayerPoints: this.foolPlayerPoints
     });
     await this.delay(this.timings.authorRevealDuration);
 
@@ -339,7 +348,9 @@ class ResultsAnimator {
 
     this.io.to(this.roomCode).emit('results:updateCorrectScores', {
       sequenceId: this.sequenceId,
-      voters: correctVotersWithScores
+      voters: correctVotersWithScores,
+      multiplier: this.multiplier,
+      correctVotePoints: this.correctVotePoints
     });
     await this.delay(this.timings.scoreAnimationDuration);
   }

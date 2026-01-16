@@ -15,7 +15,7 @@ module.exports = {
 
   // Game configuration
   MIN_PLAYERS: 2,
-  QUESTIONS_PER_GAME: 6,
+  QUESTIONS_PER_GAME: 8,  // Total questions (matches TOTAL_QUESTIONS)
   MAX_PLAYER_NAME_LENGTH: 20,
   MAX_ANSWER_LENGTH: 100,
 
@@ -35,6 +35,11 @@ module.exports = {
   CORRECT_VOTE_POINTS: 1000,
   FOOL_PLAYER_POINTS: 500,
 
+  // Point Multiplier Configuration
+  QUESTIONS_BEFORE_DOUBLE: 3,  // After question 3, points double (questions 4-7 are 2x)
+  QUESTIONS_BEFORE_TRIPLE: 7,  // After question 7, points triple (question 8 is 3x)
+  TOTAL_QUESTIONS: 8,
+
   // Game text customization
   GAME_TITLE: 'ECON FIBBAGE',
   GAME_RULES: `Welcome to ECON FIBBAGE! Here's how to play:
@@ -51,6 +56,15 @@ Remember: The best lies are the ones that sound almost true!`,
 
   // Timer broadcast interval
   TIMER_BROADCAST_INTERVAL: 1000,
+
+  // Multiplier Announcement Animation Timings (in milliseconds)
+  MULTIPLIER_ANIMATION_TIMINGS: {
+    fadeToBlack: 500,           // Duration for screen fade to black
+    textZoomIn: 800,            // Duration for text zoom entrance (scale 0 → 1.2 → 1.0)
+    holdDuration: 3500,         // How long to hold the announcement on screen
+    fadeOut: 500,               // Duration for fade out transition
+    particlesDuration: 3500     // Duration for confetti/particles animation
+  },
 
   // Results animation timings (in milliseconds)
   RESULTS_ANIMATION_TIMINGS: {

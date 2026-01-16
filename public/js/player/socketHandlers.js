@@ -208,4 +208,12 @@ function setupPlayerSocketHandlers(socket, state) {
       resetJoinButton();
     }
   });
+
+  // Multiplier announcement event
+  socket.on('multiplierAnnouncement', (data) => {
+    console.log('[PlayerSocketHandlers] Multiplier announcement:', data);
+    if (typeof showMultiplierAnnouncement === 'function') {
+      showMultiplierAnnouncement(data);
+    }
+  });
 }

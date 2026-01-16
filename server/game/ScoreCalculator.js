@@ -8,13 +8,21 @@ const config = require('../config');
  * Calculates results and scores for the current round.
  * Handles duplicate answers by splitting points among players who submitted the same lie.
  * Also handles answers from players who left mid-game (they don't get score but their lies still fool people).
+ * Applies point multiplier based on the current question number.
  * @param {object} gameState - Current game state
- * @returns {object} Results data including scores and vote counts
+ * @returns {object} Results data including scores, vote counts, and multiplier info
  */
 function calculateResults(gameState) {
   const correctAnswer = gameState.currentQuestion.answer;
   const roundScores = {};
   const voteCounts = {};
+
+  // Get the current multiplier (1x, 2x, or 3x)
+  const multiplier = gameState.getCurrentMultiplier();
+
+  // Calculate multiplied point values
+  const correctVotePoints = config.CORRECT_VOTE_POINTS * multiplier;
+  const foolPlayerPoints = config.FOOL_PLAYER_POINTS * multiplier;
 
   // Initialize scores and vote counts for active players
   gameState.players.forEach(player => {
@@ -43,13 +51,13 @@ function calculateResults(gameState) {
   gameState.players.forEach(player => {
     const votedFor = gameState.votes[player.id];
 
-    // Award points for voting for correct answer
+    // Award points for voting for correct answer (with multiplier)
     if (votedFor === 'correct') {
-      roundScores[player.id] += config.CORRECT_VOTE_POINTS;
+      roundScores[player.id] += correctVotePoints;
     } else if (votedFor) {
       const votedForPlayer = gameState.players.find(p => p.id === votedFor);
       if (votedForPlayer && gameState.submittedAnswers[votedFor] === correctAnswer) {
-        roundScores[player.id] += config.CORRECT_VOTE_POINTS;
+        roundScores[player.id] += correctVotePoints;
       }
     }
   });
@@ -72,8 +80,8 @@ function calculateResults(gameState) {
       const playersWithThisAnswer = answerGroups.get(votedForAnswer) || [firstPlayerId];
       const numberOfDuplicates = playersWithThisAnswer.length;
 
-      // Split points among all players who submitted this answer
-      const pointsPerPlayer = config.FOOL_PLAYER_POINTS / numberOfDuplicates;
+      // Split points among all players who submitted this answer (with multiplier)
+      const pointsPerPlayer = foolPlayerPoints / numberOfDuplicates;
 
       playersWithThisAnswer.forEach(playerId => {
         voteCounts[playerId]++;
@@ -93,7 +101,12 @@ function calculateResults(gameState) {
     roundScores,
     totalScores: gameState.players.map(p => p.toClientData()),
     votes: gameState.votes,
-    voteCounts
+    voteCounts,
+    multiplier,
+    baseCorrectVotePoints: config.CORRECT_VOTE_POINTS,
+    baseFoolPlayerPoints: config.FOOL_PLAYER_POINTS,
+    correctVotePoints,
+    foolPlayerPoints
   };
 }
 

@@ -18,6 +18,40 @@ class GameState {
     this.submittedAnswers = {};
     this.votes = {};
     this.timer = new Timer();
+    this.currentMultiplier = 1; // Point multiplier (1x, 2x, or 3x)
+  }
+
+  /**
+   * Gets the current point multiplier based on question index.
+   * Questions 1-3 (index 0-2): 1x multiplier
+   * Questions 4-7 (index 3-6): 2x multiplier
+   * Question 8 (index 7): 3x multiplier
+   * @returns {number} Current multiplier (1, 2, or 3)
+   */
+  getCurrentMultiplier() {
+    const questionNumber = this.currentQuestionIndex + 1; // Convert to 1-based
+    if (questionNumber > config.QUESTIONS_BEFORE_TRIPLE) {
+      return 3;
+    } else if (questionNumber > config.QUESTIONS_BEFORE_DOUBLE) {
+      return 2;
+    }
+    return 1;
+  }
+
+  /**
+   * Checks if a multiplier announcement should be shown before the current question.
+   * @returns {object|null} { type: 'double'|'triple', multiplier: 2|3 } or null
+   */
+  shouldShowMultiplierAnnouncement() {
+    const questionNumber = this.currentQuestionIndex + 1; // Convert to 1-based
+    if (questionNumber === config.QUESTIONS_BEFORE_DOUBLE + 1) {
+      // About to start question 4 - show "POINTS DOUBLED!"
+      return { type: 'double', multiplier: 2 };
+    } else if (questionNumber === config.QUESTIONS_BEFORE_TRIPLE + 1) {
+      // About to start question 8 (final) - show "POINTS TRIPLED!"
+      return { type: 'triple', multiplier: 3 };
+    }
+    return null;
   }
 
   /**

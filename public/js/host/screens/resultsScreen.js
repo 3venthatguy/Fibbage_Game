@@ -276,14 +276,20 @@ async function handleRevealAuthor(data) {
       authorNames: data.authorNames,
       authorIds: data.authorIds,
       pointsPerPlayer: data.pointsPerPlayer,
-      voterCount: data.voterCount
+      voterCount: data.voterCount,
+      multiplier: data.multiplier,
+      baseFoolPlayerPoints: data.baseFoolPlayerPoints,
+      foolPlayerPoints: data.foolPlayerPoints
     });
   } else {
     // Single author - pass authorId for score update
     await revealAuthor(authorContainer, data.authorName, data.pointsEarned, {
       isDuplicate: false,
       authorId: data.authorId,
-      voterCount: data.voterCount
+      voterCount: data.voterCount,
+      multiplier: data.multiplier,
+      baseFoolPlayerPoints: data.baseFoolPlayerPoints,
+      foolPlayerPoints: data.foolPlayerPoints
     });
   }
 }

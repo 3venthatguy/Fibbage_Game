@@ -52,10 +52,79 @@ const AUDIO_CONFIG = {
   SFX_TRUTH_REVEAL_VOLUME: 1,
 
   /** Success ending celebration sound on final game over screen */
-  SFX_SUCCESS_ENDING_VOLUME: 0.7
+  SFX_SUCCESS_ENDING_VOLUME: 0.7,
+
+  /** Multiplier announcement fanfare sound */
+  SFX_MULTIPLIER_FANFARE_VOLUME: 0.8
+};
+
+/**
+ * Multiplier Announcement Animation Settings.
+ * Edit these values to customize the dramatic announcement screens.
+ * All timing values are in milliseconds.
+ */
+const MULTIPLIER_CONFIG = {
+  // ============================================
+  // ANIMATION DURATIONS
+  // ============================================
+
+  /** Duration for screen fade to black */
+  fadeToBlack: 500,
+
+  /** Duration for text zoom entrance (scale 0 → 1.2 → 1.0) */
+  textZoomIn: 800,
+
+  /** How long to hold the announcement on screen */
+  holdDuration: 3500,
+
+  /** Duration for fade out transition */
+  fadeOut: 500,
+
+  // ============================================
+  // ANIMATION TIMING OFFSETS (relative to fadeToBlack completion)
+  // ============================================
+
+  /** Delay after fade before showing subtitle (for triple announcement) */
+  subtitleDelay: 200,
+
+  /** Delay after fade before showing main title */
+  titleDelay: 400,
+
+  /** Delay after title zoom before starting pulse animation */
+  pulseStartDelay: 500,
+
+  // ============================================
+  // TEXT PULSE ANIMATION
+  // ============================================
+
+  /** Scale factor for gentle text pulse (1.0 = no scale, 1.05 = 5% larger) */
+  pulseScale: 1.05,
+
+  /** Duration of one pulse cycle */
+  pulseDuration: 1000,
+
+  // ============================================
+  // PARTICLE SETTINGS
+  // ============================================
+
+  /** Number of confetti particles to create */
+  particleCount: 50,
+
+  /** How long particles take to fall across the screen */
+  particleFallDuration: 3000,
+
+  /** Maximum random delay for staggered particle start (seconds) */
+  particleStaggerMax: 2,
+
+  /** Base particle size in pixels */
+  particleSizeMin: 8,
+
+  /** Additional random size variation in pixels */
+  particleSizeVariation: 8
 };
 
 // Make config available globally
 if (typeof window !== 'undefined') {
   window.AUDIO_CONFIG = AUDIO_CONFIG;
+  window.MULTIPLIER_CONFIG = MULTIPLIER_CONFIG;
 }
