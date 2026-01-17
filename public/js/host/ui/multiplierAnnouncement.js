@@ -37,6 +37,13 @@ function showMultiplierAnnouncement(data) {
       return;
     }
 
+    // Prevent duplicate announcements if already showing
+    if (overlay.classList.contains('active')) {
+      console.log('Multiplier announcement already active, skipping');
+      resolve();
+      return;
+    }
+
     // Reset classes
     overlay.className = 'multiplier-overlay';
     emojisTop.className = 'multiplier-emojis';
@@ -69,9 +76,16 @@ function showMultiplierAnnouncement(data) {
     overlay.style.display = 'flex';
     overlay.classList.add('active');
 
-    // Play sound effect
-    if (typeof playSoundEffect === 'function') {
-      playSoundEffect('multiplierFanfare', window.AUDIO_CONFIG?.SFX_MULTIPLIER_FANFARE_VOLUME);
+    // Play sound effect based on type
+    const volume = window.AUDIO_CONFIG?.SFX_MULTIPLIER_FANFARE_VOLUME || 0.8;
+    if (data.type === 'double') {
+      const audio = new Audio('sounds/effects/RevealSound.mp3');
+      audio.volume = volume;
+      audio.play().catch(() => {});
+    } else if (data.type === 'triple') {
+      const audio = new Audio('sounds/effects/EvilString.mp3');
+      audio.volume = volume;
+      audio.play().catch(() => {});
     }
 
     // Step 1: Fade to black
@@ -101,9 +115,8 @@ function showMultiplierAnnouncement(data) {
       description.classList.add('show');
     }, config.fadeToBlack + config.textZoomIn);
 
-    // Step 6: Start pulse animation
+    // Step 6: Start pulse animation (keep 'show' class so text stays visible)
     setTimeout(() => {
-      title.classList.remove('show');
       title.classList.add('pulse');
     }, config.fadeToBlack + config.textZoomIn + config.pulseStartDelay);
 

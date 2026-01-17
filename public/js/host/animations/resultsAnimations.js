@@ -137,8 +137,8 @@ export function revealAuthor(container, authorName, pointsEarned, options = {}) 
 
     // Handle duplicate answers - create a row for each author
     if (options.isDuplicate && options.authorNames && options.authorNames.length > 1 && options.authorIds) {
-      // Points are split among co-authors
-      const pointsPerAuthor = Math.round(foolPlayerPoints / options.authorNames.length);
+      // For 2+ duplicates, each player gets fixed reduced points (250/500/750)
+      const pointsPerAuthor = foolPlayerPoints;
 
       options.authorNames.forEach((individualName, index) => {
         const row = document.createElement('div');

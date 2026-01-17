@@ -260,6 +260,7 @@
 }
 
 .multiplier-title.pulse {
+  opacity: 1;
   animation: multiplierTitlePulse 1s ease-in-out infinite;
 }
 

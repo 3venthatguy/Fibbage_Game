@@ -23,6 +23,7 @@ function calculateResults(gameState) {
   // Calculate multiplied point values
   const correctVotePoints = config.CORRECT_VOTE_POINTS * multiplier;
   const foolPlayerPoints = config.FOOL_PLAYER_POINTS * multiplier;
+  const duplicateFoolPoints = config.DUPLICATE_FOOL_POINTS * multiplier;
 
   // Initialize scores and vote counts for active players
   gameState.players.forEach(player => {
@@ -63,7 +64,7 @@ function calculateResults(gameState) {
   });
 
   // Count votes received and award points for fooling others
-  // For duplicate answers, split the points among all players who submitted that answer
+  // For 3+ duplicate answers, each player gets a fixed reduced amount instead of splitting
   Object.entries(gameState.votes).forEach(([voterId, votedForId]) => {
     if (votedForId && votedForId !== 'correct') {
       // Handle comma-separated player IDs (duplicate answers)
@@ -80,8 +81,10 @@ function calculateResults(gameState) {
       const playersWithThisAnswer = answerGroups.get(votedForAnswer) || [firstPlayerId];
       const numberOfDuplicates = playersWithThisAnswer.length;
 
-      // Split points among all players who submitted this answer (with multiplier)
-      const pointsPerPlayer = foolPlayerPoints / numberOfDuplicates;
+      // Determine points per player:
+      // - 1 player: full points (500/1000/1500)
+      // - 2+ players (duplicates): fixed reduced points (250/500/750)
+      const pointsPerPlayer = numberOfDuplicates >= 2 ? duplicateFoolPoints : foolPlayerPoints;
 
       playersWithThisAnswer.forEach(playerId => {
         voteCounts[playerId]++;
@@ -105,8 +108,10 @@ function calculateResults(gameState) {
     multiplier,
     baseCorrectVotePoints: config.CORRECT_VOTE_POINTS,
     baseFoolPlayerPoints: config.FOOL_PLAYER_POINTS,
+    baseDuplicateFoolPoints: config.DUPLICATE_FOOL_POINTS,
     correctVotePoints,
-    foolPlayerPoints
+    foolPlayerPoints,
+    duplicateFoolPoints
   };
 }
 

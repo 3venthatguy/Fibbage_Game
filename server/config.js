@@ -34,10 +34,11 @@ module.exports = {
   // Scoring
   CORRECT_VOTE_POINTS: 1000,
   FOOL_PLAYER_POINTS: 500,
+  DUPLICATE_FOOL_POINTS: 250, // Fixed points when 2+ players submit the same answer
 
   // Point Multiplier Configuration
-  QUESTIONS_BEFORE_DOUBLE: 3,  // After question 3, points double (questions 4-7 are 2x)
-  QUESTIONS_BEFORE_TRIPLE: 7,  // After question 7, points triple (question 8 is 3x)
+  QUESTIONS_BEFORE_DOUBLE: 1,  // After question 3, points double (questions 4-7 are 2x)
+  QUESTIONS_BEFORE_TRIPLE: 2,  // After question 7, points triple (question 8 is 3x)
   TOTAL_QUESTIONS: 8,
 
   // Game text customization

@@ -28,13 +28,14 @@ class ResultsAnimator {
    * @param {object} results - Results data from ScoreCalculator
    */
   async playResultsSequence(results) {
-    const { correctAnswer, explanation, roundScores, totalScores, votes, voteCounts, multiplier, baseFoolPlayerPoints, foolPlayerPoints, correctVotePoints } = results;
+    const { correctAnswer, explanation, roundScores, totalScores, votes, voteCounts, multiplier, baseFoolPlayerPoints, foolPlayerPoints, correctVotePoints, duplicateFoolPoints } = results;
 
     // Store multiplier info for use in other methods
     this.multiplier = multiplier || 1;
     this.baseFoolPlayerPoints = baseFoolPlayerPoints || 500;
     this.foolPlayerPoints = foolPlayerPoints || 500;
     this.correctVotePoints = correctVotePoints || 1000;
+    this.duplicateFoolPoints = duplicateFoolPoints || 250;
 
     // Group all submitted answers to handle duplicates (includes left players)
     const answerGroups = new Map(); // answer text -> {playerIds: [], playerNames: [], text: string, leftPlayerIds: []}
@@ -257,6 +258,10 @@ class ResultsAnimator {
     await this.delay(this.timings.voterAppearStagger * voters.length + 500);
 
     // Phase 5: Reveal Author(s)
+    // Determine if this is a duplicate (2+ players get reduced fixed points)
+    const isDuplicateTwoOrMore = playerIds && playerIds.length >= 2;
+    const actualFoolPoints = isDuplicateTwoOrMore ? this.duplicateFoolPoints : this.foolPlayerPoints;
+
     this.io.to(this.roomCode).emit('results:revealAuthor', {
       sequenceId: this.sequenceId,
       answerId: playerId,
@@ -265,12 +270,14 @@ class ResultsAnimator {
       authorName: playerName,
       authorNames: playerNames, // Array of all player names
       isDuplicate: playerIds && playerIds.length > 1,
+      isDuplicateTwoOrMore: isDuplicateTwoOrMore,
       pointsEarned: pointsEarned,
-      pointsPerPlayer: pointsPerPlayer, // Points each player gets (for split points display)
+      pointsPerPlayer: pointsPerPlayer, // Points each player gets
       voterCount: voters.length,
       multiplier: this.multiplier,
       baseFoolPlayerPoints: this.baseFoolPlayerPoints,
-      foolPlayerPoints: this.foolPlayerPoints
+      foolPlayerPoints: actualFoolPoints, // Use actual points based on duplicate status
+      duplicateFoolPoints: this.duplicateFoolPoints
     });
     await this.delay(this.timings.authorRevealDuration);
 

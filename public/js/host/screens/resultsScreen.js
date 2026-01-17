@@ -503,12 +503,15 @@ function handleShowCorrectVoters(data) {
 async function handleUpdateCorrectScores(data) {
   if (data.sequenceId !== currentSequenceId) return;
 
+  // Use the actual multiplied points value from server
+  const pointsToShow = data.correctVotePoints || 1000;
+
   for (const voter of data.voters) {
     if (voter.pointsEarned > 0) {
       const pointsCell = document.querySelector(`[data-player-id="${voter.id}"]`);
       if (pointsCell) {
-        // Always show fixed value of +1000 for correct voters
-        pointsCell.textContent = '+1000';
+        // Show actual multiplied points value (+1000, +2000, or +3000)
+        pointsCell.textContent = `+${pointsToShow}`;
         // Apply pop animation
         pointsCell.style.animation = 'none';
         setTimeout(() => {

@@ -55,7 +55,7 @@ const AUDIO_CONFIG = {
   SFX_SUCCESS_ENDING_VOLUME: 0.7,
 
   /** Multiplier announcement fanfare sound */
-  SFX_MULTIPLIER_FANFARE_VOLUME: 0.8
+  SFX_MULTIPLIER_FANFARE_VOLUME: 0.6
 };
 
 /**
@@ -75,7 +75,7 @@ const MULTIPLIER_CONFIG = {
   textZoomIn: 800,
 
   /** How long to hold the announcement on screen */
-  holdDuration: 3500,
+  holdDuration: 5000,
 
   /** Duration for fade out transition */
   fadeOut: 500,

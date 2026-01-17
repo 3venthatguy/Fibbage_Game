@@ -558,6 +558,12 @@
   max-width: 450px;
 }
 
+/* Ensure inner content expands to fill the highlighted card width */
+.results-phase .answer-card.answer-highlighted > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .voters-container {
   margin-top: 20px;
   padding-top: 20px;
@@ -954,6 +960,7 @@
 }
 
 .multiplier-title.pulse {
+  opacity: 1;
   animation: multiplierTitlePulse 1s ease-in-out infinite;
 }
 
