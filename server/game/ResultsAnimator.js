@@ -140,8 +140,9 @@ class ResultsAnimator {
       answers: allAnswersForDisplay
     });
 
-    // Wait a moment for clients to prepare
-    await this.delay(500);
+    // Wait for clients to prepare and display all answers before highlighting
+    const initialDelay = this.timings.initialAnswerDelay || 2000;
+    await this.delay(initialDelay);
 
     // Reveal each answer: voted fakes first (randomized), then correct answer
     // Unvoted fakes are never revealed (revealFakeAnswer will skip them)

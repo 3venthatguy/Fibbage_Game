@@ -37,9 +37,9 @@ module.exports = {
   DUPLICATE_FOOL_POINTS: 250, // Fixed points when 2+ players submit the same answer
 
   // Point Multiplier Configuration
-  QUESTIONS_BEFORE_DOUBLE: 1,  // After question 3, points double (questions 4-7 are 2x)
-  QUESTIONS_BEFORE_TRIPLE: 2,  // After question 7, points triple (question 8 is 3x)
-  TOTAL_QUESTIONS: 8,
+  QUESTIONS_BEFORE_DOUBLE: 3,  // After question 3, points double (questions 4-7 are 2x)
+  QUESTIONS_BEFORE_TRIPLE: 5,  // After question 7, points triple (question 8 is 3x)
+  TOTAL_QUESTIONS: 6,
 
   // Game text customization
   GAME_TITLE: 'ECON FIBBAGE',
@@ -69,6 +69,7 @@ Remember: The best lies are the ones that sound almost true!`,
 
   // Results animation timings (in milliseconds)
   RESULTS_ANIMATION_TIMINGS: {
+    initialAnswerDelay: 2000,           // Delay after showing all answers before highlighting first one
     answerHighlight: 1000,              // Duration for highlighting a fake answer before revealing it
     suspensePause: 1500,                // Pause duration to build suspense before showing who fooled whom
     lieRevealDuration: 1500,            // Duration to display "IT'S A LIE!" text above fake answer
