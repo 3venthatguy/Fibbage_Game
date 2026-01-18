@@ -20,19 +20,23 @@ const introMusicFiles = [
 
 // Available playing phase music files (gameplay)
 const playingMusicFiles = [
+  'sounds/playing/BootleggerBoogie.mp3',
+  'sounds/playing/BotanicPanic.mp3',
+  'sounds/playing/CantinaBand.mp3',
+  'sounds/playing/Caravan.mp3',
+  'sounds/playing/Clutterfunk.mp3',
   'sounds/playing/CoconutMall.mp3',
+  'sounds/playing/ColdIsland.mp3',
+  'sounds/playing/Forcast.mp3',
   'sounds/playing/GreatPretender.mp3',
   'sounds/playing/Kerfuffle.mp3',
-  'sounds/playing/Piano_Black.mp3',
-  'sounds/playing/Windmill_Isle.mp3',
-  'sounds/playing/botanic-panic.mp3',
   'sounds/playing/Loonboon.mp3',
-  'sounds/playing/ColdIsland.mp3',
-  'sounds/playing/TimeMachine.mp3',
+  'sounds/playing/PedestriansCrossing.mp3',
+  'sounds/playing/Piano_Black.mp3',
   'sounds/playing/PumpItUp.mp3',
-  'sounds/playing/Caravan.mp3',
   'sounds/playing/Sepia.mp3',
-  'sounds/playing/Forcast.mp3'
+  'sounds/playing/TimeMachine.mp3',
+  'sounds/playing/WindmillIsle.mp3'
 ];
 
 // Available ending music files (game over)
