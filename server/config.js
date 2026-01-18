@@ -15,13 +15,13 @@ module.exports = {
 
   // Game configuration
   MIN_PLAYERS: 2,
-  QUESTIONS_PER_GAME: 8,  // Total questions (matches TOTAL_QUESTIONS)
+  QUESTIONS_PER_GAME: 6,  // Total questions (matches TOTAL_QUESTIONS)
   MAX_PLAYER_NAME_LENGTH: 20,
   MAX_ANSWER_LENGTH: 100,
 
   // Phase durations (in seconds)
   READING_PHASE_DURATION: 8,
-  SUBMIT_PHASE_DURATION: 35,
+  SUBMIT_PHASE_DURATION: 40,
   VOTING_PHASE_DURATION: 20,
 
   // Transition delays (in milliseconds)

@@ -21,7 +21,7 @@ const questions = [
     explanation: "Named after Charles Cobb and Paul Douglas, this functional form exhibits constant returns to scale and diminishing marginal returns, making it a standard tool in empirical macroeconomics and growth theory. By the way for all the smooth-brained players, α is the greek letter alpha." 
   },
   {
-    question: "In 1980, Fed Chairman _____ raised interest rates to 20% to fight inflation.",
+    question: "In 1980, the Fed Chairman named _____ raised interest rates to 20% to fight inflation.",
     answer: "PAUL VOLCKER",
     explanation: "Fed Chairman Paul Volcker raised rates to nearly 20% to break the back of double-digit inflation. Yes, there was a Fed chairman before Jerome Powell."
   },
