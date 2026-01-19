@@ -36,7 +36,7 @@ const playingMusicFiles = [
   'sounds/playing/PumpItUp.mp3',
   'sounds/playing/Sepia.mp3',
   'sounds/playing/TimeMachine.mp3',
-  'sounds/playing/WindmillIsle.mp3'
+  'sounds/playing/Windmill_Isle.mp3'
 ];
 
 // Available ending music files (game over)

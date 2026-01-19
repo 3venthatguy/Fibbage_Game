@@ -8,7 +8,6 @@ let sfxEnabled = false;
 
 // Available sound effect files
 const soundEffects = {
-  fail: 'sounds/effects/fail-trumpet-02-383962.mp3',
   pop: 'sounds/effects/pop-sound.mp3',
   success: 'sounds/effects/success.mp3',
   ticking: 'sounds/effects/ticking_timer.mp3',
