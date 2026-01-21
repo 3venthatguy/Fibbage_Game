@@ -1,13 +1,13 @@
 // Economics trivia questions database
 const questions = [
   {
-    question: "In 1923, German hyperinflation got so bad that a _____ cost 200 billion marks.",
-    answer: "LOAF OF BREAD",
+    question: "In 1923, German hyperinflation got so bad that _____ cost 200 billion marks.",
+    answer: "BREAD",
     explanation: "At the peak of Weimar hyperinflation in November 1923, prices doubled every 3.7 days. A bunch of gluten-free cafes also popped up (don't quote me on that)."
   },
   {
-    question: "The Dutch _____ bubble of 1637 saw a single tulip bulb sell for the price of a mansion.",
-    answer: "TULIP MANIA",
+    question: "The Dutch _____ Mania bubble of 1637 saw a single tulip bulb sell for the price of a mansion.",
+    answer: "TULIP",
     explanation: "At the height of Tulip Mania, some rare bulbs sold for more than 10 times the annual income of a skilled craftsman. Imagine how much it would've cost if it were marketed as organic!"
   },
   {
@@ -161,8 +161,8 @@ const questions = [
     explanation: "Fluctuations in total factor productivity explain output volatility without relying on monetary factors. The economy sneezes, and everyone works a little less."
   },
   { 
-    question: "Rational consumers _____ subject to the constraint of their income and the prices they face, leading them to equate the marginal utility per dollar across all goods.", 
-    answer: "MAXIMIZE UTILITY", 
+    question: "Rational consumers maximize _____ subject to the constraint of their income and the prices they face, leading them to equate the marginal utility per dollar across all goods.", 
+    answer: "UTILITY", 
     explanation: "The utility-maximization rule (MUx/Px = MUy/Py = …) is the core of consumer choice theory and explains how people allocate limited budgets among competing demands." 
   },
   { 
@@ -206,8 +206,8 @@ const questions = [
     explanation: "Date futures were the original commodity derivatives. Ancient risk management tasted very sweet." 
   },
   { 
-    question: "The Roman Republic's first known financial crisis (c. 352 BCE) was solved by creating a public debt registry and allowing debtors to pay off loans by surrendering _____ instead of land.", 
-    answer: "THEIR FREEDOM", 
+    question: "The Roman Republic's first known financial crisis (c. 352 BCE) was solved by creating a public debt registry and allowing debtors to pay off loans by surrendering their _____ instead of their land.", 
+    answer: "FREEDOM", 
     explanation: "Debt bondage was so common they basically legalized voluntary temporary slavery as a repayment option. Ancient debt-relief had strings attached." 
   },
   {
@@ -217,7 +217,7 @@ const questions = [
   },
   {
     question: "The phenomenon observed in Jeffrey Sachs and Andrew Warner's 1995 paper, where countries abundant in _____ often experience poorer economic performance, is termed the Resource Curse.",
-    answer: "NATURAL RESOURCE",
+    answer: "NATURAL RESOURCEs",
     explanation: "In their seminal paper, Sachs and Warner analyzed data from 1970-1990 across 97 countries and found that resource-dependent economies grew 1% slower annually than non-resource ones—think of it as nature's prank where oil gushes but growth sputters."
   },
   {
@@ -226,8 +226,8 @@ const questions = [
     explanation: "Baumol's research showed that while manufacturing productivity soared (e.g., cars per worker doubled from 1950-2000), services like healthcare couldn't as efficiently automate surgical procedures helping sad people talk through their feelings."
   },
   {
-    question: "The puzzle identified by Martin Feldstein and Charles Horioka in 1980 highlights that national savings and _____ are highly correlated despite global capital flows.",
-    answer: "INVESTMENT RATES",
+    question: "The puzzle identified by Martin Feldstein and Charles Horioka in 1980 highlights that national savings and _____ rates are highly correlated despite global capital flows.",
+    answer: "INVESTMENT",
     explanation: "Using OECD data from 1960-1974, they found a correlation coefficient of 0.89, baffling economists who expected free-flowing capital to break the link—imagine money stubbornly staying home like a couch potato."
   },
   {
@@ -276,8 +276,8 @@ const questions = [
     explanation: "U.S. household debt rose from 80% to 130% of GDP from 2000-2007—envision easy credit as the economy's candy store, leading to a sugar crash and a whole bunch of yodeling children."
   },
   {
-    question: "During the late Roman Empire, chronic debasement of the denarius gradually replaced silver with base metals, contributing to inflation and a loss of trust that pushed economic activity toward localized barter systems known as _____.",
-    answer: "NATURAL ECONOMY",
+    question: "During the late Roman Empire, chronic debasement of the denarius gradually replaced silver with base metals, contributing to inflation and a loss of trust that pushed economic activity toward localized barter systems known as a _____ economy.",
+    answer: "NATURAL",
     explanation: "By the 3rd century CE, Roman coin silver content had fallen below 5%, destroying confidence in money and encouraging in-kind exchange. When your currency becomes decorative tin foil, farmers start accepting goats instead—and honestly, the goats were probably more reliable."
   },
   {
