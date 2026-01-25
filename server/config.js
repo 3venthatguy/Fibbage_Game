@@ -46,9 +46,9 @@ module.exports = {
 
   // Game text customization
   GAME_TITLE: 'INTRO TO MISINFORMATION',
-  GAME_RULES: `Welcome to FIBBAGE! Here's how to play:
+  GAME_RULES: `Welcome to your first class on misinforming the public! Here's how to play:
 
-1. You'll play through 8 fill-in-the-blank questions
+1. You'll play through 6 fill-in-the-blank questions
 2. Make up a LIE that sounds believable to fill in the blank
 3. Everyone votes on which answer they think is TRUE
 4. Earn points by:

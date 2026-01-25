@@ -66,12 +66,12 @@ module.exports = {
       explanation: "The Smoot-Hawley Tariff Act of 1930 significantly increased U.S. tariffs, provoking foreign retaliation and contributing to a collapse in world trade. Noted, too much protectionism is bad."
     },
     {
-      question: "In early 19th-century U.S. history, high tariffs that protected "infant industries" from British competition were a key feature of the economic system as highly popularized by _____.",
+      question: "In early 19th-century U.S. history, high tariffs that protected 'infant industries' from British competition were a key feature of the economic system as highly popularized by _____.",
       answer: "ALEXANDER HAMILTON",
       explanation: "Alexander Hamilton advocated for protective tariffs with the goal of nurturing young American industries, an approach highly employed in early U.S. tariff policy. He was also on the $10 bill, so you know he's important."
     },
     {
-      question: "In international trade, a policy that deliberately harms another country's economic welfare—for example, by imposing a welfare-maximizing tariff at that country's expense—is often described as a "beggar-thy-_____" policy",
+      question: "In international trade, a policy that deliberately harms another country's economic welfare—for example, by imposing a welfare-maximizing tariff at that country's expense—is often described as a 'beggar-thy-_____' policy",
       answer: "NEIGHBOR",
       explanation: "When a country sets an optimal tariff that improves its own welfare while worsening that of its trading partner, the policy is described as beggar-thy-neighbor. Not a very neighborly thing to do unfortunately."
     },

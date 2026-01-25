@@ -3,6 +3,32 @@
  */
 
 /**
+ * Calculates ranks with proper tie handling.
+ * Players with the same score get the same rank.
+ * @param {Array} sortedScores - Array of scores sorted descending
+ * @returns {Array} Array of rank numbers corresponding to each player
+ */
+function calculateRanksWithTies(sortedScores) {
+  const ranks = [];
+  let currentRank = 1;
+
+  for (let i = 0; i < sortedScores.length; i++) {
+    if (i === 0) {
+      ranks.push(currentRank);
+    } else if (sortedScores[i].score === sortedScores[i - 1].score) {
+      // Same score as previous player, same rank
+      ranks.push(ranks[i - 1]);
+    } else {
+      // Different score, rank is position + 1
+      currentRank = i + 1;
+      ranks.push(currentRank);
+    }
+  }
+
+  return ranks;
+}
+
+/**
  * Shows the game over screen with final scores.
  * @param {Array} finalScores - Array of final scores sorted by rank
  */
@@ -25,20 +51,32 @@ function showGameOverScreen(finalScores) {
     restoreMusicVolume(AUDIO_CONFIG.GAME_OVER_MUSIC_VOLUME);
   }
 
-  // Show winner
-  if (finalScores.length > 0) {
-    winnerCelebration.textContent = `🎉 ${finalScores[0].name} Wins! 🎉`;
+  // Calculate ranks with tie handling
+  const ranks = calculateRanksWithTies(finalScores);
+
+  // Find all first-place winners (could be ties)
+  const firstPlaceScore = finalScores.length > 0 ? finalScores[0].score : 0;
+  const winners = finalScores.filter(p => p.score === firstPlaceScore);
+
+  // Show winner(s)
+  if (winners.length > 1) {
+    const winnerNames = winners.map(w => w.name).join(' & ');
+    winnerCelebration.textContent = `🎉 ${winnerNames} Tie for 1st! 🎉`;
+  } else if (winners.length === 1) {
+    winnerCelebration.textContent = `🎉 ${winners[0].name} Wins! 🎉`;
   }
 
   // Show final leaderboard
   finalLeaderboard.innerHTML = '';
   finalScores.forEach((player, index) => {
+    const playerRank = ranks[index];
     const item = document.createElement('div');
-    item.className = `final-leaderboard-item rank-${index + 1}`;
+    // Apply rank-1 class to all first place players (including ties)
+    item.className = `final-leaderboard-item rank-${playerRank}`;
 
     const rank = document.createElement('span');
     rank.className = 'rank-badge';
-    rank.textContent = `#${index + 1}`;
+    rank.textContent = `#${playerRank}`;
 
     const name = document.createElement('span');
     name.textContent = player.name;

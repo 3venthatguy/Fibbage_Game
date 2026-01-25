@@ -63,7 +63,7 @@ function setupRoomEvents(io, socket, gameManager) {
       }
 
       // Verify this is the host
-      if (gameRoom.hostSocketId !== socket.id) {
+      if (gameState.hostId !== socket.id) {
         socket.emit('error', 'Only the host can change the question package');
         return;
       }
@@ -99,30 +99,74 @@ function setupRoomEvents(io, socket, gameManager) {
         return;
       }
 
-      // Check if game is in progress
-      if (gameState.phase !== 'lobby') {
-        socket.emit('error', 'Game already in progress');
+      // Allow joining during lobby, reading, or submit phases
+      const allowedPhases = ['lobby', 'reading', 'submit'];
+      if (!allowedPhases.includes(gameState.phase)) {
+        socket.emit('error', 'Game in progress! Wait for the next question to appear on the host screen, then try again.');
         return;
       }
 
-      // Normal lobby join
+      // Join the room
       const player = gameManager.joinRoom(roomCode, playerName, socket.id);
       socket.join(roomCode);
 
-      // Notify all players in room
-      io.to(roomCode).emit('playerJoined', {
-        players: gameState.getPlayersClientData()
-      });
+      // Notify all players in room (including host)
+      // Include phase info and counts so host can update checkmarks
+      const playerJoinedData = {
+        players: gameState.getPlayersClientData(),
+        phase: gameState.phase,
+        totalPlayers: gameState.players.length
+      };
+
+      // Add submitted/voted counts for mid-game joins
+      if (gameState.phase === 'submit' || gameState.phase === 'reading') {
+        playerJoinedData.submittedCount = Object.keys(gameState.submittedAnswers).length;
+        console.log(`[RoomEvents] Player joined mid-game. Total players: ${playerJoinedData.totalPlayers}, Submitted: ${playerJoinedData.submittedCount}`);
+      }
+
+      io.to(roomCode).emit('playerJoined', playerJoinedData);
 
       // Send current game state AND player ID to the new player
-      socket.emit('gameState', {
+      const gameStateData = {
         phase: gameState.phase,
         currentQuestionIndex: gameState.currentQuestionIndex,
         totalQuestions: gameState.selectedQuestionIds.length || 8,
         playerId: player.id,
         gameTitle: config.GAME_TITLE,
         gameRules: config.GAME_RULES
-      });
+      };
+
+      // If joining mid-game, send the current question too
+      if (gameState.phase !== 'lobby' && gameState.currentQuestion) {
+        gameStateData.currentQuestion = gameState.currentQuestion.question;
+        gameStateData.timeRemaining = gameState.getTimeRemaining();
+        gameStateData.joinedMidGame = true;
+      }
+
+      socket.emit('gameState', gameStateData);
+
+      // If in submit phase, also send phase change so player can start answering
+      if (gameState.phase === 'submit') {
+        socket.emit('phaseChange', {
+          phase: 'submit',
+          timeRemaining: gameState.getTimeRemaining()
+        });
+        socket.emit('newQuestion', {
+          question: gameState.currentQuestion.question,
+          questionIndex: gameState.currentQuestionIndex,
+          totalQuestions: gameState.selectedQuestionIds.length
+        });
+      } else if (gameState.phase === 'reading') {
+        socket.emit('phaseChange', {
+          phase: 'reading',
+          timeRemaining: gameState.getTimeRemaining()
+        });
+        socket.emit('newQuestion', {
+          question: gameState.currentQuestion.question,
+          questionIndex: gameState.currentQuestionIndex,
+          totalQuestions: gameState.selectedQuestionIds.length
+        });
+      }
     } catch (error) {
       socket.emit('error', error.message);
       logError('joining room', error);

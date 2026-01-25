@@ -19,13 +19,16 @@ class GameRoom {
 
   /**
    * Adds a player to the room.
+   * Players can join during lobby, reading, or submit phases.
    * @param {string} playerName - Player's name
    * @param {string} socketId - Player's socket ID
    * @returns {Player} Created player object
    */
   addPlayer(playerName, socketId) {
-    if (this.gameState.phase !== 'lobby') {
-      throw new Error('Game already in progress');
+    // Allow joining during lobby, reading, or submit phases
+    const allowedPhases = ['lobby', 'reading', 'submit'];
+    if (!allowedPhases.includes(this.gameState.phase)) {
+      throw new Error('Game in progress! Wait for the next question to appear on the host screen, then try again.');
     }
 
     const sanitizedName = sanitizePlayerName(playerName);

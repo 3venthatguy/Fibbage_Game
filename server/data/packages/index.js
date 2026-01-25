@@ -7,11 +7,13 @@
 
 const economicsPackage = require('./economics');
 const architecturePackage = require('./architecture');
+const bioinformaticsPackage = require('./bioinformatics');
 
 // Registry of all available packages
 const packages = {
   economics: economicsPackage,
-  architecture: architecturePackage
+  architecture: architecturePackage,
+  bioinformatics: bioinformaticsPackage
 };
 
 /**

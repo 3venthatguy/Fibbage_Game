@@ -114,6 +114,7 @@ function stopGameMusic() {
 
 /**
  * Toggles music on/off globally.
+ * Plays phase-appropriate music when re-enabled.
  */
 function toggleMusic() {
   musicEnabled = !musicEnabled;
@@ -123,12 +124,46 @@ function toggleMusic() {
     currentMusic.pause();
     musicPlaying = false;
   } else if (musicEnabled && !musicPlaying) {
-    // Music enabled but nothing playing - try to start lobby music
-    console.log('Music enabled - attempting to start');
-    playRandomIntroMusic();
+    // Music enabled but nothing playing - play appropriate music for current phase
+    console.log('Music enabled - attempting to start phase-appropriate music');
+    playMusicForCurrentPhase();
   }
 
   updateMusicButton();
+}
+
+/**
+ * Plays the appropriate music for the current game phase.
+ * Uses hostState.currentPhase to determine which music to play.
+ */
+function playMusicForCurrentPhase() {
+  // Check if hostState exists and has currentPhase
+  const currentPhase = (typeof hostState !== 'undefined' && hostState.currentPhase)
+    ? hostState.currentPhase
+    : 'lobby';
+
+  console.log('Playing music for phase:', currentPhase);
+
+  switch (currentPhase) {
+    case 'lobby':
+      playRandomIntroMusic();
+      break;
+    case 'reading':
+      // No music during reading phase (just came from lobby or between questions)
+      break;
+    case 'submit':
+    case 'voting':
+      playRandomGameMusic();
+      break;
+    case 'results':
+    case 'gameOver':
+      playRandomEndingMusic();
+      break;
+    default:
+      // Default to intro music if phase unknown
+      playRandomIntroMusic();
+      break;
+  }
 }
 
 /**

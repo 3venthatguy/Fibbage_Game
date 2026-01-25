@@ -74,6 +74,12 @@ function setupHostSocketHandlers(socket, state) {
     updateStartButton(state.players.length);
     // Play pop sound when a player joins
     playSoundEffect('pop', AUDIO_CONFIG.SFX_PLAYER_JOIN_VOLUME);
+
+    // Update checkmarks if player joined during submit or reading phase
+    if (data.phase === 'submit' || data.phase === 'reading') {
+      console.log('[SocketHandlers] Player joined mid-game, updating checkmarks. Total:', data.totalPlayers, 'Submitted:', data.submittedCount);
+      rerenderSubmitCheckmarks(data.totalPlayers, data.submittedCount || 0);
+    }
   });
 
   socket.on('playerDisconnected', (data) => {

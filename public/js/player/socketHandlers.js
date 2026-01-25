@@ -47,9 +47,12 @@ function setupPlayerSocketHandlers(socket, state) {
       }
     }
 
-    // Handle reconnection or late join
-    if (data.phase !== 'lobby') {
-      showPlayerError('Game already in progress. Please wait for the next game.');
+    // Handle mid-game join
+    if (data.phase !== 'lobby' && data.joinedMidGame) {
+      // Player joined mid-game - they'll receive newQuestion and phaseChange events
+      // to get them into the current game state
+      console.log('Joined mid-game during phase:', data.phase);
+      state.currentPhase = data.phase;
     }
   });
 
