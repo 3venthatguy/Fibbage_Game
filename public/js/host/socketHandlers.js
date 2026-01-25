@@ -13,9 +13,13 @@ function setupHostSocketHandlers(socket, state) {
     const code = typeof data === 'string' ? data : data.roomCode;
     const gameTitle = data.gameTitle || 'Fibbage';
     const gameRules = data.gameRules || '';
+    const availablePackages = data.availablePackages || [];
+    const selectedPackageId = data.packageId || 'economics';
 
     console.log('Room created with code:', code);
     state.roomCode = code;
+    state.selectedPackageId = selectedPackageId;
+    state.availablePackages = availablePackages;
 
     const roomCodeDisplay = document.getElementById('roomCodeDisplay');
     if (roomCodeDisplay) {
@@ -43,6 +47,25 @@ function setupHostSocketHandlers(socket, state) {
     if (gameRulesElement && gameRules) {
       gameRulesElement.textContent = gameRules;
     }
+
+    // Render package cards
+    if (availablePackages.length > 0) {
+      renderPackageCards(availablePackages, selectedPackageId);
+    }
+  });
+
+  socket.on('packageChanged', (data) => {
+    console.log('Package changed to:', data.packageId);
+    state.selectedPackageId = data.packageId;
+    // Update the selected card visually
+    const packageCards = document.querySelectorAll('.package-card');
+    packageCards.forEach(card => {
+      if (card.dataset.packageId === data.packageId) {
+        card.classList.add('selected');
+      } else {
+        card.classList.remove('selected');
+      }
+    });
   });
 
   socket.on('playerJoined', (data) => {

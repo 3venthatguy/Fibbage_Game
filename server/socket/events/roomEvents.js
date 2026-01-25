@@ -12,16 +12,31 @@ const config = require('../../config');
  * @param {GameManager} gameManager - Game manager instance
  */
 function setupRoomEvents(io, socket, gameManager) {
-  // Create a new room
-  socket.on('createRoom', () => {
+  // Send available packages to host
+  socket.on('getPackages', () => {
+    try {
+      const packages = gameManager.getAvailablePackages();
+      socket.emit('availablePackages', { packages });
+    } catch (error) {
+      socket.emit('error', error.message);
+      logError('getting packages', error);
+    }
+  });
+
+  // Create a new room with optional package selection
+  socket.on('createRoom', (data = {}) => {
     try {
       console.log('createRoom event received from socket:', socket.id);
-      const roomCode = gameManager.createRoom(socket.id);
-      console.log('Room created with code:', roomCode);
+      const packageId = data.packageId || null;
+      const roomCode = gameManager.createRoom(socket.id, packageId);
+      const gameRoom = gameManager.getGameRoom(roomCode);
+      console.log('Room created with code:', roomCode, 'package:', gameRoom.packageId);
       socket.emit('roomCreated', {
         roomCode,
+        packageId: gameRoom.packageId,
         gameTitle: config.GAME_TITLE,
-        gameRules: config.GAME_RULES
+        gameRules: config.GAME_RULES,
+        availablePackages: gameManager.getAvailablePackages()
       });
       console.log('roomCreated event emitted with code:', roomCode);
       socket.join(roomCode);
@@ -29,6 +44,49 @@ function setupRoomEvents(io, socket, gameManager) {
       console.error('Error creating room:', error);
       socket.emit('error', error.message);
       logError('creating room', error);
+    }
+  });
+
+  // Change question package (only in lobby phase)
+  socket.on('changePackage', ({ roomCode, packageId }) => {
+    try {
+      const gameRoom = gameManager.getGameRoom(roomCode);
+      if (!gameRoom) {
+        socket.emit('error', 'Room not found');
+        return;
+      }
+
+      const gameState = gameRoom.getGameState();
+      if (gameState.phase !== 'lobby') {
+        socket.emit('error', 'Cannot change package after game has started');
+        return;
+      }
+
+      // Verify this is the host
+      if (gameRoom.hostSocketId !== socket.id) {
+        socket.emit('error', 'Only the host can change the question package');
+        return;
+      }
+
+      // Update the package
+      const questionPackages = require('../../data/packages');
+      const questions = questionPackages.getQuestions(packageId);
+      if (questions.length === 0) {
+        socket.emit('error', 'Invalid package selected');
+        return;
+      }
+
+      // Regenerate question IDs for the new package
+      const selectedQuestionIds = gameManager.generateRandomQuestionIds(questions);
+      gameRoom.packageId = packageId;
+      gameRoom.questionLoader = (index) => questions[index];
+      gameState.selectedQuestionIds = selectedQuestionIds;
+
+      console.log('Package changed to:', packageId, 'for room:', roomCode);
+      socket.emit('packageChanged', { packageId });
+    } catch (error) {
+      socket.emit('error', error.message);
+      logError('changing package', error);
     }
   });
 

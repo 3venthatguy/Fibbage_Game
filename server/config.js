@@ -41,9 +41,12 @@ module.exports = {
   QUESTIONS_BEFORE_TRIPLE: 5,  // After question 7, points triple (question 8 is 3x)
   TOTAL_QUESTIONS: 6,
 
+  // Question package configuration
+  DEFAULT_PACKAGE: 'economics',
+
   // Game text customization
-  GAME_TITLE: 'ECON FIBBAGE',
-  GAME_RULES: `Welcome to ECON FIBBAGE! Here's how to play:
+  GAME_TITLE: 'INTRO TO MISINFORMATION',
+  GAME_RULES: `Welcome to FIBBAGE! Here's how to play:
 
 1. You'll play through 8 fill-in-the-blank questions
 2. Make up a LIE that sounds believable to fill in the blank

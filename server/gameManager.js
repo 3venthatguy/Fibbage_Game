@@ -5,7 +5,7 @@
 
 const GameRoom = require('./game/GameRoom');
 const config = require('./config');
-const questions = require('./data/questions');
+const questionPackages = require('./data/packages');
 const { generateRoomCode } = require('./utils/roomCodeGenerator');
 const { logRoomCreated, logRoomCleanup, logQuestionsSelected } = require('./utils/logger');
 
@@ -19,14 +19,18 @@ class GameManager {
   /**
    * Creates a new game room.
    * @param {string} hostSocketId - Socket ID of the host
+   * @param {string} packageId - Question package ID (optional, defaults to 'economics')
    * @returns {string} Room code
    */
-  createRoom(hostSocketId) {
+  createRoom(hostSocketId, packageId = null) {
     const roomCode = generateRoomCode(this.rooms);
-    const selectedQuestionIds = this.generateRandomQuestionIds();
+    const actualPackageId = packageId || questionPackages.getDefaultPackageId();
+    const questions = questionPackages.getQuestions(actualPackageId);
+    const selectedQuestionIds = this.generateRandomQuestionIds(questions);
 
     const questionLoader = (index) => questions[index];
     const gameRoom = new GameRoom(roomCode, hostSocketId, selectedQuestionIds, questionLoader);
+    gameRoom.packageId = actualPackageId; // Store the package ID for reference
 
     this.rooms.set(roomCode, gameRoom);
     this.socketToRoom.set(hostSocketId, roomCode);
@@ -80,9 +84,10 @@ class GameManager {
 
   /**
    * Generates random question indices for a game.
+   * @param {Array} questions - Array of questions from the selected package
    * @returns {Array} Array of question indices
    */
-  generateRandomQuestionIds() {
+  generateRandomQuestionIds(questions) {
     const availableIndices = questions.map((_, index) => index);
     const selectedIndices = [];
     const count = Math.min(config.QUESTIONS_PER_GAME, availableIndices.length);
@@ -94,6 +99,14 @@ class GameManager {
     }
 
     return selectedIndices;
+  }
+
+  /**
+   * Gets available question packages.
+   * @returns {Array} Array of package metadata
+   */
+  getAvailablePackages() {
+    return questionPackages.getAvailablePackages();
   }
 
   /**

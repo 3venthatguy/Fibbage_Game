@@ -20,6 +20,15 @@
     <div id="lobbyScreen" class="lobby-screen active">
       <h1 id="gameTitle" style="font-size: 48px; margin-bottom: 20px;">Fibbage</h1>
       <div class="room-code-display" id="roomCodeDisplay">----</div>
+
+      <!-- Question Package Selector -->
+      <div class="package-selector" id="packageSelector" style="max-width: 700px; margin: 20px auto;">
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">Select Question Pack:</div>
+        <div class="package-cards" id="packageCards" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+          <!-- Package cards will be dynamically inserted here -->
+        </div>
+      </div>
+
       <div class="game-rules" id="gameRules" style="max-width: 700px; margin: 20px auto; padding: 25px 30px; background: linear-gradient(135deg, rgba(255,107,129,0.2) 0%, rgba(78,205,196,0.2) 100%); border: 3px solid rgba(255,255,255,0.4); border-radius: 20px; text-align: left; white-space: pre-line; line-height: 1.8; font-size: 16px; font-weight: 500; color: #ffffff; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-shadow: 1px 1px 2px rgba(0,0,0,0.5);"></div>
       <div class="player-count" id="playerCount">Waiting for players...</div>
       <div class="players-grid" id="playersGrid"></div>

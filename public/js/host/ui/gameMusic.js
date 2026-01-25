@@ -11,22 +11,16 @@ let musicPlaying = false;
 // Available intro music files (lobby)
 const introMusicFiles = [
   'sounds/intro/CASIOPEA.mp3',
-  'sounds/intro/LeFestin.mp3',
   'sounds/intro/Monogatari.mp3',
   'sounds/intro/a_birds_last_look.mp3',
-  'sounds/intro/MonstersInc.mp3',
   'sounds/intro/abandoned_plaza.mp3'
 ];
 
 // Available playing phase music files (gameplay)
 const playingMusicFiles = [
-  'sounds/playing/BootleggerBoogie.mp3',
   'sounds/playing/BotanicPanic.mp3',
-  'sounds/playing/CantinaBand.mp3',
   'sounds/playing/Caravan.mp3',
-  'sounds/playing/Clutterfunk.mp3',
   'sounds/playing/CoconutMall.mp3',
-  'sounds/playing/ColdIsland.mp3',
   'sounds/playing/Forcast.mp3',
   'sounds/playing/GreatPretender.mp3',
   'sounds/playing/Kerfuffle.mp3',
@@ -35,7 +29,6 @@ const playingMusicFiles = [
   'sounds/playing/Piano_Black.mp3',
   'sounds/playing/PumpItUp.mp3',
   'sounds/playing/Sepia.mp3',
-  'sounds/playing/TimeMachine.mp3',
   'sounds/playing/Windmill_Isle.mp3'
 ];
 

@@ -957,3 +957,62 @@ body {
   line-height: 1.6;
   opacity: 0.9;
 }
+
+/* Package Selector Styles */
+.package-selector {
+  margin: 30px auto;
+}
+
+.package-cards {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.package-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 20px 25px;
+  min-width: 180px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.package-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.package-card.selected {
+  border-color: #4ecdc4;
+  background: rgba(78, 205, 196, 0.3);
+  box-shadow: 0 0 20px rgba(78, 205, 196, 0.4);
+}
+
+.package-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.package-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.package-count {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.package-description {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 8px;
+  line-height: 1.3;
+}

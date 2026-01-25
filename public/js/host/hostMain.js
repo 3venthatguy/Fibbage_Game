@@ -6,7 +6,9 @@
 const hostState = {
   roomCode: null,
   currentPhase: 'lobby',
-  players: []
+  players: [],
+  selectedPackageId: null,
+  availablePackages: []
 };
 
 // Initialize socket connection
@@ -92,4 +94,45 @@ function setupButtonHandlers() {
       toggleSoundEffects();
     });
   }
+}
+
+/**
+ * Renders the package selection cards.
+ * @param {Array} packages - Available packages
+ * @param {string} selectedId - Currently selected package ID
+ */
+function renderPackageCards(packages, selectedId) {
+  const container = document.getElementById('packageCards');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  packages.forEach(pkg => {
+    const card = document.createElement('div');
+    card.className = 'package-card' + (pkg.id === selectedId ? ' selected' : '');
+    card.dataset.packageId = pkg.id;
+
+    card.innerHTML = `
+      <div class="package-icon">${pkg.icon}</div>
+      <div class="package-name">${pkg.name}</div>
+      <div class="package-count">${pkg.questionCount} questions</div>
+      <div class="package-description">${pkg.description}</div>
+    `;
+
+    card.addEventListener('click', () => {
+      if (hostState.currentPhase !== 'lobby') return;
+
+      // Update visual selection immediately
+      document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+
+      // Send package change to server
+      socket.emit('changePackage', {
+        roomCode: hostState.roomCode,
+        packageId: pkg.id
+      });
+    });
+
+    container.appendChild(card);
+  });
 }
