@@ -68,74 +68,114 @@ module.exports = {
       explanation: "The tower was built on a foundation of soft soil and clay, which caused it to sink unevenly."
     },
     {
-      question: "In structural engineering, the primary function of a foundation is to safely transfer building loads to the underlying ________.",
+      question: "In structural engineering, the primary function of a foundation is to safely transfer building loads to the underlying _____.",
       answer: "SOIL",
       explanation: "Foundations distribute dead and live loads so stresses remain below the bearing capacity of the ground. When this goes wrong, buildings don't fall dramatically—they just sigh and crack over several expensive years."
     },
     {
-      question: "In reinforced concrete design, steel rebar is used primarily to resist ________ forces.",
+      question: "In reinforced concrete design, steel rebar is used primarily to resist _____ forces.",
       answer: "TENSILE",
       explanation: "Concrete is strong in compression but weak in tension, while steel excels at handling tensile stress. Together they form a codependent relationship that has held up most of modern civilization."
     },
     {
-      question: "In earthquake engineering, base isolation systems reduce seismic demand by increasing the structure's ________ period.",
+      question: "In earthquake engineering, base isolation systems reduce seismic demand by increasing the structure's _____ period.",
       answer: "NATURAL",
       explanation: "By lengthening the natural period, base isolation shifts the building away from damaging ground motion frequencies. Instead of fighting the earthquake, the building politely sways and waits it out."
     },
     {
-      question: "In steel frame construction, lateral stability against wind and seismic loads is commonly provided by ________ systems.",
+      question: "In steel frame construction, lateral stability against wind and seismic loads is commonly provided by _____ systems.",
       answer: "BRACING",
       explanation: "Diagonal bracing resists lateral forces efficiently by converting them into axial loads. Triangles continue to be undefeated, geometrically speaking."
     },
     {
-      question: "In urban planning, zoning regulations control land use intensity through limits on height, density, and ________ ratios.",
+      question: "In urban planning, zoning regulations control land use intensity through limits on height, density, and _____ ratios.",
       answer: "FLOOR-AREA",
       explanation: "Floor-area ratio (FAR) determines how much building can be placed on a given lot. It's an elegant way to say 'not everything needs to be a luxury tower.'"
     },
     {
-      question: "In geotechnical engineering, consolidation theory describes the time-dependent settlement of soils under sustained ________ loading.",
+      question: "In geotechnical engineering, consolidation theory describes the time-dependent settlement of soils under sustained _____ loading.",
       answer: "COMPRESSIVE",
       explanation: "As pore water slowly escapes from clay, effective stress increases and settlement occurs. The ground takes its time, which contractors absolutely do not."
     },
     {
-      question: "In bridge engineering, suspension bridges efficiently span long distances by placing the main cables primarily in ________.",
+      question: "In bridge engineering, suspension bridges efficiently span long distances by placing the main cables primarily in _____.",
       answer: "TENSION",
       explanation: "The cables carry loads through tension while towers handle compression. Gravity does the rest, quietly but insistently."
     },
     {
-      question: "In sustainable architecture, passive solar design reduces energy demand by optimizing building orientation, insulation, and thermal ________.",
+      question: "In sustainable architecture, passive solar design reduces energy demand by optimizing building orientation, insulation, and thermal _____.",
       answer: "MASS",
       explanation: "Thermal mass stores heat during the day and releases it at night, stabilizing indoor temperatures. The building remembers yesterday so HVAC systems don't have to."
     },
     {
-      question: "In construction management, the critical path method identifies the sequence of tasks that determines the project's minimum ________ time.",
+      question: "In construction management, the critical path method identifies the sequence of tasks that determines the project's minimum _____ time.",
       answer: "COMPLETION",
       explanation: "Any delay in critical activities directly delays the entire project. This is why one missing permit can emotionally devastate an entire Gantt chart."
     },
     {
-      question: "In hydraulic engineering, open-channel flow behavior is governed by gravity and boundary friction, often analyzed using the ________ equation.",
+      question: "In hydraulic engineering, open-channel flow behavior is governed by gravity and boundary friction, often analyzed using the _____ equation.",
       answer: "MANNING",
       explanation: "The Manning equation estimates flow velocity based on channel slope, roughness, and hydraulic radius. Water obeys physics, not your drainage deadline."
     },
     {
-      question: "In tall building design, outriggers are structural elements that connect the core to perimeter columns to reduce ________ drift.",
+      question: "In tall building design, outriggers are structural elements that connect the core to perimeter columns to reduce _____ drift.",
       answer: "LATERAL",
       explanation: "Outriggers increase the building's effective width, improving stiffness under wind loads. It's structural teamwork with excellent posture."
     },
     {
-      question: "In pavement engineering, flexible pavements distribute wheel loads through layered materials that primarily fail by ________ strain.",
+      question: "In pavement engineering, flexible pavements distribute wheel loads through layered materials that primarily fail by _____ strain.",
       answer: "TENSILE",
       explanation: "Repeated traffic loading causes fatigue cracking at the bottom of asphalt layers. Roads don't break suddenly—they just slowly give up."
     },
     {
-      question: "In historical architecture, the development of the flying buttress allowed Gothic cathedrals to achieve greater wall height and ________.",
+      question: "In historical architecture, the development of the flying buttress allowed Gothic cathedrals to achieve greater wall height and _____.",
       answer: "OPENNESS",
       explanation: "By redirecting lateral forces outward, walls could be thinner and filled with stained glass. Structural innovation met divine lighting preferences."
     },
     {
-      question: "In civil engineering ethics, the paramount obligation of engineers is to protect public health, safety, and ________.",
+      question: "In civil engineering ethics, the paramount obligation of engineers is to protect public health, safety, and _____.",
       answer: "WELFARE",
       explanation: "This principle appears in professional codes worldwide and governs all design decisions. Budgets matter—but not as much as gravity and consequences."
     },
+    {
+      question: "In construction contracts, a 'change order' is a formal document that modifies the original scope, cost, or _____ of work.",
+      answer: "SCHEDULE",
+      explanation: "Change orders are common and can significantly impact project delivery. They are the official way of saying 'we need to do this differently now, for reasons.'"
+    },
+    {
+      question: "The ancient Egyptian Great Pyramid of Giza was originally covered in highly polished _____ that reflected the sun's light.",
+      answer: "CASING STONES",
+      explanation: "These stones were made of fine white limestone. While most were removed over centuries for other building projects, some are still visible at the pyramid's base, showcasing the precision of Old Kingdom masonry."
+    },
+    {
+      question: "The Parthenon in Athens utilizes a subtle convex curving of the columns known as _____ to counteract the optical illusion of them looking concave.",
+      answer: "ENTASIS",
+      explanation: "Architects Ictinus and Callicrates used entasis to make the columns appear straight and strong to the human eye. Without this slight swelling, the vertical lines of the temple would appear to thin or 'waist' in the middle."
+    },
+    {
+      question: "The Hagia Sophia in Istanbul is famous for its massive dome supported by four _____, which allow a circular dome to be placed over a square room.",
+      answer: "PENDENTIVES",
+      explanation: "Pendentives are triangular segments of a sphere that transition the weight of the dome down to the massive piers. This Byzantine innovation allowed for much larger interior spaces and a sense of weightlessness in the dome."
+    },
+    {
+      question: "The Gothic style of the Notre-Dame de Paris is defined by the use of _____ buttresses, which transmit the lateral thrust of the roof away from the walls.",
+      answer: "FLYING",
+      explanation: "By moving the support structure outside the main building, Gothic architects could build taller walls and fill them with massive stained-glass windows, as the walls no longer had to bear the full weight of the stone vaulting."
+    },
+    {
+      question: "The Taj Mahal, built by Emperor Shah Jahan, is a prime example of Indo-Islamic architecture characterized by its perfect _____ along a central axis.",
+      answer: "SYMMETRY",
+      explanation: "The entire complex, excluding the tomb of Shah Jahan himself, is perfectly symmetrical. This was intended to represent the harmony and perfection of paradise on Earth."
+    },
+    {
+      question: "Designed by Frank Lloyd Wright, the Guggenheim Museum in New York features a continuous _____ that allows visitors to view art as they descend.",
+      answer: "HELICAL RAMP",
+      explanation: "This design challenged traditional gallery layouts. Instead of distinct rooms, the open-atrium spiral creates a single, flowing experience that Wright intended to feel more organic and less rigid than classical museums."
+    },
+    {
+      question: "The Burj Khalifa in Dubai utilizes a 'buttressed _____' structural system to support its record-breaking height of 828 meters.",
+      answer: "CORE",
+      explanation: "This Y-shaped plan provides structural rigidity for the tower and helps manage the extreme wind forces at high altitudes. The design was inspired by the Hymenocallis desert flower."
+    }
   ]
 };

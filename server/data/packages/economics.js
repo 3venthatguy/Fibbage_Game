@@ -11,11 +11,6 @@ module.exports = {
   icon: '📈',
   questions: [
     {
-      question: "In 1923, German hyperinflation got so bad that _____ cost 200 billion marks.",
-      answer: "BREAD",
-      explanation: "At the peak of Weimar hyperinflation in November 1923, prices doubled every 3.7 days. A bunch of gluten-free cafes also popped up (don't quote me on that)."
-    },
-    {
       question: "The Dutch _____ Mania bubble of 1637 saw a single tulip bulb sell for the price of a mansion.",
       answer: "TULIP",
       explanation: "At the height of Tulip Mania, some rare bulbs sold for more than 10 times the annual income of a skilled craftsman. Imagine how much it would've cost if it were marketed as organic!"
@@ -39,11 +34,6 @@ module.exports = {
       question: "China's economy grew by an average of _____% per year from 1978 to 2018.",
       answer: "9.5",
       explanation: "China achieved the most rapid sustained expansion by a major economy in history. This is your cue to learn Mandarin."
-    },
-    {
-      question: "The 1929 stock market crash saw the _____ stock index to lose 89% of its value by 1932.",
-      answer: "DOW JONES",
-      explanation: "The Dow peaked at 381.17 in 1929 and bottomed at 41.22 in 1932. It took until 1954 to regain its pre-crash level. This is why your grandpa keeps trying to save money by going to Great Clips."
     },
     {
       question: "In the Solow growth model, long-run per capita output growth is driven entirely by exogenous _____ rather than capital accumulation.",
@@ -71,7 +61,7 @@ module.exports = {
       explanation: "Alexander Hamilton advocated for protective tariffs with the goal of nurturing young American industries, an approach highly employed in early U.S. tariff policy. He was also on the $10 bill, so you know he's important."
     },
     {
-      question: "In international trade, a policy that deliberately harms another country's economic welfare—for example, by imposing a welfare-maximizing tariff at that country's expense—is often described as a 'beggar-thy-_____' policy",
+      question: "In international trade, a policy that deliberately harms another country's economic welfare is often described as a 'beggar-thy-_____' policy",
       answer: "NEIGHBOR",
       explanation: "When a country sets an optimal tariff that improves its own welfare while worsening that of its trading partner, the policy is described as beggar-thy-neighbor. Not a very neighborly thing to do unfortunately."
     },
@@ -96,19 +86,9 @@ module.exports = {
       explanation: "The Pet Rock craze lasted six months but made Dahl a millionaire. Each rock came in a cardboard box with breathing holes and an instruction manual for 'training' your pet rock."
     },
     {
-      question: "The first _____ currency was introduced in China during the Tang Dynasty.",
-      answer: "PAPER",
-      explanation: "The Tang Dynasty (618-907 AD) saw the first use of paper money, which helped facilitate trade across the vast empire. They also invented paper. Double whammy."
-    },
-    {
       question: "In 2021, a digital artwork by Beeple sold as an _____ for $69 million.",
       answer: "NFT",
       explanation: "The NFT (non-fungible token) craze reached new heights when Beeple's digital collage 'Everydays: The First 5000 Days' sold for $69 million at Christie's auction house. I've even got like 5 pictures of it saved on my hard drive!"
-    },
-    {
-      question: "The concept of _____ in economics was popularized by French economist Frederic Bastiat.",
-      answer: "OPORTUNITY COST",
-      explanation: "Frédéric Bastiat, a 19th-century French economist, is credited with popularizing the concept of opportunity cost, emphasizing the value of foregone alternatives in decision-making. He was also a master of witty economic essays."
     },
     {
       question: "In 1636, a Dutch sailor mistook a valuable tulip bulb for an _____ and ate it.",
@@ -126,19 +106,14 @@ module.exports = {
       explanation: "A samurai's wealth and rank were measured in koku (enough rice to feed one person for a year). High-ranking samurai received thousands of koku annually. Instead of displaying the head of their enemies as trophies, they displayed sacks of rice."
     },
     {
-      question: "The 'Dutch Disease' refers to the negative economic impact that can occur when a country discovers a large amount of _____.",
-      answer: "NATURAL RESOURCES",
+      question: "The _____ Disease refers to the negative economic impact that can occur when a country discovers a large amount of natural resources.",
+      answer: "DUTCH",
       explanation: "The term 'Dutch Disease' originated from the Netherlands' experience after discovering large natural gas reserves, which led to currency appreciation and harm to other export sectors. Back then even resources like the pretty tulip flower got grandpa go wild."
     },
     {
       question: "In 2010, a programmer famously bought two pizzas for 10,000 _____, now worth over $600 million.",
       answer: "BITCOIN",
       explanation: "On May 22, 2010, Laszlo Hanyecz made the first real-world transaction using Bitcoin by purchasing two pizzas for 10,000 BTC, which would be worth hundreds of millions today."
-    },
-    {
-      question: "Economist Milton Freidman famously quoted: 'There is no such thing as _____'.",
-      answer: "A FREE LUNCH",
-      explanation: "He used it to argue that government spending always has costs - even 'free' programs are paid for through taxes, debt, or inflation. Maybe if if ask nicely enough though, someone might give you a free lunch."
     },
     {
       question: "When Ireland was having its bank strikes in the early 70s, people used _____ as a replacement currency.",
@@ -227,7 +202,7 @@ module.exports = {
     },
     {
       question: "The phenomenon observed in Jeffrey Sachs and Andrew Warner's 1995 paper, where countries abundant in _____ often experience poorer economic performance, is termed the Resource Curse.",
-      answer: "NATURAL RESOURCEs",
+      answer: "NATURAL RESOURCES",
       explanation: "In their seminal paper, Sachs and Warner analyzed data from 1970-1990 across 97 countries and found that resource-dependent economies grew 1% slower annually than non-resource ones—think of it as nature's prank where oil gushes but growth sputters."
     },
     {
@@ -311,11 +286,6 @@ module.exports = {
       explanation: "With up to half the population dead, peasants suddenly had bargaining power. Turns out scarcity works both ways, and landlords discovered that 'you'll do as you're told' hits differently when everyone already died."
     },
     {
-      question: "In Tokugawa Japan, rice stipends paid to samurai created a mismatch between fixed income and a growing money economy, leading to chronic _____ among the warrior class.",
-      answer: "INDEBTEDNESS",
-      explanation: "Samurai were paid in rice while prices increasingly demanded cash. Imagine being paid entirely in quinoa while rent requires dollars—honor remains intact, finances do not."
-    },
-    {
       question: "The 1873 financial panic revealed structural weaknesses in railroad finance and helped usher in a prolonged deflationary period often called the _____.",
       answer: "LONG DEPRESSION",
       explanation: "Despite real growth, falling prices and repeated bank failures plagued advanced economies until the 1890s. It's called a depression because calling it 'a vibe shift' felt insensitive."
@@ -324,11 +294,6 @@ module.exports = {
       question: "In colonial Spanish America, silver extraction at Potosí fueled global trade but also entrenched extractive institutions economists now associate with _____ development paths.",
       answer: "DEPENDENT",
       explanation: "Massive silver flows enriched Spain but distorted local economies, discouraging diversification. When your whole economy is shiny rocks, you tend to ignore, well, everything else."
-    },
-    {
-      question: "John Maynard Keynes argued that reparations imposed on _____ after World War I would destabilize Europe, a view he laid out forcefully in The Economic Consequences of the Peace.",
-      answer: "GERMANY",
-      explanation: "Published in 1919, Keynes warned that crushing fiscal burdens would invite political extremism. He was ignored, which is economists' most cherished historical tradition."
     },
     {
       question: "During the Gold Standard era, balance-of-payments adjustment relied on price and wage flexibility rather than monetary autonomy, a mechanism later termed Internal _____.",
@@ -441,7 +406,7 @@ module.exports = {
       explanation: "After the U.S. closed the gold window in 1971, major currencies began to float against one another. Exchange rates discovered freedom and immediately became volatile hobbyists."
     },
     {
-      question: "During the late 19th century, rapid industrialization in the United States was financed largely through railroad expansion and the accumulation of _____ capital.",
+      question: "During the late 19th century, rapid industrialization in the United States was financed largely through railroad expansion and the accumulation of long-term manufacturing assets, also known as _____ capital.",
       answer: "FIXED",
       explanation: "Railroads accounted for nearly 40% of U.S. capital investment by 1900. Steel tracks, not vibes, were doing the heavy lifting."
     },
@@ -464,11 +429,6 @@ module.exports = {
       question: "The Great Inflation of the 1970s in the United States was driven by oil price shocks combined with accommodative monetary policy and unanchored _____ expectations.",
       answer: "INFLATION",
       explanation: "U.S. CPI inflation averaged over 7% from 1970 to 1980. Once people expect prices to rise, they behave accordingly—and then act surprised when they're right."
-    },
-    {
-      question: "The establishment of the World Trade Organization in 1995 institutionalized global trade rules and strengthened mechanisms for _____ resolution.",
-      answer: "DISPUTE",
-      explanation: "The WTO introduced a binding appellate system that adjudicated hundreds of trade cases. Globalization added a courtroom and a very thick rulebook."
     },
     {
       question: "During the Great Depression, U.S. agricultural policy attempted to raise farm incomes by restricting output through _____ controls.",
@@ -509,6 +469,66 @@ module.exports = {
       question: "The formal adoption of inflation targeting by central banks in the 1990s sought to anchor expectations and improve _____ credibility.",
       answer: "MONETARY",
       explanation: "By 2005, over 20 central banks had explicit inflation targets, contributing to lower and more stable inflation. Saying what you'll do turns out to matter. Who knew."
-    }
+    },
+    { 
+      question: "In the study of Economic Development, Daron Acemoglu and others argued in a 2001 paper that the historical _____ of a region determined whether inclusive or extractive institutions were formed.", 
+      answer: "GEOGRAPHY", 
+      explanation: "In 'The Colonial Origins of Comparative Development,' the authors use settler mortality as an instrumental variable to show that where Europeans could settle, they built inclusive institutions that fostered long-term growth, whereas high-mortality areas led to extractive institutions that persist today." 
+    },
+    {
+      question: "The 'Lucas Critique,' articulated by Robert Lucas in 1976, argues that traditional econometric models fail to predict the effects of policy changes because they do not account for changes in _____.",
+      answer: "EXPECTATIONS",
+      explanation: "Lucas emphasized that economic agents adjust their behavior based on anticipated policy changes, rendering models that assume fixed relationships between variables unreliable for policy analysis."
+    },
+    {
+      question: "The 'Impossible Trinity' in international economics states that it is impossible for a country to simultaneously maintain a fixed foreign exchange rate, free capital movement, and an independent _____.",
+      answer: "MONETARY POLICY",
+      explanation: "Countries must choose two of the three policy goals, as attempting to achieve all three leads to conflicts that undermine economic stability."
+    },
+    {
+      question: "The 'Triffin Dilemma,' identified by Robert Triffin in the 1960s, highlights the inherent conflict between a national currency serving as a global reserve currency and the need for that country to maintain _____ stability.",
+      answer: "DOMESTIC ECONOMIC",
+      explanation: "To supply the world with liquidity, the reserve currency country must run balance of payments deficits, which can undermine confidence in the currency over time."
+    },
+    {
+      question: "The 'Calvo Doctrine,' proposed by Guillermo Calvo in 1988, suggests that in emerging markets, sudden stops in capital flows can lead to severe economic crises due to the reliance on short-term foreign debt and the lack of credible _____.",
+      answer: "COMMITMENTS",
+      explanation: "Calvo argued that without credible policy frameworks, countries are vulnerable to abrupt reversals in investor sentiment, leading to currency crashes and economic downturns."
+    },
+    {
+      question: "The 'Sargent-Wallace' model of rational expectations in macroeconomics demonstrates that anticipated government policies, such as fiscal expansions, have no real effects on output and employment in the long run due to adjustments in _____.",
+      answer: "PRICE LEVELS",
+      explanation: "According to Sargent and Wallace, if agents anticipate inflationary policies, they will adjust their expectations accordingly, leading to higher prices without changes in real economic activity."
+    },
+    {
+      question: "In Macroeconomics, the relationship between a short-run trade-off between inflation and unemployment is described by the _____.",
+      answer: "PHILIPPS CURVE",
+      explanation: "The Phillips Curve illustrates the inverse relationship between inflation and unemployment in the short run, showing that lower unemployment is associated with higher inflation."
+    },
+    { 
+      question: "In Econometrics, Instrumental Variables (IV) are used to estimate causal relationships when an explanatory variable is correlated with the error term, a problem known as _____.", 
+      answer: "ENDOGENEITY", 
+      explanation: "Endogeneity often arises from omitted variable bias, measurement error, or simultaneity. An instrument must be correlated with the endogenous regressor (relevance) but uncorrelated with the error term (exogenous)." 
+    },
+    { 
+      question: "The Great Leap Forward in China is a historical example of an economic failure where _____ agricultural planning led to a massive famine.", 
+      answer: "CENTRALIZED", 
+      explanation: "From 1958 to 1962, the diversion of labor from farming to steel production, combined with mandatory radical agricultural techniques and false production reporting, resulted in tens of millions of deaths due to food shortages." 
+    },
+    { 
+      question: "In the context of Economic Failures, a Bank Run occurs when a large number of customers withdraw their deposits simultaneously due to fears of the bank's _____.", 
+      answer: "INSOLVENCY", 
+      explanation: "Bank runs are a classic 'coordination failure.' Even a healthy bank can fail if everyone believes it will fail; the Diamond-Dybvig model explains how banks are susceptible to this due to the illiquid nature of their long-term loans versus liquid deposits." 
+    },
+    { 
+      question: "In Econometrics, the Difference-in-Differences (DiD) method is often used to estimate the effect of a specific _____ by comparing a treatment group to a control group over time.", 
+      answer: "INTERVENTION", 
+      explanation: "DiD mimics an experimental design using observational data. It calculates the change in the treatment group's outcome and subtracts the change in the control group's outcome to isolate the impact of the policy, assuming 'parallel trends'." 
+    },
+    { 
+      question: "The 2008 Financial Crisis highlighted the failure of Credit Rating Agencies, which assigned 'AAA' ratings to risky _____ securities.", 
+      answer: "MORTGAGE-BACKED", 
+      explanation: "The failure was driven by asymmetric information and misaligned incentives. Agencies were paid by the banks issuing the securities, leading to inflated ratings for subprime debt that eventually defaulted." 
+    },
   ]
 };

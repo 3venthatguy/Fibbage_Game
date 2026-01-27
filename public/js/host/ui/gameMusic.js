@@ -23,7 +23,6 @@ const playingMusicFiles = [
   'sounds/playing/CoconutMall.mp3',
   'sounds/playing/Forcast.mp3',
   'sounds/playing/GreatPretender.mp3',
-  'sounds/playing/Kerfuffle.mp3',
   'sounds/playing/Loonboon.mp3',
   'sounds/playing/PedestriansCrossing.mp3',
   'sounds/playing/Piano_Black.mp3',
@@ -36,7 +35,10 @@ const playingMusicFiles = [
 const endingMusicFiles = [
   'sounds/endings/AquaticGroove.mp3',
   'sounds/endings/FunkMagic.mp3',
-  'sounds/endings/SmoothJazz.mp3'
+  'sounds/endings/SmoothJazz.mp3',
+  'sounds/endings/GoldenWhisper.mp3',
+  'sounds/endings/HitsJazz.mp3',
+  'sounds/endings/SomeJazz.mp3'
 ];
 
 /**
