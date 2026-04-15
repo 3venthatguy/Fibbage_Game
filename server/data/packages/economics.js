@@ -16,11 +16,6 @@ module.exports = {
       explanation: "At the height of Tulip Mania, some rare bulbs sold for more than 10 times the annual income of a skilled craftsman. Imagine how much it would've cost if it were marketed as organic!"
     },
     {
-      question: "Venezuela's inflation rate in 2018 reached an estimated _____%.",
-      answer: "130,060",
-      explanation: "Venezuela experienced one of the worst hyperinflations in modern history. Let's see if the U.S. can top that it's running the government!"
-    },
-    {
       question: "The _____ production function, commonly used in growth models like Solow-Swan, takes the form Y = A K^α L^(1-α), where α represents the capital share of income.",
       answer: "COBB-DOUGLAS",
       explanation: "Named after Charles Cobb and Paul Douglas, this functional form exhibits constant returns to scale and diminishing marginal returns, making it a standard tool in empirical macroeconomics and growth theory. By the way for all the smooth-brained players, α is the greek letter alpha."
@@ -29,11 +24,6 @@ module.exports = {
       question: "In 1980, the Fed Chairman named _____ raised interest rates to 20% to fight inflation.",
       answer: "PAUL VOLCKER",
       explanation: "Fed Chairman Paul Volcker raised rates to nearly 20% to break the back of double-digit inflation. Yes, there was a Fed chairman before Jerome Powell."
-    },
-    {
-      question: "China's economy grew by an average of _____% per year from 1978 to 2018.",
-      answer: "9.5",
-      explanation: "China achieved the most rapid sustained expansion by a major economy in history. This is your cue to learn Mandarin."
     },
     {
       question: "In the Solow growth model, long-run per capita output growth is driven entirely by exogenous _____ rather than capital accumulation.",
@@ -76,8 +66,8 @@ module.exports = {
       explanation: "At the height of Beanie Baby mania, rare specimens like 'Princess the Bear' sold for thousands. People treated them as serious investments, storing them in climate-controlled rooms. *ahem* Labubu *ahem*."
     },
     {
-      question: "During the 17th century, the _____ Company was the first company to issue stocks to the public.",
-      answer: "DUTCH EAST INDIA",
+      question: "During the 17th century, the Dutch _____ Company was the first company to issue stocks to the public.",
+      answer: "EAST INDIA",
       explanation: "The Dutch East India Company pioneered the concept of publicly traded shares, allowing investors to buy ownership stakes. So next time your portfolio tanks, blame it on them."
     },
     {
@@ -96,8 +86,8 @@ module.exports = {
       explanation: "Tulip bulbs were so valuable during the Tulip Mania the sailor's expensive snack cost his employer the price of an entire ship. He was thrown in jail and was reported to have bad breath."
     },
     {
-      question: "The country that saw the first recorded stock market crash in 1637 was _____.",
-      answer: "THE NETHERLANDS",
+      question: "The country that saw the first recorded stock market crash in 1637 was the _____.",
+      answer: "NETHERLANDS",
       explanation: "The Dutch Tulip Mania bubble burst in 1637, leading to the first recorded stock market crash in history. Suppliers resorted to becoming black market pretty flower dealers."
     },
     {
@@ -121,8 +111,8 @@ module.exports = {
       explanation: "To deal with not being able to withdraw their money from banks, people just wrote IOUs to each other in napkins. Ireland's national GDP even increased during the period of the bank strike."
     },
     {
-      question: "In the 21st century after the natural disaster known as _____, insurance companies paid out approximately $41 billion in claims, the costliest natural disaster in U.S. history.",
-      answer: "HURRICANE KATRINA",
+      question: "In the 21st century after the natural disaster known as Hurricane _____, insurance companies paid out approximately $41 billion in claims, the costliest natural disaster in U.S. history.",
+      answer: "KATRINA",
       explanation: "Katrina's insurance payouts bankrupted several insurers and caused many to stop offering coverage in coastal areas. The disaster fundamentally changed how insurance companies assess climate risk, price policies, and your bank account."
     },
     {
@@ -159,11 +149,6 @@ module.exports = {
       question: "In 1980s Britain, the 'Big Bang' financial deregulation led to so much cocaine-fueled trading that dealers started accepting _____ as payment from stressed-out yuppies on the trading floor.",
       answer: "SHARE CERTIFICATES",
       explanation: "For a brief period in the late 80s, powdered Peruvian marching powder was like a secondary currency in the City of London. Peak Thatcher-era degeneracy."
-    },
-    {
-      question: "The 1997 Asian Financial Crisis was partially triggered when Thai Prime Minister Chavalit Yongchaiyudh appeared on TV looking _____ while denying the baht would be devalued—causing everyone to panic-sell immediately.",
-      answer: "SWEATY AND NERVOUS",
-      explanation: "The 'sweaty PM' moment is now studied in behavioral finance. Body language moved more money than the IMF that week."
     },
     {
       question: "In 2008-2009 Iceland, after the banking collapse, citizens jokingly started a campaign to make their new prime minister the world's first '_____ of the nation' because she was the only politician who hadn't screwed them.",
