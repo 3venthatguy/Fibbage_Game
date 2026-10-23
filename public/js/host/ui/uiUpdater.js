@@ -9,14 +9,37 @@
  */
 function updatePlayersDisplay(players) {
   const playersGrid = document.getElementById('playersGrid');
+  // Only newly joined players get the entrance animation
+  const shownNames = new Set([...playersGrid.querySelectorAll('.player-card .tape')].map(el => el.textContent));
   playersGrid.innerHTML = '';
+  playersGrid.classList.toggle('crowded', players.length > 8);
 
-  players.forEach(player => {
-    const card = document.createElement('div');
-    card.className = 'player-card';
-    card.textContent = player.name;
+  players.forEach((player, index) => {
+    const isNew = !shownNames.has(player.name);
+    const card = createPlayerTag(player.name, avatarFor(index), { size: 72, className: `player-card${isNew ? ' slap-in' : ''}` });
+    if (player.connected === false) {
+      card.classList.add('disconnected');
+    }
     playersGrid.appendChild(card);
   });
+
+  // Empty slots so the lobby looks ready to fill
+  const LOBBY_SLOTS = 8;
+  for (let i = players.length; i < LOBBY_SLOTS; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'player-slot-empty';
+    slot.innerHTML = '<span class="avatar-badge" style="--size: 72px">?</span><span class="slot-line"></span>';
+    playersGrid.appendChild(slot);
+  }
+
+  const playerCount = document.getElementById('playerCount');
+  if (playerCount) {
+    if (players.length === 0) {
+      playerCount.textContent = 'Waiting for players…';
+    } else {
+      playerCount.textContent = `${players.length} player${players.length === 1 ? '' : 's'} in`;
+    }
+  }
 }
 
 /**

@@ -52,6 +52,9 @@ function setupHostSocketHandlers(socket, state) {
     if (availablePackages.length > 0) {
       renderPackageCards(availablePackages, selectedPackageId);
     }
+
+    // Show the empty player slots
+    updatePlayersDisplay(state.players);
   });
 
   socket.on('packageChanged', (data) => {

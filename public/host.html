@@ -9,39 +9,54 @@
   <link rel="stylesheet" href="css/host-animations.css">
   <script src="/socket.io/socket.io.js"></script>
 </head>
-<body>
-  <!-- Persistent Room Code Display (fixed position, top left) -->
-  <div class="persistent-room-code" id="persistentRoomCodeBox">
-    <div class="persistent-room-code-label">Join Code:</div>
-    <div class="persistent-room-code-value" id="persistentRoomCode">----</div>
-  </div>
+<body class="theme-title">
+  <!-- Gradient + topographic line background (theme set by setTheme in theme.js) -->
+  <div class="bg-layer"></div>
 
-  <!-- Audio Controls (fixed position, top right) -->
+  <!-- Audio Controls (fixed position, bottom left) -->
   <div class="audio-controls">
-    <button class="audio-toggle-button" id="musicToggleButton">🎵 Music</button>
-    <button class="audio-toggle-button" id="sfxToggleButton">🔊 SFX</button>
+    <button class="audio-toggle-button tape" id="musicToggleButton">🎵 Music</button>
+    <button class="audio-toggle-button tape" id="sfxToggleButton">🔊 SFX</button>
   </div>
 
   <!-- Stage: fixed 1920x1080 canvas scaled to fit the window (see stageScaler.js) -->
   <div id="stage" class="stage">
+    <!-- Room code lockup (top left of the stage, always visible) -->
+    <div class="room-code-lockup" id="persistentRoomCodeBox">
+      <div class="room-code-lockup-label">Room<br>Code</div>
+      <div class="room-code-lockup-value" id="persistentRoomCode">----</div>
+    </div>
+
     <div class="container">
       <!-- Lobby Screen -->
       <div id="lobbyScreen" class="lobby-screen active">
-        <h1 id="gameTitle" style="font-size: 48px; margin-bottom: 20px;">Fibbage</h1>
-        <div class="room-code-display" id="roomCodeDisplay">----</div>
+        <div class="lobby-left">
+          <h1 id="gameTitle" class="lobby-title tape">Fibbage</h1>
 
-        <!-- Question Package Selector -->
-        <div class="package-selector" id="packageSelector" style="max-width: 700px; margin: 20px auto;">
-          <div style="font-size: 18px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">Select Question Pack:</div>
-          <div class="package-cards" id="packageCards" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-            <!-- Package cards will be dynamically inserted here -->
+          <div class="lobby-join">
+            <div class="lobby-join-label tape tape--light">Join on your phone with code</div>
+            <div class="room-code-display" id="roomCodeDisplay">----</div>
           </div>
+
+          <div class="game-rules" id="gameRules"></div>
         </div>
 
-        <div class="game-rules" id="gameRules" style="max-width: 700px; margin: 15px auto; padding: 20px 30px; background: linear-gradient(135deg, rgba(255,107,129,0.2) 0%, rgba(78,205,196,0.2) 100%); border: 3px solid rgba(255,255,255,0.4); border-radius: 20px; text-align: left; white-space: pre-line; line-height: 1.5; font-size: 16px; font-weight: 500; color: #ffffff; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-shadow: 1px 1px 2px rgba(0,0,0,0.5);"></div>
-        <div class="player-count" id="playerCount">Fibagging...</div>
-        <div class="players-grid" id="playersGrid"></div>
-        <button class="start-button" id="startButton" disabled>Start Game</button>
+        <div class="lobby-right">
+          <!-- Question Package Selector -->
+          <div class="package-selector" id="packageSelector">
+            <div class="lobby-heading tape">Pick a question pack</div>
+            <div class="package-cards" id="packageCards">
+              <!-- Package cards will be dynamically inserted here -->
+            </div>
+          </div>
+
+          <div class="lobby-players">
+            <div class="lobby-heading tape" id="playerCount">Waiting for players…</div>
+            <div class="players-grid" id="playersGrid"></div>
+          </div>
+
+          <button class="start-button tape tape-button" id="startButton" disabled>Everybody's in!</button>
+        </div>
       </div>
 
       <!-- Game Screen -->

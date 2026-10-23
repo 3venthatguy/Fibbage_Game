@@ -71,7 +71,7 @@
 
 .theme-title {
   --bg-gradient: linear-gradient(120deg, #ff4a4a 0%, #ff7a3c 30%, #f6c445 55%, #69d0a0 78%, #2fb9c4 100%);
-  --topo-color: rgba(0, 0, 0, 0.22);
+  --topo-color: rgba(0, 0, 0, 0.13);
 }
 
 .theme-play {
