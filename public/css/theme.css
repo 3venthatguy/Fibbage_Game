@@ -1,0 +1,423 @@
+/**
+ * Shared Fibbage 4-style theme for host and player screens.
+ * Fonts, color tokens, backgrounds, and reusable components (tape labels,
+ * avatar badges, wavy divider, arced text).
+ */
+
+/* ============================================
+   FONTS (self-hosted, SIL OFL - see fonts/OFL-*.txt)
+   ============================================ */
+
+@font-face {
+  font-family: 'Anton';
+  src: url('../fonts/anton-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('../fonts/archivo-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('../fonts/archivo-latin-800-normal.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('../fonts/archivo-latin-900-normal.woff2') format('woff2');
+  font-weight: 900;
+  font-display: swap;
+}
+
+/* ============================================
+   TOKENS
+   ============================================ */
+
+:root {
+  --font-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --font-body: 'Archivo', 'Arial Black', 'Arial', sans-serif;
+
+  --ink: #111111;
+  --paper: #f4f1ea;
+  --white: #ffffff;
+  --teal-1: #18a7c9;
+  --teal-2: #2fc0bf;
+  --lime: #d4f04c;
+  --green: #22c58c;
+  --orange: #ff8a3c;
+  --hot-red: #ff4848;
+  --yellow: #ffd93b;
+  --truth: #2fd66b;
+  --lie: #ff3b3b;
+
+  --tilt: 0deg;
+  --shadow-hard: 6px 6px 0 rgba(0, 0, 0, 0.25);
+
+  /* Overridden per theme class on <body> */
+  --bg-gradient: linear-gradient(160deg, var(--teal-1) 0%, var(--teal-2) 50%, #7fd6a8 100%);
+  --topo-color: rgba(8, 70, 100, 0.28);
+}
+
+/* ============================================
+   BACKGROUND THEMES
+   ============================================ */
+
+.theme-title {
+  --bg-gradient: linear-gradient(120deg, #ff4a4a 0%, #ff7a3c 30%, #f6c445 55%, #69d0a0 78%, #2fb9c4 100%);
+  --topo-color: rgba(0, 0, 0, 0.22);
+}
+
+.theme-play {
+  --bg-gradient: linear-gradient(160deg, #169fcb 0%, #2bbcc4 40%, #5fcfae 75%, #c2e07c 100%);
+  --topo-color: rgba(8, 70, 100, 0.28);
+}
+
+.theme-results {
+  --bg-gradient: linear-gradient(160deg, #0f7fa3 0%, #1aa3b0 50%, #3cc39b 100%);
+  --topo-color: rgba(0, 40, 60, 0.3);
+}
+
+.theme-round {
+  --bg-gradient: linear-gradient(110deg, #d8f24c 0%, #9be36a 40%, #2ec98a 100%);
+  --topo-color: rgba(0, 0, 0, 0.8);
+}
+
+body {
+  background: var(--ink);
+}
+
+/* Fixed full-bleed background behind everything */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-gradient);
+  transition: background 0.8s ease;
+  overflow: hidden;
+}
+
+/* Contour lines: tinted by masking a solid color with the SVG */
+.bg-layer::after {
+  content: '';
+  position: absolute;
+  inset: -900px;
+  background: var(--topo-color);
+  -webkit-mask: url('../img/topo.svg') repeat;
+  mask: url('../img/topo.svg') repeat;
+  -webkit-mask-size: 900px 900px;
+  mask-size: 900px 900px;
+  animation: topoDrift 120s linear infinite;
+}
+
+@keyframes topoDrift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(900px, 450px); }
+}
+
+/* ============================================
+   COMPONENTS
+   ============================================ */
+
+/* Black tape label: white uppercase text on a torn-edged black strip */
+.tape {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1.05;
+  padding: 0.4em 0.85em 0.35em;
+  transform: rotate(var(--tilt));
+  clip-path: polygon(0 6%, 2% 0, 35% 3%, 70% 0, 98% 2%, 100% 8%, 99% 55%, 100% 94%, 97% 100%, 60% 97%, 25% 100%, 1% 97%, 0 60%);
+}
+
+/* Paper variant: black text on off-white */
+.tape--light {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* Tape button: adds press/hover feedback */
+.tape-button {
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.tape-button:hover:not(:disabled) {
+  transform: rotate(calc(var(--tilt) * -1)) scale(1.05);
+}
+
+.tape-button:active:not(:disabled) {
+  transform: rotate(var(--tilt)) scale(0.97);
+}
+
+.tape-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.display-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  color: var(--white);
+}
+
+/* White cut-out badge holding an emoji avatar */
+.avatar-badge {
+  --size: 96px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--size);
+  height: var(--size);
+  font-size: calc(var(--size) * 0.58);
+  line-height: 1;
+  background: var(--white);
+  border-radius: 47% 53% 49% 51% / 52% 46% 54% 48%;
+  filter: drop-shadow(4px 5px 0 rgba(0, 0, 0, 0.22));
+  transform: rotate(var(--tilt));
+}
+
+/* Avatar + name tag pair */
+.player-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transform: rotate(var(--tilt));
+}
+
+.player-tag .tape {
+  transform: none;
+}
+
+/* Fill-in-the-blank rule inside question text */
+.blank {
+  display: inline-block;
+  width: 3.2em;
+  height: 0.12em;
+  background: currentColor;
+  vertical-align: baseline;
+  margin: 0 0.1em;
+}
+
+/* Hand-drawn wavy line. Path drawn with stroke-dash animation. */
+.wavy-divider {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.wavy-divider path {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wavy-divider .wave-base {
+  stroke: rgba(8, 60, 90, 0.55);
+}
+
+.wavy-divider .wave-progress {
+  stroke: #c9f6ff;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.wavy-divider.drawing .wave-progress {
+  animation: waveDraw linear forwards;
+}
+
+@keyframes waveDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Letters fanned along an arc (built by makeArcText in theme.js) */
+.arc-text {
+  position: relative;
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.arc-text span {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform-origin: 50% var(--arc-radius);
+  transform: translateX(-50%) rotate(var(--arc-angle));
+  white-space: pre;
+}
+
+/* Small rotated sticker for points, counters, check marks */
+.sticker {
+  display: inline-block;
+  background: var(--yellow);
+  color: var(--ink);
+  font-family: var(--font-display);
+  padding: 0.15em 0.45em;
+  transform: rotate(var(--tilt, -4deg));
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Entrance: label slapped down onto the screen */
+.slap-in {
+  animation: slapIn 0.35s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes slapIn {
+  from { opacity: 0; transform: rotate(calc(var(--tilt) * 4)) scale(1.6); }
+  to { opacity: 1; transform: rotate(var(--tilt)) scale(1); }
+}
+
+/* ============================================
+   ROUND CARD (round intro / multiplier overlay)
+   ============================================ */
+
+.round-card {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  overflow: hidden;
+  background: var(--bg-gradient);
+  --bg-gradient: linear-gradient(110deg, #d8f24c 0%, #9be36a 40%, #2ec98a 100%);
+  --topo-color: rgba(0, 0, 0, 0.85);
+}
+
+.round-card.active {
+  display: block;
+  animation: roundCardIn 0.45s ease-out both;
+}
+
+.round-card.fade-out {
+  animation: roundCardOut 0.5s ease-in forwards;
+}
+
+@keyframes roundCardIn {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes roundCardOut {
+  to { opacity: 0; }
+}
+
+/* Topo lines only on the right half, like the Fibbage round art */
+.round-card::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 70%;
+  height: 120%;
+  background: var(--topo-color);
+  -webkit-mask: url('../img/topo.svg') repeat;
+  mask: url('../img/topo.svg') repeat;
+  -webkit-mask-size: 700px 700px;
+  mask-size: 700px 700px;
+}
+
+.round-card-art {
+  position: absolute;
+  right: 12%;
+  top: 50%;
+  --size: min(42vh, 30vw);
+  transform: translateY(-50%) rotate(-6deg);
+  opacity: 0;
+}
+
+.round-card-art.show {
+  animation: roundArtIn 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+}
+
+@keyframes roundArtIn {
+  from { opacity: 0; transform: translateY(-30%) rotate(12deg) scale(0.4); }
+  to { opacity: 1; transform: translateY(-50%) rotate(-6deg) scale(1); }
+}
+
+.round-card-text {
+  position: absolute;
+  left: 5vw;
+  bottom: 7vh;
+  max-width: 60vw;
+}
+
+.round-card-stripes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8vh;
+  margin-bottom: 2.5vh;
+}
+
+.round-card-stripes .tape {
+  font-size: clamp(16px, 2.6vw, 44px);
+  font-weight: 800;
+  text-transform: none;
+  opacity: 0;
+}
+
+.round-card-stripes .tape.show {
+  animation: slapIn 0.35s cubic-bezier(0.2, 1.6, 0.4, 1) forwards;
+}
+
+.round-card-title {
+  font-size: clamp(64px, 15vw, 280px);
+  text-shadow: 6px 6px 0 rgba(0, 0, 0, 0.12);
+  opacity: 0;
+}
+
+.round-card-title.show {
+  animation: roundTitleIn 0.6s cubic-bezier(0.2, 1.3, 0.4, 1) forwards;
+}
+
+.round-card-title.pulse {
+  opacity: 1;
+  animation: roundTitlePulse 1s ease-in-out infinite;
+}
+
+@keyframes roundTitleIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.85); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes roundTitlePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-layer::after,
+  .round-card-title.pulse {
+    animation: none;
+  }
+
+  .slap-in,
+  .round-card-stripes .tape.show,
+  .round-card-title.show,
+  .round-card-art.show {
+    animation-duration: 0.01s;
+  }
+}
