@@ -87,6 +87,22 @@ function formatQuestion(text) {
 }
 
 /**
+ * Builds a round avatar badge.
+ * @param {string} avatar - Emoji
+ * @param {number} size - Optional size in px
+ * @returns {HTMLElement} Badge element
+ */
+function createAvatarBadge(avatar, size) {
+  const badge = document.createElement('span');
+  badge.className = 'avatar-badge';
+  badge.textContent = avatar;
+  if (size) {
+    badge.style.setProperty('--size', `${size}px`);
+  }
+  return badge;
+}
+
+/**
  * Builds an avatar badge + tape name tag.
  * @param {string} name - Player name
  * @param {string} avatar - Emoji
@@ -98,12 +114,7 @@ function createPlayerTag(name, avatar, options = {}) {
   tag.className = `player-tag ${options.className || ''}`.trim();
   tag.style.setProperty('--tilt', tiltFor(name, 2.5));
 
-  const badge = document.createElement('span');
-  badge.className = 'avatar-badge';
-  badge.textContent = avatar;
-  if (options.size) {
-    badge.style.setProperty('--size', `${options.size}px`);
-  }
+  const badge = createAvatarBadge(avatar, options.size);
 
   const label = document.createElement('span');
   label.className = 'tape';

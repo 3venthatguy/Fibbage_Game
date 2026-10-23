@@ -1,826 +1,532 @@
 /**
- * CSS animations for results reveal sequence.
+ * Host results reveal: layout, reveal stamps, voter/author tables,
+ * explanation, leaderboard, and the multiplier overlay.
+ * (All results styles live here; host.css has none.)
  */
 
-/* Answer Highlight Animation */
-.answer-highlighted {
-  animation: answerPulse 0.5s ease-in-out;
-  border: 3px solid #667eea !important;
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.6) !important;
-  transform: scale(1);
+/* ============================================
+   RESULTS LAYOUT
+   ============================================ */
+
+.results-phase {
+  padding: 200px 110px 150px;
 }
 
-.answer-highlighted:hover {
-  transform: scale(1.05) !important;
+/* Compact question header above the reveal */
+.theme-results .question-header {
+  top: 40px;
+  left: 330px;
+  right: 330px;
+  height: auto;
+  justify-content: center;
 }
 
-@keyframes answerPulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(102, 126, 234, 0);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
-  }
+.theme-results .question-mascot,
+.theme-results .question-wave {
+  display: none;
 }
 
-/* Dimmed answers */
+.theme-results .question-body {
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.question-display.results-mode {
+  font-size: 30px;
+  line-height: 1.2;
+  text-shadow: none;
+}
+
+.question-number.results-mode {
+  font-size: 18px;
+}
+
+/* Leaderboard hides the question; use the top of the stage */
+.results-phase:has(.leaderboard-list) {
+  padding-top: 50px;
+}
+
+.correct-answer-area {
+  display: none !important;
+}
+
+/* ============================================
+   ANSWER PILE AND FOCUSED ANSWER
+   ============================================ */
+
+.answers-reveal-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 22px 30px;
+  min-height: 280px;
+}
+
+.results-phase .answer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.results-phase .answer-text {
+  font-size: 30px;
+  line-height: 1.08;
+  max-width: 560px;
+  padding: 14px 24px 12px;
+  overflow-wrap: anywhere;
+}
+
 .answer-dimmed {
-  opacity: 0.3;
-  filter: grayscale(0.5);
+  opacity: 0.35;
+  filter: grayscale(0.4);
+}
+
+/* While an answer is being revealed, it takes over the area */
+.answers-reveal-area:has(.answer-highlighted:not(.fade-out)) .answer-card:not(.answer-highlighted) {
+  display: none;
+}
+
+.results-phase .answer-card.answer-highlighted {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 70px;
+  row-gap: 44px;
+  align-items: start;
+  padding-top: 125px;
+}
+
+.answer-card.answer-highlighted .answer-text {
+  grid-column: 1 / -1;
+  justify-self: center;
+  font-size: 60px;
+  max-width: 1300px;
+  padding: 24px 48px 20px;
+  text-align: center;
+  animation: slapIn 0.4s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+.answer-card.answer-highlighted .voters-container {
+  grid-column: 1;
+  justify-self: end;
+}
+
+.answer-card.answer-highlighted .author-container {
+  grid-column: 2;
+  justify-self: start;
+}
+
+/* The truth only has one table: center it */
+.answer-card.correct-answer-revealed .author-container {
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
+.correct-answer-revealed .answer-text {
+  background: var(--truth);
+  color: var(--ink);
+}
+
+/* Suspense shake on the label before the verdict */
+.answer-card.answer-vibrating .answer-text {
+  animation: lootBoxVibrate 1.5s ease-in-out;
+}
+
+@keyframes lootBoxVibrate {
+  0%, 26%, 50%, 100% { transform: rotate(var(--tilt)) scale(1.03); }
+  4%, 12%, 20% { transform: translateX(-4px) rotate(-1deg) scale(1.03); }
+  8%, 16%, 24% { transform: translateX(4px) rotate(1deg) scale(1.03); }
+  54%, 62%, 70%, 78% { transform: translateX(-7px) rotate(-2deg) scale(1.07); }
+  58%, 66%, 74%, 82% { transform: translateX(7px) rotate(2deg) scale(1.07); }
+  88% { transform: translateX(-3px) rotate(-0.5deg) scale(1.05); }
+  94% { transform: translateX(3px) rotate(0.5deg) scale(1.05); }
+}
+
+.answer-card.correct-answer-zoom .answer-text {
+  animation: correctAnswerZoom 0.6s ease-out;
+}
+
+@keyframes correctAnswerZoom {
+  0% { transform: rotate(var(--tilt)) scale(1); }
+  50% { transform: rotate(var(--tilt)) scale(1.12); }
+  100% { transform: rotate(var(--tilt)) scale(1); }
+}
+
+/* ============================================
+   VERDICT STAMPS
+   ============================================ */
+
+/* Centered above the label, overlapping its top edge */
+.lie-reveal,
+.truth-reveal {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  right: 0;
+  width: max-content;
+  margin: 0 auto;
+  z-index: 5;
+  font-family: var(--font-display);
+  font-size: 108px;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
   pointer-events: none;
+  transform: rotate(-9deg);
+  text-shadow:
+    5px 0 0 var(--white), -5px 0 0 var(--white), 0 5px 0 var(--white), 0 -5px 0 var(--white),
+    4px 4px 0 var(--white), -4px -4px 0 var(--white), 4px -4px 0 var(--white), -4px 4px 0 var(--white),
+    12px 12px 0 rgba(0, 0, 0, 0.25);
+  animation: stampSlam 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
 }
 
-/* Voter Fly-in Animation */
-.voter-avatar {
-  display: inline-block;
-  padding: 8px 16px;
-  margin: 4px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 20px;
-  font-weight: 600;
-  animation: voterFlyIn 0.4s ease-out;
-  transform-origin: left center;
+.lie-reveal {
+  color: var(--lie);
 }
 
-@keyframes voterFlyIn {
-  0% {
-    transform: translateX(-100px) scale(0.8);
-    opacity: 0;
-  }
-  60% {
-    transform: translateX(10px) scale(1.1);
-  }
-  100% {
-    transform: translateX(0) scale(1);
-    opacity: 1;
-  }
+.truth-reveal {
+  color: var(--truth);
+}
+
+@keyframes stampSlam {
+  0% { opacity: 0; transform: rotate(-22deg) scale(2.6); }
+  70% { opacity: 1; transform: rotate(-7deg) scale(0.92); }
+  100% { opacity: 1; transform: rotate(-9deg) scale(1); }
+}
+
+/* ============================================
+   WHO FELL FOR IT
+   ============================================ */
+
+.voters-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 18px;
+  max-width: 780px;
 }
 
 .voters-label {
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 900;
   font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #333;
+  text-transform: uppercase;
+  padding: 8px 18px 6px;
+  transform: rotate(2deg);
 }
 
 .voters-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  justify-content: flex-end;
+  gap: 16px 26px;
 }
 
-.no-votes-message {
-  font-size: 20px;
-  color: #999;
-  font-style: italic;
-  padding: 20px;
+.voter-avatar .tape {
+  font-size: 30px;
 }
 
-/* Author Reveal Animation */
-.author-reveal {
-  text-align: center;
-  padding: 30px;
-  position: relative;
+.voter-avatar {
+  animation: voterFlyIn 0.35s cubic-bezier(0.2, 1.5, 0.4, 1) both;
 }
 
-.author-label {
-  font-size: 18px;
-  font-weight: 600;
-  color: #666;
-  margin-bottom: 8px;
+@keyframes voterFlyIn {
+  from { opacity: 0; transform: translateX(-60px) rotate(-10deg) scale(0.6); }
+  to { opacity: 1; transform: rotate(var(--tilt)); }
+}
+
+.no-votes-message,
+.no-correct-voters {
+  font-weight: 900;
+  font-size: 30px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.author-name {
-  font-size: 42px;
-  font-weight: 700;
-  color: #667eea;
-  animation: authorBurst 0.8s ease-out;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes authorBurst {
-  0% {
-    transform: scale(0) rotate(-10deg);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.2) rotate(5deg);
-  }
-  80% {
-    transform: scale(0.95) rotate(-2deg);
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-/* Score Animation */
-.points-earned {
-  font-size: 48px;
-  font-weight: 700;
-  color: #10b981;
   text-align: center;
-  margin: 20px 0;
+  padding: 10px 20px;
 }
 
-.points-fly-up {
-  animation: pointsFlyUp 1s ease-out forwards;
-}
+/* ============================================
+   AUTHOR / CORRECT-VOTER SCORECARD
+   ============================================ */
 
-@keyframes pointsFlyUp {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100px) scale(1.5);
-    opacity: 0;
-  }
-}
-
-.total-score-display {
-  font-size: 32px;
-  font-weight: 600;
-  color: #333;
-  text-align: center;
-  margin-top: 10px;
-}
-
-/* Correct Answer Zoom */
-.correct-answer-zoom {
-  animation: correctAnswerZoom 1s ease-out;
-  border: 4px solid #10b981 !important;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-  color: white !important;
-  box-shadow: 0 0 40px rgba(16, 185, 129, 0.6) !important;
+.author-container {
   position: relative;
-  z-index: 10;
 }
 
-@keyframes correctAnswerZoom {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(16, 185, 129, 0);
-  }
-  50% {
-    transform: scale(1.2);
-    box-shadow: 0 0 50px rgba(16, 185, 129, 0.8);
-  }
-  100% {
-    transform: scale(1.3);
-    box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
-  }
+.author-reveal {
+  background: var(--paper);
+  color: var(--ink);
+  min-width: 480px;
+  padding: 22px 30px 18px;
+  transform: rotate(-1.5deg);
+  box-shadow: var(--shadow-hard);
+  animation: authorRevealPop 0.45s cubic-bezier(0.2, 1.5, 0.4, 1);
 }
 
-/* Confetti Particles */
+@keyframes authorRevealPop {
+  from { opacity: 0; transform: rotate(6deg) scale(0.7); }
+  to { opacity: 1; transform: rotate(-1.5deg) scale(1); }
+}
+
+.author-table-header,
+.author-table-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+}
+
+.author-table-header {
+  border-bottom: 4px solid var(--ink);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.author-table-header-cell {
+  font-weight: 900;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.author-table-header-cell:nth-child(2) {
+  text-align: right;
+}
+
+.author-table-row {
+  padding: 7px 0;
+  animation: rowFadeIn 0.4s ease-out both;
+}
+
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: none; }
+}
+
+.author-table-name {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 900;
+  font-size: 34px;
+  text-transform: uppercase;
+}
+
+.author-table-name .avatar-badge {
+  --size: 56px;
+  border: 3px solid var(--ink);
+  filter: none;
+}
+
+/* Points as a yellow sticker */
+.author-table-points {
+  justify-self: end;
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1.1;
+  background: var(--yellow);
+  padding: 2px 14px;
+  transform: rotate(-4deg);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  animation: pointsPop 0.5s ease-out;
+}
+
+@keyframes pointsPop {
+  0% { transform: rotate(-4deg) scale(0.3); opacity: 0; }
+  50% { transform: rotate(-4deg) scale(1.3); opacity: 1; }
+  70% { transform: rotate(-4deg) scale(0.9); }
+  100% { transform: rotate(-4deg) scale(1); opacity: 1; }
+}
+
+/* ============================================
+   CONFETTI
+   ============================================ */
+
 .confetti-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: -40px;
   pointer-events: none;
   overflow: visible;
-  z-index: 1000;
 }
 
 .confetti-particle {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background: #667eea;
-  animation: confettiFall 3s ease-out forwards;
+  width: 14px;
+  height: 8px;
+  background: var(--lime);
+  animation: confettiFall 2s ease-out forwards;
 }
 
-.confetti-particle:nth-child(2n) {
-  background: #764ba2;
-}
-
-.confetti-particle:nth-child(3n) {
-  background: #f093fb;
-}
-
-.confetti-particle:nth-child(4n) {
-  background: #4facfe;
-}
-
-.confetti-particle:nth-child(5n) {
-  background: #10b981;
-}
+.confetti-particle:nth-child(3n) { background: var(--yellow); }
+.confetti-particle:nth-child(3n + 1) { background: var(--hot-red); }
+.confetti-particle:nth-child(4n) { background: var(--ink); }
 
 @keyframes confettiFall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(200px) rotate(720deg);
-    opacity: 0;
-  }
+  from { transform: translateY(0) rotate(0deg); opacity: 1; }
+  to { transform: translateY(260px) rotate(540deg); opacity: 0; }
 }
 
-/* Shake Animation */
-.shake {
-  animation: shake 0.4s ease-in-out;
+/* ============================================
+   EXPLANATION
+   ============================================ */
+
+.explanation-area {
+  margin-top: 54px;
 }
 
-@keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  10%, 30%, 50%, 70%, 90% {
-    transform: translateX(-5px);
-  }
-  20%, 40%, 60%, 80% {
-    transform: translateX(5px);
-  }
-}
-
-/* Loot Box Vibration Animation - Intense suspense shake */
-.answer-vibrating {
-  animation: lootBoxVibrate 1.5s ease-in-out;
-}
-
-@keyframes lootBoxVibrate {
-  0% {
-    transform: translateX(0) scale(1.05);
-  }
-  2% {
-    transform: translateX(-3px) rotate(-0.5deg) scale(1.05);
-  }
-  4% {
-    transform: translateX(3px) rotate(0.5deg) scale(1.05);
-  }
-  6% {
-    transform: translateX(-3px) rotate(-0.5deg) scale(1.05);
-  }
-  8% {
-    transform: translateX(3px) rotate(0.5deg) scale(1.05);
-  }
-  10% {
-    transform: translateX(-2px) rotate(-0.3deg) scale(1.05);
-  }
-  12% {
-    transform: translateX(2px) rotate(0.3deg) scale(1.05);
-  }
-  14% {
-    transform: translateX(-2px) rotate(-0.3deg) scale(1.05);
-  }
-  16% {
-    transform: translateX(2px) rotate(0.3deg) scale(1.05);
-  }
-  18% {
-    transform: translateX(-1px) rotate(-0.2deg) scale(1.05);
-  }
-  20% {
-    transform: translateX(1px) rotate(0.2deg) scale(1.05);
-  }
-  22% {
-    transform: translateX(-1px) rotate(-0.2deg) scale(1.05);
-  }
-  24% {
-    transform: translateX(1px) rotate(0.2deg) scale(1.05);
-  }
-  26% {
-    transform: translateX(0) scale(1.05);
-  }
-  /* Pause briefly */
-  50% {
-    transform: translateX(0) scale(1.05);
-  }
-  /* Resume vibration with increasing intensity */
-  52% {
-    transform: translateX(-4px) rotate(-1deg) scale(1.06);
-  }
-  54% {
-    transform: translateX(4px) rotate(1deg) scale(1.06);
-  }
-  56% {
-    transform: translateX(-4px) rotate(-1deg) scale(1.06);
-  }
-  58% {
-    transform: translateX(4px) rotate(1deg) scale(1.06);
-  }
-  60% {
-    transform: translateX(-5px) rotate(-1.5deg) scale(1.07);
-  }
-  62% {
-    transform: translateX(5px) rotate(1.5deg) scale(1.07);
-  }
-  64% {
-    transform: translateX(-5px) rotate(-1.5deg) scale(1.07);
-  }
-  66% {
-    transform: translateX(5px) rotate(1.5deg) scale(1.07);
-  }
-  68% {
-    transform: translateX(-6px) rotate(-2deg) scale(1.08);
-  }
-  70% {
-    transform: translateX(6px) rotate(2deg) scale(1.08);
-  }
-  72% {
-    transform: translateX(-6px) rotate(-2deg) scale(1.08);
-  }
-  74% {
-    transform: translateX(6px) rotate(2deg) scale(1.08);
-  }
-  76% {
-    transform: translateX(-5px) rotate(-1.5deg) scale(1.08);
-  }
-  78% {
-    transform: translateX(5px) rotate(1.5deg) scale(1.08);
-  }
-  80% {
-    transform: translateX(-4px) rotate(-1deg) scale(1.08);
-  }
-  82% {
-    transform: translateX(4px) rotate(1deg) scale(1.08);
-  }
-  84% {
-    transform: translateX(-3px) rotate(-0.5deg) scale(1.08);
-  }
-  86% {
-    transform: translateX(3px) rotate(0.5deg) scale(1.08);
-  }
-  88% {
-    transform: translateX(-2px) rotate(-0.3deg) scale(1.08);
-  }
-  90% {
-    transform: translateX(2px) rotate(0.3deg) scale(1.08);
-  }
-  92% {
-    transform: translateX(-1px) rotate(-0.2deg) scale(1.08);
-  }
-  94% {
-    transform: translateX(1px) rotate(0.2deg) scale(1.08);
-  }
-  96% {
-    transform: translateX(-1px) rotate(-0.1deg) scale(1.08);
-  }
-  98% {
-    transform: translateX(1px) rotate(0.1deg) scale(1.08);
-  }
-  100% {
-    transform: translateX(0) rotate(0deg) scale(1.05);
-  }
-}
-
-/* "IT'S A LIE!" Reveal */
-.lie-reveal {
-  text-align: center;
-  font-size: 56px;
-  font-weight: 700;
-  color: #ef4444;
-  text-transform: uppercase;
-  margin: 20px 0;
-  animation: lieRevealBurst 0.8s ease-out;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes lieRevealBurst {
-  0% {
-    transform: scale(0) rotate(-15deg);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.3) rotate(5deg);
-  }
-  80% {
-    transform: scale(0.95) rotate(-2deg);
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-/* "THE TRUTH!" Reveal */
-.truth-reveal {
-  text-align: center;
-  font-size: 64px;
-  font-weight: 700;
-  color: #10b981;
-  text-transform: uppercase;
-  margin: 20px 0;
-  animation: truthRevealBurst 1s ease-out;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes truthRevealBurst {
-  0% {
-    transform: scale(0) rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.5) rotate(360deg);
-  }
-  70% {
-    transform: scale(0.9) rotate(350deg);
-  }
-  100% {
-    transform: scale(1) rotate(360deg);
-    opacity: 1;
-  }
-}
-
-/* Correct Voter Celebration */
-.correct-voter {
-  display: inline-block;
-  padding: 12px 24px;
-  margin: 8px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 18px;
-  animation: correctVoterAppear 0.5s ease-out;
-  position: relative;
-}
-
-.correct-voter::after {
-  content: '✓';
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 24px;
-  height: 24px;
-  background: #10b981;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  border: 2px solid white;
-}
-
-@keyframes correctVoterAppear {
-  0% {
-    transform: scale(0) rotate(-180deg);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.2) rotate(10deg);
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-/* Explanation Fade-in */
 .explanation-box {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 30px;
-  border-radius: 12px;
-  margin: 10px auto;
-  max-width: 800px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  animation: explanationFadeIn 0.5s ease-out;
-  color: #1f2937; /* Dark text for readability */
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 44px 44px 30px;
+  transform: rotate(0.6deg);
+  box-shadow: var(--shadow-hard);
+  animation: explanationIn 0.5s ease-out;
 }
 
 .explanation-box h3 {
-  color: #1f2937;
-  margin-bottom: 15px;
+  position: absolute;
+  top: -24px;
+  left: 30px;
+  background: var(--ink);
+  color: var(--white);
+  font-weight: 900;
+  font-size: 24px;
+  text-transform: uppercase;
+  padding: 8px 18px 6px;
+  transform: rotate(-2deg);
 }
 
 .explanation-box p {
-  color: #374151;
-  line-height: 1.6;
-}
-
-@keyframes explanationFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Results Container */
-.results-container {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.answers-reveal-area {
-  min-height: 200px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 15px;
-  /* Ensure container is wide enough: 1 highlighted (450px) + 2 normal (300px each) + gaps (30px) = 1080px */
-  min-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Results phase answer cards - ensure dark text on light background */
-.results-phase .answer-card {
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 0;
-  width: 300px;
-  min-width: 280px;
-  max-width: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  color: #1f2937; /* Dark text for readability */
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Highlighted answer card expands horizontally to show more content */
-.results-phase .answer-card.answer-highlighted {
-  width: 450px;
-  max-width: 450px;
-}
-
-/* Ensure inner content expands to fill the highlighted card width */
-.results-phase .answer-card.answer-highlighted > * {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.voters-container {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 2px solid #e5e7eb;
-}
-
-.author-container {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 2px solid #e5e7eb;
-}
-
-.score-container {
-  margin-top: 15px;
-}
-
-/* Correct Answer Area */
-.correct-answer-area {
-  text-align: center;
-  margin: 5px 0 10px 0;
-}
-
-.correct-answer-card {
-  background: white;
-  border: 4px solid #10b981;
-  border-radius: 16px;
-  padding: 40px;
-  margin: 10px auto;
-  max-width: 700px;
-  box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
-}
-
-.correct-answer-text {
-  font-size: 36px;
   font-weight: 700;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 27px;
+  line-height: 1.4;
 }
 
-.correct-voters-container {
-  margin-top: 30px;
+@keyframes explanationIn {
+  from { opacity: 0; transform: translateY(30px) rotate(0.6deg); }
+  to { opacity: 1; transform: rotate(0.6deg); }
 }
 
-.correct-voters-label {
-  font-size: 28px;
-  font-weight: 700;
-  color: #10b981;
-  margin-bottom: 20px;
+/* ============================================
+   LEADERBOARD
+   ============================================ */
+
+.leaderboard-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 120px;
+  line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.correct-voters-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.no-correct-voters {
-  font-size: 24px;
-  color: #999;
-  font-style: italic;
-  padding: 30px;
-}
-
-/* Explanation Area */
-.explanation-area {
-  margin: 10px 0;
-}
-
-/* Leaderboard Area */
-.leaderboard-area {
-  margin: 40px 0;
   text-align: center;
-}
-
-/* Show Leaderboard Button */
-.show-leaderboard-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  color: white;
-  font-size: 32px;
-  font-weight: bold;
-  padding: 20px 60px;
-  border-radius: 50px;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s, box-shadow 0.3s;
-  animation: fadeIn 0.5s ease-out;
-}
-
-.show-leaderboard-button:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-}
-
-.show-leaderboard-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  color: var(--white);
+  text-shadow: 8px 8px 0 rgba(0, 0, 0, 0.18);
+  transform: rotate(-2deg);
+  margin-bottom: 34px;
 }
 
 .leaderboard-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 14px;
+  max-width: 1120px;
+  margin: 0 auto;
 }
 
 .leaderboard-entry {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 16px 24px;
-  animation: leaderboardSlideIn 0.5s ease-out;
-  animation-fill-mode: both;
+  gap: 22px;
+  background: var(--ink);
+  color: var(--white);
+  padding: 10px 34px 10px 24px;
+  transform: rotate(var(--tilt));
+  clip-path: polygon(0 6%, 2% 0, 35% 3%, 70% 0, 98% 2%, 100% 8%, 99% 55%, 100% 94%, 97% 100%, 60% 97%, 25% 100%, 1% 97%, 0 60%);
+  animation: leaderboardSlideIn 0.5s cubic-bezier(0.2, 1.3, 0.4, 1) both;
 }
 
-.leaderboard-rank {
-  font-size: 24px;
-  font-weight: 700;
-  color: #667eea;
-  min-width: 50px;
-}
-
-.leaderboard-name {
-  font-size: 20px;
-  font-weight: 600;
-  flex: 1;
-  margin-left: 20px;
-  color: #1f2937;
-  text-align: left;
-}
-
-.leaderboard-score {
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
-}
-
-.leaderboard-round-score {
-  font-size: 18px;
-  font-weight: 600;
-  color: #10b981;
-  margin-left: 12px;
+.leaderboard-entry:first-child {
+  background: var(--lime);
+  color: var(--ink);
 }
 
 @keyframes leaderboardSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-120px) rotate(var(--tilt)); }
+  to { opacity: 1; transform: rotate(var(--tilt)); }
 }
 
-/* Sparkle Particles */
-.sparkle-particle {
+.leaderboard-rank {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1;
+  min-width: 56px;
+  text-align: center;
+}
+
+.leaderboard-entry .avatar-badge {
+  --size: 64px;
+  filter: none;
+}
+
+.leaderboard-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 900;
+  font-size: 38px;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leaderboard-round-score {
+  font-family: var(--font-display);
+  font-size: 30px;
+  background: var(--yellow);
+  color: var(--ink);
+  padding: 0 12px;
+  transform: rotate(5deg);
+}
+
+.leaderboard-score {
+  font-family: var(--font-display);
+  font-size: 50px;
+  line-height: 1;
+  min-width: 150px;
+  text-align: right;
+}
+
+/* ============================================
+   BUTTONS (bottom right of the stage)
+   ============================================ */
+
+.show-leaderboard-button,
+.next-button {
+  --tilt: -2deg;
   position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #ffd700;
-  border-radius: 50%;
-  animation: sparkle 1s ease-out forwards;
-  pointer-events: none;
+  right: 60px;
+  bottom: 50px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 50px;
+  padding: 16px 46px 12px;
 }
 
-@keyframes sparkle {
-  0% {
-    transform: scale(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.5) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* Burst Particles */
-.burst-particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #667eea;
-  border-radius: 50%;
-  animation: burst 0.8s ease-out forwards;
-  pointer-events: none;
-}
-
-@keyframes burst {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--final-x, 0), var(--final-y, 0)) scale(0);
-    opacity: 0;
-  }
-}
-
-/* Star Particles */
-.star-particle {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: #ffd700;
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  animation: starTwinkle 2s ease-out forwards;
-  pointer-events: none;
-}
-
-@keyframes starTwinkle {
-  0% {
-    transform: scale(0) rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2) rotate(180deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* Transition Effects */
 .fade-out {
   animation: fadeOut 0.3s ease-out forwards;
 }
 
 @keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+  to { opacity: 0; transform: scale(0.95); }
 }
 
 .fade-in {
-  animation: fadeIn 0.3s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+  animation: slapIn 0.4s cubic-bezier(0.2, 1.6, 0.4, 1) both;
 }
 
 /* ======================================

@@ -67,7 +67,7 @@ function showResultsPhase() {
           <div class="correct-answer-area" id="correctAnswerArea" style="display: none;"></div>
           <div class="explanation-area" id="explanationArea" style="display: none;"></div>
           <div class="leaderboard-area" id="leaderboardArea" style="display: none;"></div>
-          <button class="next-button" id="nextButton" style="display: none;">Next Question</button>
+          <button class="next-button tape tape-button" id="nextButton" style="display: none;">Next Question</button>
         </div>
       `;
     } else {
@@ -137,10 +137,11 @@ function initializeResultsSequence(answersData) {
       card.className = 'answer-card';
       card.dataset.answerId = answer.id;
 
-      // Create answer text element (matching voting screen structure)
+      // Answer text is the tape label; reveal stamps and tables attach around it
       const answerText = document.createElement('div');
+      answerText.className = 'answer-text tape';
       answerText.textContent = answer.text;
-      answerText.style.flex = '1';
+      answerText.style.setProperty('--tilt', tiltFor(answer.text, 2.5));
       card.appendChild(answerText);
 
       // Apply base styles
@@ -362,8 +363,8 @@ function handleHighlightCorrectAnswer(data) {
   const correctAnswerCard = answerElements.get('correct');
   if (correctAnswerCard) {
     console.log('[ResultsScreen] Found correct answer card, highlighting it');
-    // Show the card and highlight it
-    correctAnswerCard.style.display = 'block';
+    // Show the card and highlight it (clear inline display so the CSS layout applies)
+    correctAnswerCard.style.display = '';
     correctAnswerCard.classList.remove('answer-dimmed');
     correctAnswerCard.classList.add('answer-highlighted');
 
@@ -443,7 +444,7 @@ function handleShowCorrectVoters(data) {
   if (data.voters.length === 0) {
     const noVotersDiv = document.createElement('div');
     noVotersDiv.className = 'author-reveal';
-    noVotersDiv.innerHTML = '<div class="no-correct-voters" style="text-align: center; padding: 20px; color: white;">Everyone was fooled!</div>';
+    noVotersDiv.innerHTML = '<div class="no-correct-voters">Everyone was fooled!</div>';
     votersContainer.appendChild(noVotersDiv);
   } else {
     // Create table structure for correct voters
@@ -477,7 +478,8 @@ function handleShowCorrectVoters(data) {
 
       const nameCell = document.createElement('div');
       nameCell.className = 'author-table-name';
-      nameCell.textContent = voter.name;
+      nameCell.appendChild(createAvatarBadge(avatarForPlayer(hostState.players, voter.id)));
+      nameCell.appendChild(document.createTextNode(voter.name));
 
       const pointsCell = document.createElement('div');
       pointsCell.className = 'author-table-points';
@@ -508,7 +510,8 @@ async function handleUpdateCorrectScores(data) {
 
   for (const voter of data.voters) {
     if (voter.pointsEarned > 0) {
-      const pointsCell = document.querySelector(`[data-player-id="${voter.id}"]`);
+      // Scope to the scorecard: status tags and voter tags also carry data-player-id
+      const pointsCell = document.querySelector(`.author-table-points[data-player-id="${voter.id}"]`);
       if (pointsCell) {
         // Show actual multiplied points value (+1000, +2000, or +3000)
         pointsCell.textContent = `+${pointsToShow}`;
@@ -553,7 +556,7 @@ function handleShowLeaderboardButton(data) {
 
   leaderboardArea.style.display = 'block';
   leaderboardArea.innerHTML = `
-    <button class="show-leaderboard-button" id="showLeaderboardButton">
+    <button class="show-leaderboard-button tape tape-button" id="showLeaderboardButton">
       Show Leaderboard
     </button>
   `;
@@ -600,7 +603,7 @@ function handleShowLeaderboard(data) {
   if (!leaderboardArea) return;
 
   leaderboardArea.style.display = 'block';
-  leaderboardArea.innerHTML = '<h3 style="font-size: 32px; margin-bottom: 20px;">Leaderboard</h3>';
+  leaderboardArea.innerHTML = '<h3 class="leaderboard-title">Leaderboard</h3>';
 
   const leaderboardList = document.createElement('div');
   leaderboardList.className = 'leaderboard-list';
@@ -609,13 +612,15 @@ function handleShowLeaderboard(data) {
     const entry = document.createElement('div');
     entry.className = 'leaderboard-entry';
     entry.style.animationDelay = `${index * 0.1}s`;
+    entry.style.setProperty('--tilt', tiltFor(player.id, 1.2));
 
     const roundScore = data.roundScores[player.id] || 0;
     entry.innerHTML = `
       <div class="leaderboard-rank">${index + 1}</div>
-      <div class="leaderboard-name">${player.name}</div>
-      <div class="leaderboard-score">${player.score.toLocaleString()}</div>
+      <span class="avatar-badge">${avatarForPlayer(hostState.players, player.id)}</span>
+      <div class="leaderboard-name">${escapeHtml(player.name)}</div>
       ${roundScore > 0 ? `<div class="leaderboard-round-score">+${roundScore}</div>` : ''}
+      <div class="leaderboard-score">${player.score.toLocaleString()}</div>
     `;
 
     leaderboardList.appendChild(entry);

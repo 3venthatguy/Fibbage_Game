@@ -57,7 +57,7 @@ export function showVoters(container, voters) {
 
     const label = document.createElement('div');
     label.className = 'voters-label';
-    label.textContent = 'Who voted for this?';
+    label.textContent = 'Fell for it';
     container.appendChild(label);
 
     const votersList = document.createElement('div');
@@ -67,9 +67,7 @@ export function showVoters(container, voters) {
     let appeared = 0;
     voters.forEach((voter, index) => {
       setTimeout(() => {
-        const voterElement = document.createElement('div');
-        voterElement.className = 'voter-avatar';
-        voterElement.textContent = voter.name;
+        const voterElement = createPlayerTag(voter.name, avatarForPlayer(hostState.players, voter.id), { size: 60, className: 'voter-avatar' });
         voterElement.dataset.playerId = voter.id;
         votersList.appendChild(voterElement);
         
@@ -147,7 +145,8 @@ export function revealAuthor(container, authorName, pointsEarned, options = {}) 
 
         const nameCell = document.createElement('div');
         nameCell.className = 'author-table-name';
-        nameCell.textContent = individualName;
+        nameCell.appendChild(createAvatarBadge(avatarForPlayer(hostState.players, options.authorIds[index])));
+        nameCell.appendChild(document.createTextNode(individualName));
 
         const pointsCell = document.createElement('div');
         pointsCell.className = 'author-table-points';
@@ -165,7 +164,8 @@ export function revealAuthor(container, authorName, pointsEarned, options = {}) 
 
       const nameCell = document.createElement('div');
       nameCell.className = 'author-table-name';
-      nameCell.textContent = authorName;
+      nameCell.appendChild(createAvatarBadge(avatarForPlayer(hostState.players, options.authorId)));
+      nameCell.appendChild(document.createTextNode(authorName));
 
       const pointsCell = document.createElement('div');
       pointsCell.className = 'author-table-points';
