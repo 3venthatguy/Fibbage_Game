@@ -31,6 +31,9 @@ function initializePlayer() {
   // Setup socket handlers
   setupPlayerSocketHandlers(socket, playerState);
 
+  // Phone-sized wavy divider (a narrower viewBox keeps the line chunky)
+  buildWavyDivider(document.getElementById('playerWave'), 600, 90);
+
   // Setup join screen
   setupJoinScreen((code, name) => {
     playerState.roomCode = code;

@@ -18,14 +18,10 @@ function showPlayerReadingPhase(duration) {
   if (watchScreen) {
     watchScreen.style.display = 'none';
   }
+  document.getElementById('gameScreen').classList.remove('watching');
 
-  // Start progress bar animation
-  const progressBar = document.getElementById('readingProgressBar');
-  progressBar.classList.remove('animating');
-  // Force reflow to restart animation
-  void progressBar.offsetWidth;
-  progressBar.classList.add('animating');
-  progressBar.style.animationDuration = duration + 's';
+  // The wave's light line draws across over the reading time
+  drawWave(document.getElementById('playerWave'), duration);
 }
 
 /**
@@ -82,6 +78,7 @@ function showPlayerSubmitPhase() {
     watchScreen.style.display = 'none';
   }
   submitWaiting.style.display = 'none';
+  document.getElementById('gameScreen').classList.remove('watching');
 
   // Show question, question number, and timer
   if (questionDisplay) {

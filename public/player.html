@@ -6,93 +6,102 @@
   <title>Fibbage - Player</title>
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/player.css">
-  <link rel="stylesheet" href="css/player-animations.css">
   <script src="/socket.io/socket.io.js"></script>
 </head>
-<body>
-  <!-- Player Name Badge (shown after joining) -->
+<body class="theme-title">
+  <!-- Gradient + topographic line background (theme set by setTheme in theme.js) -->
+  <div class="bg-layer"></div>
+
+  <!-- Player Name Badge: avatar + name (shown after joining) -->
   <div class="player-name-badge" id="playerNameBadge" style="display: none;"></div>
 
   <div class="container">
     <!-- Join Screen -->
     <div id="joinScreen" class="join-screen">
-      <h1 id="joinGameTitle">INTRO TO MISINFORMATION</h1>
+      <h1 id="joinGameTitle" class="player-title tape">INTRO TO MISINFORMATION</h1>
       <div class="input-group">
-        <label for="roomCodeInput">Room Code</label>
+        <label for="roomCodeInput" class="tape">Room Code</label>
         <input type="text" id="roomCodeInput" placeholder="ABCD" maxlength="4" autocomplete="off">
       </div>
       <div class="input-group">
-        <label for="playerNameInput">Your Name</label>
+        <label for="playerNameInput" class="tape">Your Name</label>
         <input type="text" id="playerNameInput" placeholder="Enter your name" maxlength="20" autocomplete="off">
       </div>
-      <button class="join-button" id="joinButton" disabled>Join Game</button>
+      <button class="join-button tape tape-button" id="joinButton" disabled>Join Game</button>
     </div>
 
     <!-- Lobby Screen -->
     <div id="lobbyScreen" class="lobby-screen">
-      <h1 id="lobbyGameTitle" style="font-size: 36px; margin-bottom: 20px;">Fibbage</h1>
+      <h1 id="lobbyGameTitle" class="player-title tape">Fibbage</h1>
+      <div class="room-code-label">Room code</div>
       <div class="room-code-display" id="roomCodeDisplay">----</div>
       <div class="players-list" id="playersList"></div>
-      <div class="waiting-message">Waiting for host to start...</div>
+      <div class="waiting-message tape tape--light">Waiting for host to start…</div>
     </div>
 
     <!-- Game Screen -->
     <div id="gameScreen" class="game-screen">
-      <div class="question-number" id="questionNumber">Question 1 of 8</div>
-      <div class="timer-display" id="timerDisplay">30</div>
+      <div class="question-top">
+        <div class="question-number tape" id="questionNumber">Question 1 of 6</div>
+        <div class="timer-display" id="timerDisplay">30</div>
+      </div>
       <div class="question-display" id="questionDisplay"></div>
+
+      <!-- Wavy divider; its light line shows the phase time (drawWave in theme.js) -->
+      <svg class="wavy-divider player-wave" id="playerWave" aria-hidden="true"></svg>
 
       <!-- Reading Phase -->
       <div id="readingPhase" class="reading-phase" style="display: none;">
-        <div class="reading-progress-bar" id="readingProgressBar"></div>
-        <div class="reading-message">Read the question...</div>
+        <div class="reading-message tape tape--light">Read the question!</div>
       </div>
 
       <!-- Submit Phase -->
       <div id="submitPhase" class="submit-phase" style="display: none;">
-        <input type="text" class="answer-input" id="answerInput" placeholder="Enter your fake answer..." maxlength="100" autocomplete="off">
-        <div class="char-counter" id="charCounter">0/100 characters</div>
-        <button class="submit-button" id="submitButton" disabled>Submit Answer</button>
-        <div class="waiting-message" id="submitWaiting" style="display: none;">Waiting for other players...</div>
+        <div class="answer-card-paper">
+          <input type="text" class="answer-input" id="answerInput" placeholder="Type a believable lie…" maxlength="100" autocomplete="off">
+          <div class="char-counter sticker" id="charCounter">0/100 characters</div>
+        </div>
+        <button class="submit-button tape tape-button" id="submitButton" disabled>Send your lie</button>
+        <div class="waiting-message tape tape--light" id="submitWaiting" style="display: none;">Waiting for other players…</div>
       </div>
 
       <!-- Voting Phase -->
       <div id="votingPhase" class="voting-phase" style="display: none;">
-        <h2 style="font-size: 28px; margin-bottom: 20px;">Vote for the correct answer!</h2>
+        <h2 class="voting-heading">Pick the truth!</h2>
         <div class="answers-list" id="answersList"></div>
-        <div class="waiting-message" id="votingWaiting" style="display: none;">Waiting for other players...</div>
+        <div class="waiting-message tape tape--light" id="votingWaiting" style="display: none;">Waiting for other players…</div>
       </div>
 
       <!-- Watch Screen (After Voting) -->
       <div id="watchScreen" class="watch-screen" style="display: none;">
         <div class="watch-screen-content">
-          <div class="watch-screen-icon">👀</div>
-          <div class="watch-screen-message">Look at the TV!</div>
-          <div class="watch-screen-submessage">Watch the main screen for results</div>
+          <span class="avatar-badge watch-screen-icon" id="watchAvatar">👀</span>
+          <div class="watch-screen-message display-title">Look at the TV!</div>
+          <div class="watch-screen-submessage tape tape--light">Results are on the main screen</div>
         </div>
       </div>
     </div>
 
     <!-- Game Over Screen -->
     <div id="gameOverScreen" class="game-over-screen">
-      <h1>Game Over!</h1>
-      <div class="final-leaderboard" id="finalLeaderboard"></div>
+      <h1 class="player-title tape">Final results</h1>
       <div class="thanks-message" id="thanksMessage"></div>
+      <div class="final-leaderboard" id="finalLeaderboard"></div>
     </div>
 
     <!-- Error Message -->
     <div class="error-message" id="errorMessage"></div>
 
-    <!-- Multiplier Announcement Overlay -->
-    <div id="multiplierOverlay" class="multiplier-overlay" style="display: none;">
-      <div class="multiplier-content">
-        <div class="multiplier-emojis" id="multiplierEmojis"></div>
-        <div class="multiplier-subtitle" id="multiplierSubtitle"></div>
-        <div class="multiplier-title" id="multiplierTitle"></div>
-        <div class="multiplier-description" id="multiplierDescription"></div>
-        <div class="multiplier-emojis" id="multiplierEmojisBottom"></div>
+    <!-- Round card overlay: ROUND ONE / ROUND TWO / FINAL ROUND (shared/roundCard.js) -->
+    <div id="multiplierOverlay" class="round-card" aria-live="polite">
+      <span class="avatar-badge round-card-art" id="roundCardArt"></span>
+      <div class="round-card-text">
+        <div class="round-card-stripes">
+          <div class="tape" id="roundCardFool"></div>
+          <div class="tape" id="roundCardTruth"></div>
+        </div>
+        <div class="round-card-title display-title" id="multiplierTitle"></div>
       </div>
-      <div class="multiplier-particles" id="multiplierParticles"></div>
     </div>
   </div>
 
@@ -103,7 +112,7 @@
   <!-- UI Utilities -->
   <script src="js/player/ui/uiUpdater.js"></script>
   <script src="js/player/ui/timer.js"></script>
-  <script src="js/player/ui/multiplierAnnouncement.js"></script>
+  <script src="js/shared/roundCard.js"></script>
 
   <!-- Screen Modules -->
   <script src="js/player/screens/joinScreen.js"></script>

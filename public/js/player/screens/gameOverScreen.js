@@ -26,34 +26,49 @@ function showPlayerGameOverScreen(finalScores, playerId) {
 
   gameScreen.classList.remove('active');
   gameOverScreen.classList.add('active');
+  setTheme('title');
 
-  // Show final leaderboard
+  const players = window.playerState.players || [];
+
+  // Show final leaderboard as tape bars
   finalLeaderboard.innerHTML = '';
   finalScores.forEach((player, index) => {
     const item = document.createElement('div');
-    item.className = `final-leaderboard-item rank-${index + 1}`;
+    item.className = `final-leaderboard-item rank-${index + 1}${player.id === playerId ? ' is-me' : ''}`;
+    item.style.setProperty('--tilt', index % 2 ? '0.8deg' : '-0.8deg');
 
     const rank = document.createElement('span');
     rank.className = 'rank-badge';
-    rank.textContent = `#${index + 1}`;
+    rank.textContent = index + 1;
 
     const name = document.createElement('span');
+    name.className = 'final-name';
     name.textContent = player.name;
-    name.style.flex = '1';
-    name.style.textAlign = 'left';
-    name.style.marginLeft = '15px';
 
     const score = document.createElement('span');
-    score.textContent = `${player.score.toLocaleString()} pts`;
-    score.style.fontWeight = 'bold';
+    score.className = 'final-score';
+    score.textContent = player.score.toLocaleString();
 
     item.appendChild(rank);
+    item.appendChild(createAvatarBadge(avatarForPlayer(players, player.id), 36));
     item.appendChild(name);
     item.appendChild(score);
     finalLeaderboard.appendChild(item);
   });
 
-  // Show thanks message
+  // Big sticker with this player's placement
   const ourRank = finalScores.findIndex(p => p.id === playerId) + 1;
-  thanksMessage.textContent = `You finished in ${getOrdinal(ourRank)} place! Thanks for playing!`;
+  thanksMessage.innerHTML = '';
+  if (ourRank > 0) {
+    const label = document.createElement('div');
+    label.className = 'thanks-label';
+    label.textContent = 'You finished';
+
+    const place = document.createElement('div');
+    place.className = 'thanks-place sticker';
+    place.textContent = getOrdinal(ourRank);
+
+    thanksMessage.appendChild(label);
+    thanksMessage.appendChild(place);
+  }
 }

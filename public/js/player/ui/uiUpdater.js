@@ -11,12 +11,23 @@ function updatePlayersList(players) {
   const playersList = document.getElementById('playersList');
   playersList.innerHTML = '';
 
-  players.forEach(player => {
-    const item = document.createElement('div');
-    item.className = 'player-item';
-    item.textContent = player.name;
+  // Same avatars as the host: assigned by join order
+  players.forEach((player, index) => {
+    const item = createPlayerTag(player.name, avatarFor(index), { size: 48, className: 'player-item' });
+    if (player.id === window.playerState.playerId) {
+      item.classList.add('is-me');
+    }
     playersList.appendChild(item);
   });
+}
+
+/**
+ * Returns this player's avatar emoji (by position in the players list).
+ * @returns {string} Emoji
+ */
+function myAvatar() {
+  const state = window.playerState;
+  return avatarForPlayer(state.players || [], state.playerId);
 }
 
 /**
@@ -80,18 +91,26 @@ function showPlayerError(message) {
 function updateCharCounter(length) {
   const charCounter = document.getElementById('charCounter');
   if (charCounter) {
-    charCounter.textContent = `${length}/100 characters`;
+    charCounter.textContent = `${length}/100`;
   }
 }
 
 /**
- * Shows the player name badge at the top left corner.
+ * Shows the player name badge (avatar + name) at the top left corner,
+ * and puts the same avatar on the watch screen.
  * @param {string} playerName - The player's name
  */
 function showPlayerNameBadge(playerName) {
   const badge = document.getElementById('playerNameBadge');
+  const avatar = myAvatar();
   if (badge) {
-    badge.textContent = playerName;
+    badge.innerHTML = '';
+    badge.appendChild(createPlayerTag(playerName, avatar, { size: 40 }));
     badge.style.display = 'block';
+  }
+
+  const watchAvatar = document.getElementById('watchAvatar');
+  if (watchAvatar) {
+    watchAvatar.textContent = avatar;
   }
 }

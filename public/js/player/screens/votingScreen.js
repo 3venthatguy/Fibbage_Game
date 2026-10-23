@@ -16,6 +16,7 @@ function showPlayerVotingPhase() {
   if (watchScreen) {
     watchScreen.style.display = 'none';
   }
+  document.getElementById('gameScreen').classList.remove('watching');
   votingWaiting.style.display = 'none';
 }
 
@@ -32,11 +33,14 @@ function displayPlayerVotingAnswers(answers, playerId, onVote) {
   // Filter out the player's own answer - they should not see it at all
   const votableAnswers = answers.filter(answer => answer.id !== playerId);
 
-  votableAnswers.forEach((answer) => {
+  votableAnswers.forEach((answer, index) => {
+    // Stacked tape buttons, alternating tilt
     const button = document.createElement('button');
-    button.className = 'answer-button';
+    button.className = 'answer-button tape slap-in';
     button.textContent = answer.text;
     button.dataset.answerId = answer.id;
+    button.style.setProperty('--tilt', index % 2 ? '1deg' : '-1deg');
+    button.style.setProperty('--delay', `${index * 0.06}s`);
 
     button.addEventListener('click', () => {
       const playerState = window.playerState;
@@ -87,6 +91,7 @@ function showWatchScreen() {
   submitPhase.style.display = 'none';
   votingPhase.style.display = 'none';
   watchScreen.style.display = 'flex';
+  document.getElementById('gameScreen').classList.add('watching');
 
   // Hide question, question number, and timer on watch screen
   if (questionDisplay) {

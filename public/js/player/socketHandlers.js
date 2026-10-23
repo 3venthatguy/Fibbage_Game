@@ -10,7 +10,7 @@
 function setupPlayerSocketHandlers(socket, state) {
   socket.on('playerJoined', (data) => {
     const { players } = data;
-    updatePlayersList(players);
+    state.players = players;
 
     // Find our player ID - only if we don't have it yet
     if (!state.playerId && state.playerName) {
@@ -19,10 +19,16 @@ function setupPlayerSocketHandlers(socket, state) {
       if (ourPlayer) {
         state.playerId = ourPlayer.id;
 
-        // Show player name badge and lobby screen only for the joining player
-        showPlayerNameBadge(state.playerName);
+        // Show lobby screen only for the joining player
         showPlayerLobbyScreen(state.roomCode);
       }
+    }
+
+    updatePlayersList(players);
+
+    // Avatars follow list position, so refresh ours when the list changes
+    if (state.playerId) {
+      showPlayerNameBadge(state.playerName);
     }
   });
 
@@ -44,6 +50,7 @@ function setupPlayerSocketHandlers(socket, state) {
       if (state.playerName && state.roomCode) {
         showPlayerNameBadge(state.playerName);
         showPlayerLobbyScreen(state.roomCode);
+        updatePlayersList(state.players || []);
       }
     }
 
@@ -58,6 +65,8 @@ function setupPlayerSocketHandlers(socket, state) {
 
   socket.on('gameStarted', () => {
     state.currentPhase = 'submit';
+    // ROUND ONE card covers the server's start delay
+    showRoundCard(1, 1, MULTIPLIER_CONFIG.roundOneDuration);
   });
 
   socket.on('newQuestion', (data) => {
@@ -65,8 +74,9 @@ function setupPlayerSocketHandlers(socket, state) {
     const questionDisplay = document.getElementById('questionDisplay');
     const questionNumber = document.getElementById('questionNumber');
 
-    questionDisplay.textContent = question;
+    questionDisplay.innerHTML = formatQuestion(question);
     questionNumber.textContent = `Question ${questionIndex + 1} of ${totalQuestions}`;
+    setTheme('play');
 
     // Reset state
     state.submittedAnswer = false;
@@ -96,13 +106,16 @@ function setupPlayerSocketHandlers(socket, state) {
 
   socket.on('phaseChange', (data) => {
     state.currentPhase = data.phase;
+    setTheme(data.phase === 'results' ? 'results' : 'play');
 
     if (data.phase === 'reading') {
       showPlayerReadingPhase(data.timeRemaining);
     } else if (data.phase === 'submit') {
       showPlayerSubmitPhase();
+      drawWave(document.getElementById('playerWave'), data.timeRemaining);
     } else if (data.phase === 'voting') {
       showPlayerVotingPhase();
+      drawWave(document.getElementById('playerWave'), data.timeRemaining);
     } else if (data.phase === 'results') {
       showPlayerResultsPhase();
       hidePlayerTimer(); // Hide timer during results animation

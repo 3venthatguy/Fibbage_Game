@@ -97,6 +97,8 @@ function setupHostSocketHandlers(socket, state) {
 
   socket.on('gameStarted', () => {
     state.currentPhase = 'submit';
+    // ROUND ONE card covers the server's start delay
+    showRoundCard(1, 1, MULTIPLIER_CONFIG.roundOneDuration);
   });
 
   socket.on('newQuestion', (data) => {

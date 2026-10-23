@@ -103,10 +103,10 @@
 
       <!-- Game Over Screen -->
       <div id="gameOverScreen" class="game-over-screen">
-        <h1 style="font-size: 64px; margin-bottom: 20px;">Game Over!</h1>
+        <h1 class="game-over-title tape">Final results</h1>
         <div class="winner-celebration" id="winnerCelebration"></div>
         <div class="final-leaderboard" id="finalLeaderboard"></div>
-        <button class="play-again-button" id="playAgainButton">Play Again</button>
+        <button class="play-again-button tape tape-button" id="playAgainButton">Play again</button>
       </div>
 
       <!-- Error Message -->
@@ -114,16 +114,16 @@
     </div>
   </div>
 
-  <!-- Multiplier Announcement Overlay -->
-  <div id="multiplierOverlay" class="multiplier-overlay" style="display: none;">
-    <div class="multiplier-content">
-      <div class="multiplier-emojis" id="multiplierEmojis"></div>
-      <div class="multiplier-subtitle" id="multiplierSubtitle"></div>
-      <div class="multiplier-title" id="multiplierTitle"></div>
-      <div class="multiplier-description" id="multiplierDescription"></div>
-      <div class="multiplier-emojis" id="multiplierEmojisBottom"></div>
+  <!-- Round card overlay: ROUND ONE / ROUND TWO / FINAL ROUND (shared/roundCard.js) -->
+  <div id="multiplierOverlay" class="round-card" aria-live="polite">
+    <span class="avatar-badge round-card-art" id="roundCardArt"></span>
+    <div class="round-card-text">
+      <div class="round-card-stripes">
+        <div class="tape" id="roundCardFool"></div>
+        <div class="tape" id="roundCardTruth"></div>
+      </div>
+      <div class="round-card-title display-title" id="multiplierTitle"></div>
     </div>
-    <div class="multiplier-particles" id="multiplierParticles"></div>
   </div>
 
   <!-- Audio Configuration (must load first) -->
@@ -135,7 +135,7 @@
   <script src="js/host/ui/timer.js"></script>
   <script src="js/host/ui/gameMusic.js"></script>
   <script src="js/host/ui/soundEffects.js"></script>
-  <script src="js/host/ui/multiplierAnnouncement.js"></script>
+  <script src="js/shared/roundCard.js"></script>
   <script src="js/host/ui/stageScaler.js"></script>
 
   <!-- Screen Modules -->

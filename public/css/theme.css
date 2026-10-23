@@ -329,10 +329,15 @@ body {
   width: 70%;
   height: 120%;
   background: var(--topo-color);
-  -webkit-mask: url('../img/topo.svg') repeat;
-  mask: url('../img/topo.svg') repeat;
-  -webkit-mask-size: 700px 700px;
-  mask-size: 700px 700px;
+  /* Contour lines, faded in from the left edge */
+  -webkit-mask-image: url('../img/topo.svg'), linear-gradient(90deg, transparent 0%, #000 30%);
+  mask-image: url('../img/topo.svg'), linear-gradient(90deg, transparent 0%, #000 30%);
+  -webkit-mask-size: 700px 700px, 100% 100%;
+  mask-size: 700px 700px, 100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
 
 .round-card-art {
@@ -404,6 +409,40 @@ body {
   50% { transform: scale(1.03); }
 }
 
+/* Phones: art on top, text below */
+@media (orientation: portrait) {
+  .round-card-art {
+    top: 30%;
+    right: 50%;
+    --size: 46vw;
+    transform: translate(50%, -50%) rotate(-6deg);
+  }
+
+  .round-card-art.show {
+    animation-name: roundArtInPortrait;
+  }
+
+  @keyframes roundArtInPortrait {
+    from { opacity: 0; transform: translate(50%, -30%) rotate(12deg) scale(0.4); }
+    to { opacity: 1; transform: translate(50%, -50%) rotate(-6deg) scale(1); }
+  }
+
+  .round-card-text {
+    left: 6vw;
+    right: 6vw;
+    bottom: 8vh;
+    max-width: none;
+  }
+
+  .round-card-stripes .tape {
+    font-size: 4.6vw;
+  }
+
+  .round-card-title {
+    font-size: 21vw;
+  }
+}
+
 /* ============================================
    ACCESSIBILITY
    ============================================ */
@@ -412,6 +451,14 @@ body {
   .bg-layer::after,
   .round-card-title.pulse {
     animation: none;
+  }
+
+  /* Looping wobbles, bobs and pulses play once and stop. Durations are left
+     alone because the wave's draw animation is the phase timer. */
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
   }
 
   .slap-in,

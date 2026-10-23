@@ -59,68 +59,28 @@ const AUDIO_CONFIG = {
 };
 
 /**
- * Multiplier Announcement Animation Settings.
- * Edit these values to customize the dramatic announcement screens.
+ * Round card timings (ROUND ONE / ROUND TWO / FINAL ROUND, see shared/roundCard.js).
  * All timing values are in milliseconds.
+ *
+ * The ROUND TWO / FINAL ROUND card lasts fadeToBlack + textZoomIn + holdDuration + fadeOut.
+ * Keep that total equal to the server's MULTIPLIER_ANIMATION_TIMINGS sum (server/config.js),
+ * which is how long the server waits before starting the next question.
  */
 const MULTIPLIER_CONFIG = {
-  // ============================================
-  // ANIMATION DURATIONS
-  // ============================================
-
-  /** Duration for screen fade to black */
+  /** Wipe-in time */
   fadeToBlack: 500,
 
-  /** Duration for text zoom entrance (scale 0 → 1.2 → 1.0) */
+  /** Time for the stripes and title to land */
   textZoomIn: 800,
 
-  /** How long to hold the announcement on screen */
-  holdDuration: 5000,
+  /** How long to hold the card on screen */
+  holdDuration: 3500,
 
   /** Duration for fade out transition */
   fadeOut: 500,
 
-  // ============================================
-  // ANIMATION TIMING OFFSETS (relative to fadeToBlack completion)
-  // ============================================
-
-  /** Delay after fade before showing subtitle (for triple announcement) */
-  subtitleDelay: 200,
-
-  /** Delay after fade before showing main title */
-  titleDelay: 400,
-
-  /** Delay after title zoom before starting pulse animation */
-  pulseStartDelay: 500,
-
-  // ============================================
-  // TEXT PULSE ANIMATION
-  // ============================================
-
-  /** Scale factor for gentle text pulse (1.0 = no scale, 1.05 = 5% larger) */
-  pulseScale: 1.05,
-
-  /** Duration of one pulse cycle */
-  pulseDuration: 1000,
-
-  // ============================================
-  // PARTICLE SETTINGS
-  // ============================================
-
-  /** Number of confetti particles to create */
-  particleCount: 50,
-
-  /** How long particles take to fall across the screen */
-  particleFallDuration: 3000,
-
-  /** Maximum random delay for staggered particle start (seconds) */
-  particleStaggerMax: 2,
-
-  /** Base particle size in pixels */
-  particleSizeMin: 8,
-
-  /** Additional random size variation in pixels */
-  particleSizeVariation: 8
+  /** ROUND ONE card length; matches the server's GAME_START_DELAY */
+  roundOneDuration: 2000
 };
 
 // Make config available globally

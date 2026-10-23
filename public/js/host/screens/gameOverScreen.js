@@ -40,6 +40,7 @@ function showGameOverScreen(finalScores) {
 
   gameScreen.classList.remove('active');
   gameOverScreen.classList.add('active');
+  setTheme('title');
 
   // Play success ending sound effect
   if (typeof playSoundEffect !== 'undefined') {
@@ -58,37 +59,54 @@ function showGameOverScreen(finalScores) {
   const firstPlaceScore = finalScores.length > 0 ? finalScores[0].score : 0;
   const winners = finalScores.filter(p => p.score === firstPlaceScore);
 
-  // Show winner(s)
-  if (winners.length > 1) {
-    const winnerNames = winners.map(w => w.name).join(' & ');
-    winnerCelebration.textContent = `🎉 ${winnerNames} Tie for 1st! 🎉`;
-  } else if (winners.length === 1) {
-    winnerCelebration.textContent = `🎉 ${winners[0].name} Wins! 🎉`;
+  // Show winner(s): big avatar badge(s), names on a tape stripe, and WINS! / TIE!
+  winnerCelebration.innerHTML = '';
+  if (winners.length > 0) {
+    const avatars = document.createElement('div');
+    avatars.className = 'winner-avatars';
+    winners.forEach((winner, index) => {
+      const badge = createAvatarBadge(avatarForPlayer(hostState.players, winner.id));
+      badge.style.setProperty('--tilt', index % 2 ? '7deg' : '-6deg');
+      avatars.appendChild(badge);
+    });
+
+    const names = document.createElement('div');
+    names.className = 'winner-names tape';
+    names.textContent = winners.map(w => w.name).join(' & ');
+
+    const verdict = document.createElement('div');
+    verdict.className = 'winner-verdict display-title';
+    verdict.textContent = winners.length > 1 ? 'Tie for 1st!' : 'Wins!';
+
+    winnerCelebration.appendChild(avatars);
+    winnerCelebration.appendChild(names);
+    winnerCelebration.appendChild(verdict);
   }
 
-  // Show final leaderboard
+  // Show final leaderboard (same tape-bar rows as the round leaderboard)
   finalLeaderboard.innerHTML = '';
   finalScores.forEach((player, index) => {
     const playerRank = ranks[index];
     const item = document.createElement('div');
     // Apply rank-1 class to all first place players (including ties)
-    item.className = `final-leaderboard-item rank-${playerRank}`;
+    item.className = `final-leaderboard-item leaderboard-entry rank-${playerRank}`;
+    item.style.animationDelay = `${0.4 + index * 0.1}s`;
+    item.style.setProperty('--tilt', tiltFor(player.id, 1.2));
 
-    const rank = document.createElement('span');
-    rank.className = 'rank-badge';
-    rank.textContent = `#${playerRank}`;
+    const rank = document.createElement('div');
+    rank.className = 'leaderboard-rank';
+    rank.textContent = playerRank;
 
-    const name = document.createElement('span');
+    const name = document.createElement('div');
+    name.className = 'leaderboard-name';
     name.textContent = player.name;
-    name.style.flex = '1';
-    name.style.textAlign = 'left';
-    name.style.marginLeft = '20px';
 
-    const score = document.createElement('span');
-    score.textContent = `${player.score.toLocaleString()} pts`;
-    score.style.fontWeight = 'bold';
+    const score = document.createElement('div');
+    score.className = 'leaderboard-score';
+    score.textContent = player.score.toLocaleString();
 
     item.appendChild(rank);
+    item.appendChild(createAvatarBadge(avatarForPlayer(hostState.players, player.id)));
     item.appendChild(name);
     item.appendChild(score);
     finalLeaderboard.appendChild(item);
