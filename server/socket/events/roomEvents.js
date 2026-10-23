@@ -121,6 +121,7 @@ function setupRoomEvents(io, socket, gameManager) {
       // Add submitted/voted counts for mid-game joins
       if (gameState.phase === 'submit' || gameState.phase === 'reading') {
         playerJoinedData.submittedCount = Object.keys(gameState.submittedAnswers).length;
+        playerJoinedData.submittedPlayerIds = Object.keys(gameState.submittedAnswers);
         console.log(`[RoomEvents] Player joined mid-game. Total players: ${playerJoinedData.totalPlayers}, Submitted: ${playerJoinedData.submittedCount}`);
       }
 

@@ -28,6 +28,18 @@ function avatarFor(index) {
   return AVATARS[index % AVATARS.length];
 }
 
+/** Decorative "host character" shown next to each question */
+const QUESTION_MASCOTS = ['🐡', '🦑', '🦚', '🐫', '🦥', '🦭', '🐊', '🦡'];
+
+/**
+ * Returns the mascot emoji for a question.
+ * @param {number} questionIndex - Zero-based question index
+ * @returns {string} Emoji
+ */
+function questionMascot(questionIndex) {
+  return QUESTION_MASCOTS[questionIndex % QUESTION_MASCOTS.length];
+}
+
 /**
  * Returns the avatar for a player ID, based on their position in the players list.
  * @param {Array} players - Players in join order
@@ -112,14 +124,23 @@ function createPlayerTag(name, avatar, options = {}) {
 function makeArcText(element, text, radius, letterAngle) {
   element.innerHTML = '';
   element.setAttribute('aria-label', text);
-  const start = -((text.length - 1) * letterAngle) / 2;
 
-  [...text].forEach((char, i) => {
+  // Rough relative widths so narrow characters and spaces don't leave gaps
+  const NARROW = { ' ': 0.55, 'I': 0.5, '!': 0.45, "'": 0.4, '.': 0.45, ',': 0.45, 'J': 0.8, 'M': 1.25, 'W': 1.3 };
+  const chars = [...text];
+  const widths = chars.map(char => NARROW[char] || 1);
+  const total = widths.reduce((sum, w) => sum + w, 0);
+
+  let offset = -total / 2;
+  chars.forEach((char, i) => {
+    const center = offset + widths[i] / 2;
+    offset += widths[i];
+
     const span = document.createElement('span');
     span.textContent = char;
     span.setAttribute('aria-hidden', 'true');
     span.style.setProperty('--arc-radius', `${radius}px`);
-    span.style.setProperty('--arc-angle', `${start + i * letterAngle}deg`);
+    span.style.setProperty('--arc-angle', `${(center * letterAngle).toFixed(2)}deg`);
     element.appendChild(span);
   });
 }

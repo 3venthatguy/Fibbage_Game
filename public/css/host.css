@@ -265,179 +265,303 @@ body {
 /* Game Screen */
 .game-screen {
   display: none;
-  text-align: center;
-  padding: 40px 20px;
-  max-width: 1400px;
-  margin: 0 auto;
+  position: relative;
+  height: 1080px;
 }
 
 .game-screen.active {
   display: block;
 }
 
-.question-display {
-  font-size: 48px;
-  font-weight: bold;
-  line-height: 1.4;
-  margin: 40px 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+/* Mascot badge + question text, upper half of the stage */
+.question-header {
+  position: absolute;
+  top: 130px;
+  left: 150px;
+  right: 360px;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.question-mascot {
+  --size: 210px;
+  --tilt: -6deg;
+}
+
+.question-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  min-width: 0;
 }
 
 .question-number {
-  font-size: 32px;
-  margin-bottom: 20px;
-  opacity: 0.9;
+  --tilt: -2deg;
+  font-size: 24px;
 }
 
+.question-display {
+  font-weight: 900;
+  font-size: 58px;
+  line-height: 1.16;
+  text-wrap: pretty;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.question-display.long {
+  font-size: 46px;
+}
+
+/* Round black timer, top right of the stage */
 .timer-display {
-  font-size: 96px;
-  font-weight: bold;
-  margin: 30px 0;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-  animation: timerPulse 1s ease-in-out infinite;
-}
-
-@keyframes timerPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 84px;
+  line-height: 150px;
+  text-align: center;
+  transform: rotate(-6deg);
+  box-shadow: var(--shadow-hard);
 }
 
 .timer-warning {
-  color: #ff6b6b;
-  animation: timerPulse 0.5s ease-in-out infinite;
+  background: var(--lie);
+  animation: timerShake 0.5s ease-in-out infinite;
 }
 
-/* Reading Phase */
-.reading-phase {
-  margin: 40px 0;
+@keyframes timerShake {
+  0%, 100% { transform: rotate(-6deg) scale(1); }
+  25% { transform: rotate(-10deg) scale(1.06); }
+  75% { transform: rotate(-2deg) scale(1.06); }
+}
+
+/* Wavy divider across the middle; doubles as the phase timer */
+.question-wave {
+  position: absolute;
+  left: 0;
+  top: 530px;
+  width: 1920px;
+  height: 120px;
+}
+
+/* Phase content sits below the wave */
+.reading-phase,
+.submit-phase,
+.voting-phase {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 680px;
   text-align: center;
 }
 
-.reading-progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.3);
-  z-index: 1000;
+.phase-callout {
+  height: 60px;
+  font-size: 46px;
+  margin-bottom: 70px;
 }
 
-.reading-progress-bar.animating {
-  animation: progressBarShrink linear forwards;
+/* Reading Phase */
+.reading-phase .phase-callout {
+  animation: readingBob 2s ease-in-out infinite;
 }
 
-@keyframes progressBarShrink {
-  from {
-    width: 100%;
-    background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%);
-  }
-  to {
-    width: 0%;
-    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
-  }
-}
-
-.reading-message {
-  font-size: 42px;
-  font-weight: bold;
-  margin: 50px 0;
-  animation: readingPulse 2s ease-in-out infinite;
-}
-
-@keyframes readingPulse {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+@keyframes readingBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 /* Submit Phase */
-.submit-phase {
-  margin: 40px 0;
-}
-
 .submit-status {
-  font-size: 36px;
-  margin: 30px 0;
+  --tilt: 1.5deg;
+  font-size: 26px;
+  margin-bottom: 30px;
 }
 
-.submit-checkmarks,
-.voting-checkmarks {
+/* Row of player tags that light up when each player is done */
+.player-status-row {
   display: flex;
-  justify-content: center;
-  gap: 20px;
   flex-wrap: wrap;
-  margin: 30px 0;
+  justify-content: center;
+  gap: 22px 40px;
+  max-width: 1720px;
+  margin: 0 auto;
 }
 
-.checkmark {
-  font-size: 48px;
-  opacity: 0.3;
-  transition: opacity 0.3s, transform 0.3s;
+.status-tag {
+  opacity: 0.35;
+  filter: grayscale(1);
+  transition: opacity 0.3s, filter 0.3s;
 }
 
-.checkmark.submitted {
+.status-tag .tape {
+  font-size: 26px;
+}
+
+.status-tag .avatar-badge {
+  position: relative;
+}
+
+.status-tag.submitted {
   opacity: 1;
-  transform: scale(1.2);
-  color: #4ecdc4;
+  filter: none;
+}
+
+.status-tag.just-done {
+  animation: statusPop 0.45s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+/* Check sticker on the avatar */
+.status-tag.submitted .avatar-badge::after {
+  content: '✓';
+  position: absolute;
+  right: -10px;
+  bottom: -6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 900;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+@keyframes statusPop {
+  0% { transform: rotate(var(--tilt)) scale(1); }
+  45% { transform: rotate(calc(var(--tilt) * -2)) scale(1.18); }
+  100% { transform: rotate(var(--tilt)) scale(1); }
+}
+
+/* Results: compact question header, no wave */
+.theme-results .question-header {
+  top: 40px;
+  left: 330px;
+  right: 330px;
+  height: auto;
+  justify-content: center;
+}
+
+.theme-results .question-mascot,
+.theme-results .question-wave {
+  display: none;
+}
+
+.theme-results .question-body {
+  align-items: center;
+  text-align: center;
+}
+
+.results-phase {
+  padding-top: 200px;
+}
+
+/* Shared answer card base (results cards build on this) */
+.answer-card {
+  position: relative;
+  font-size: 22px;
+  text-align: center;
 }
 
 /* Voting Phase */
 .voting-phase {
-  margin: 40px 0;
+  top: 650px;
+  bottom: 0;
 }
 
+.voting-phase .phase-callout {
+  margin-bottom: 36px;
+}
+
+/* Answers as a loose, wrapping pile of tape chips */
 .answers-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin: 40px auto;
-  max-width: 1200px;
-  padding: 0 20px;
-}
-
-.answer-card {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 25px 20px;
-  font-size: 22px;
-  color: white;
-  cursor: pointer;
-  transition: transform 0.3s, background 0.3s, border-color 0.3s;
-  text-align: center;
-  min-height: 100px;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
-  position: relative;
+  align-items: center;
+  gap: 22px 30px;
+  max-width: 1640px;
+  margin: 0 auto;
 }
 
-.answer-card:hover {
-  transform: scale(1.02);
-  background: rgba(255, 255, 255, 0.35);
-  border-color: rgba(255, 255, 255, 0.5);
+.voting-phase .answer-card {
+  max-width: 620px;
+  font-size: 29px;
+  line-height: 1.08;
+  padding: 16px 26px 13px;
+  overflow-wrap: anywhere;
 }
 
-.vote-count {
+/* Every other chip sits a little lower, like the Fibbage answer pile */
+.voting-phase .answer-card:nth-child(even) {
+  margin-top: 18px;
+}
+
+/* 7+ answers: denser chips so three rows fit */
+.answers-grid.many {
+  gap: 16px 24px;
+}
+
+.voting-phase .answers-grid.many .answer-card {
+  max-width: 520px;
+  font-size: 23px;
+  padding: 12px 20px 10px;
+}
+
+.voting-phase .answers-grid.many .answer-card:nth-child(even) {
+  margin-top: 10px;
+}
+
+/* Vote status sits in the free column under the timer (stage y = 650 - 430) */
+.voting-footer {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  top: -430px;
+  right: 50px;
+  width: 290px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.voting-status {
+  --tilt: -1.5deg;
   font-size: 20px;
-  font-weight: bold;
-  color: white;
-  transition: transform 0.2s;
+}
+
+/* Avatars only: names would crowd the answers */
+.player-status-row--compact {
+  margin: 0;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.player-status-row--compact .tape {
+  display: none;
+}
+
+.player-status-row--compact .avatar-badge {
+  --size: 50px !important;
+}
+
+.player-status-row--compact .status-tag.submitted .avatar-badge::after {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  right: -8px;
+  bottom: -4px;
 }
 
 /* Results Phase */

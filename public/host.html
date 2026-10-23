@@ -61,28 +61,38 @@
 
       <!-- Game Screen -->
       <div id="gameScreen" class="game-screen">
-        <div class="question-number" id="questionNumber">Question 1 of 8</div>
+        <div class="question-header">
+          <span class="avatar-badge question-mascot" id="questionMascot">🐡</span>
+          <div class="question-body">
+            <div class="question-number tape" id="questionNumber">Question 1 of 6</div>
+            <div class="question-display" id="questionDisplay"></div>
+          </div>
+        </div>
         <div class="timer-display" id="timerDisplay">30</div>
-        <div class="question-display" id="questionDisplay"></div>
+
+        <!-- Wavy divider; its light line also shows the phase time (drawWave in theme.js) -->
+        <svg class="wavy-divider question-wave" id="questionWave" aria-hidden="true"></svg>
 
         <!-- Reading Phase -->
         <div id="readingPhase" class="reading-phase" style="display: none;">
-          <div class="reading-progress-bar" id="readingProgressBar"></div>
-          <div class="reading-message">Read the question...</div>
+          <div class="arc-text phase-callout" data-arc="Read the question!"></div>
         </div>
 
         <!-- Submit Phase -->
         <div id="submitPhase" class="submit-phase" style="display: none;">
-          <div class="submit-status" id="submitStatus">Players are submitting answers...</div>
-          <div class="submit-checkmarks" id="submitCheckmarks"></div>
+          <div class="arc-text phase-callout" data-arc="Write a lie on your phone!"></div>
+          <div class="submit-status tape tape--light" id="submitStatus">Players are submitting answers...</div>
+          <div class="player-status-row" id="submitCheckmarks"></div>
         </div>
 
         <!-- Voting Phase -->
         <div id="votingPhase" class="voting-phase" style="display: none;">
-          <h2 style="font-size: 36px; margin-bottom: 30px;">Vote for the correct answer!</h2>
-          <div class="voting-status" id="votingStatus">Players are voting...</div>
-          <div class="voting-checkmarks" id="votingCheckmarks"></div>
+          <div class="arc-text phase-callout" data-arc="Pick an answer!"></div>
           <div class="answers-grid" id="answersGrid"></div>
+          <div class="voting-footer">
+            <div class="voting-status tape tape--light" id="votingStatus">Players are voting...</div>
+            <div class="player-status-row player-status-row--compact" id="votingCheckmarks"></div>
+          </div>
         </div>
 
         <!-- Results Phase -->

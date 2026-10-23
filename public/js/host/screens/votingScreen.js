@@ -4,9 +4,9 @@
 
 /**
  * Shows the voting phase UI.
- * @param {number} playerCount - Number of players
+ * @param {Array} players - Players in join order
  */
-function showVotingPhase(playerCount) {
+function showVotingPhase(players) {
   console.log('[VotingScreen] Showing voting phase');
   const submitPhase = document.getElementById('submitPhase');
   const votingPhase = document.getElementById('votingPhase');
@@ -16,17 +16,7 @@ function showVotingPhase(playerCount) {
   votingPhase.style.display = 'block';
   resultsPhase.style.display = 'none';
 
-  // Initialize voting checkmarks
-  const votingCheckmarks = document.getElementById('votingCheckmarks');
-  if (votingCheckmarks && playerCount) {
-    votingCheckmarks.innerHTML = '';
-    for (let i = 0; i < playerCount; i++) {
-      const checkmark = document.createElement('div');
-      checkmark.className = 'checkmark';
-      checkmark.textContent = '✓';
-      votingCheckmarks.appendChild(checkmark);
-    }
-  }
+  updateVotingStatus(players, []);
 
   // Debug: Check if answers are in the grid
   const answersGrid = document.getElementById('answersGrid');
@@ -49,15 +39,18 @@ function displayVotingAnswers(answers) {
   }
 
   answersGrid.innerHTML = '';
+  answersGrid.classList.toggle('many', answers.length > 6);
 
-  answers.forEach((answer) => {
+  answers.forEach((answer, index) => {
+    // Black tape chips, each slightly tilted and slapped down in turn
     const card = document.createElement('div');
-    card.className = 'answer-card';
+    card.className = 'answer-card tape slap-in';
     card.dataset.answerId = answer.id;
+    card.style.setProperty('--tilt', tiltFor(answer.text, 3));
+    card.style.setProperty('--delay', `${index * 0.12}s`);
 
     const answerText = document.createElement('div');
     answerText.textContent = answer.text;
-    answerText.style.flex = '1';
     card.appendChild(answerText);
 
     answersGrid.appendChild(card);
@@ -68,25 +61,22 @@ function displayVotingAnswers(answers) {
 }
 
 /**
- * Updates the voting status display.
- * @param {number} votedCount - Number of players who voted
- * @param {number} totalPlayers - Total number of players
+ * Updates the voting status text and lights up players who have voted.
+ * Also used to re-render after a disconnect.
+ * @param {Array} players - Players in join order
+ * @param {Array} votedPlayerIds - IDs of players who have voted
  */
-function updateVotingStatus(votedCount, totalPlayers) {
-  const votingStatus = document.getElementById('votingStatus');
-  if (votingStatus) {
-    votingStatus.textContent = `${votedCount}/${totalPlayers} players voted`;
-  }
+function updateVotingStatus(players, votedPlayerIds) {
+  renderPlayerStatus('votingCheckmarks', players, votedPlayerIds);
 
-  // Update checkmarks
-  const votingCheckmarks = document.getElementById('votingCheckmarks');
-  if (votingCheckmarks) {
-    const checkmarks = votingCheckmarks.querySelectorAll('.checkmark');
-    for (let i = 0; i < votedCount; i++) {
-      if (checkmarks[i]) {
-        checkmarks[i].classList.add('submitted');
-      }
-    }
+  const votingStatus = document.getElementById('votingStatus');
+  if (!votingStatus) return;
+
+  const votedCount = votedPlayerIds.length;
+  if (votedCount === players.length && players.length > 0) {
+    votingStatus.textContent = 'All votes submitted!';
+  } else {
+    votingStatus.textContent = `${votedCount} of ${players.length} players voted`;
   }
 }
 
@@ -97,33 +87,5 @@ function showAllVotesSubmitted() {
   const votingStatus = document.getElementById('votingStatus');
   if (votingStatus) {
     votingStatus.textContent = 'All votes submitted!';
-  }
-}
-
-/**
- * Re-renders voting checkmarks when player count changes (disconnect/reconnect).
- * @param {number} totalPlayers - Total number of connected players
- * @param {number} voteCount - Number of players who have voted
- */
-function rerenderVotingCheckmarks(totalPlayers, voteCount) {
-  const votingCheckmarks = document.getElementById('votingCheckmarks');
-  if (!votingCheckmarks) return;
-
-  votingCheckmarks.innerHTML = '';
-  for (let i = 0; i < totalPlayers; i++) {
-    const checkmark = document.createElement('div');
-    checkmark.className = 'checkmark' + (i < voteCount ? ' submitted' : '');
-    checkmark.textContent = '\u2713';
-    votingCheckmarks.appendChild(checkmark);
-  }
-
-  // Update the status text as well
-  const votingStatus = document.getElementById('votingStatus');
-  if (votingStatus) {
-    if (voteCount === totalPlayers && totalPlayers > 0) {
-      votingStatus.textContent = 'All votes submitted!';
-    } else {
-      votingStatus.textContent = `${voteCount}/${totalPlayers} players voted`;
-    }
   }
 }

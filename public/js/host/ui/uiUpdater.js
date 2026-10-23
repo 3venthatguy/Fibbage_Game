@@ -43,6 +43,35 @@ function updatePlayersDisplay(players) {
 }
 
 /**
+ * Renders a row of player tags that light up once each player is done
+ * (submitted an answer or cast a vote).
+ * @param {string} containerId - Row container ID
+ * @param {Array} players - Players in join order
+ * @param {Array} doneIds - IDs of players who are done
+ */
+function renderPlayerStatus(containerId, players, doneIds) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  // Players who were already lit don't replay the pop animation
+  const alreadyDone = new Set([...container.querySelectorAll('.status-tag.submitted')].map(el => el.dataset.playerId));
+  const done = new Set(doneIds || []);
+  container.innerHTML = '';
+
+  players.forEach((player, index) => {
+    const tag = createPlayerTag(player.name, avatarFor(index), { size: 64, className: 'status-tag' });
+    tag.dataset.playerId = player.id;
+    if (done.has(player.id)) {
+      tag.classList.add('submitted');
+      if (!alreadyDone.has(player.id)) {
+        tag.classList.add('just-done');
+      }
+    }
+    container.appendChild(tag);
+  });
+}
+
+/**
  * Updates the start button state.
  * @param {number} playerCount - Number of players
  */

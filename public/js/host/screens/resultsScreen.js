@@ -44,7 +44,7 @@ function showResultsPhase() {
     questionDisplay.classList.add('results-mode');
   }
   if (questionNumber) {
-    questionNumber.style.display = 'block';
+    questionNumber.style.display = 'inline-block';
     questionNumber.classList.add('results-mode');
   }
 

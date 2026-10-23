@@ -31,10 +31,11 @@ function setupConnectionEvents(io, socket, gameManager) {
         // If in active phase, emit playerDisconnected with updated counts
         const playerCount = gameState.players.length;
         if (gameState.phase === 'submit' || gameState.phase === 'reading') {
-          const submittedCount = gameState.players.filter(p => gameState.submittedAnswers[p.id]).length;
+          const submittedPlayerIds = gameState.players.filter(p => gameState.submittedAnswers[p.id]).map(p => p.id);
           io.to(roomCode).emit('playerDisconnected', {
             phase: 'submit',
-            submittedCount,
+            submittedCount: submittedPlayerIds.length,
+            submittedPlayerIds,
             totalPlayers: playerCount
           });
 
@@ -74,10 +75,11 @@ function setupConnectionEvents(io, socket, gameManager) {
             }, config.VOTING_TRANSITION_DELAY);
           }
         } else if (gameState.phase === 'voting') {
-          const votedCount = gameState.players.filter(p => gameState.votes[p.id]).length;
+          const votedPlayerIds = gameState.players.filter(p => gameState.votes[p.id]).map(p => p.id);
           io.to(roomCode).emit('playerDisconnected', {
             phase: 'voting',
-            voteCount: votedCount,
+            voteCount: votedPlayerIds.length,
+            votedPlayerIds,
             totalPlayers: playerCount
           });
 

@@ -29,6 +29,12 @@ function initializeHost() {
   // Setup button handlers
   setupButtonHandlers();
 
+  // Build decorative pieces: the wavy divider and arced callouts
+  buildWavyDivider(document.getElementById('questionWave'));
+  document.querySelectorAll('.arc-text[data-arc]').forEach(el => {
+    makeArcText(el, el.dataset.arc.toUpperCase(), 3200, 0.78);
+  });
+
   // Initialize audio button states
   updateMusicButton();
   updateSfxButton();

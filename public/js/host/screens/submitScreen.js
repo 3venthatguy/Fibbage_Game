@@ -4,6 +4,7 @@
 
 /**
  * Shows the reading phase UI.
+ * The wavy divider's light line draws across over the reading time.
  * @param {number} duration - Duration in seconds
  */
 function showReadingPhase(duration) {
@@ -20,21 +21,14 @@ function showReadingPhase(duration) {
   // Hide the number timer during reading phase
   hideTimer();
 
-  // Start progress bar animation
-  const progressBar = document.getElementById('readingProgressBar');
-  progressBar.classList.remove('animating');
-  // Set animation duration before starting
-  progressBar.style.animationDuration = duration + 's';
-  // Force reflow to restart animation
-  void progressBar.offsetWidth;
-  progressBar.classList.add('animating');
+  drawWave(document.getElementById('questionWave'), duration);
 }
 
 /**
  * Shows the submit phase UI.
- * @param {number} playerCount - Number of players
+ * @param {Array} players - Players in join order
  */
-function showSubmitPhase(playerCount) {
+function showSubmitPhase(players) {
   const readingPhase = document.getElementById('readingPhase');
   const submitPhase = document.getElementById('submitPhase');
   const votingPhase = document.getElementById('votingPhase');
@@ -48,33 +42,26 @@ function showSubmitPhase(playerCount) {
   // Show the timer again for submit phase
   showTimer();
 
-  // Initialize checkmarks
-  const submitCheckmarks = document.getElementById('submitCheckmarks');
-  submitCheckmarks.innerHTML = '';
-  for (let i = 0; i < playerCount; i++) {
-    const checkmark = document.createElement('div');
-    checkmark.className = 'checkmark';
-    checkmark.textContent = '✓';
-    submitCheckmarks.appendChild(checkmark);
-  }
+  updateSubmitStatus(players, []);
 }
 
 /**
- * Updates the submit status display.
- * @param {number} submittedCount - Number of players who submitted
- * @param {number} totalPlayers - Total number of players
+ * Updates the submit status text and lights up players who have submitted.
+ * Also used to re-render after a disconnect or mid-game join.
+ * @param {Array} players - Players in join order
+ * @param {Array} submittedPlayerIds - IDs of players who have submitted
  */
-function updateSubmitStatus(submittedCount, totalPlayers) {
-  const submitStatus = document.getElementById('submitStatus');
-  submitStatus.textContent = `${submittedCount}/${totalPlayers} players submitted`;
+function updateSubmitStatus(players, submittedPlayerIds) {
+  renderPlayerStatus('submitCheckmarks', players, submittedPlayerIds);
 
-  // Update checkmarks
-  const submitCheckmarks = document.getElementById('submitCheckmarks');
-  const checkmarks = submitCheckmarks.querySelectorAll('.checkmark');
-  for (let i = 0; i < submittedCount; i++) {
-    if (checkmarks[i]) {
-      checkmarks[i].classList.add('submitted');
-    }
+  const submitStatus = document.getElementById('submitStatus');
+  if (!submitStatus) return;
+
+  const submittedCount = submittedPlayerIds.length;
+  if (submittedCount === players.length && players.length > 0) {
+    submitStatus.textContent = 'All answers submitted!';
+  } else {
+    submitStatus.textContent = `${submittedCount} of ${players.length} lies are in`;
   }
 }
 
@@ -84,32 +71,4 @@ function updateSubmitStatus(submittedCount, totalPlayers) {
 function showAllAnswersSubmitted() {
   const submitStatus = document.getElementById('submitStatus');
   submitStatus.textContent = 'All answers submitted!';
-}
-
-/**
- * Re-renders submit checkmarks when player count changes (disconnect/reconnect).
- * @param {number} totalPlayers - Total number of connected players
- * @param {number} submittedCount - Number of players who have submitted
- */
-function rerenderSubmitCheckmarks(totalPlayers, submittedCount) {
-  const submitCheckmarks = document.getElementById('submitCheckmarks');
-  if (!submitCheckmarks) return;
-
-  submitCheckmarks.innerHTML = '';
-  for (let i = 0; i < totalPlayers; i++) {
-    const checkmark = document.createElement('div');
-    checkmark.className = 'checkmark' + (i < submittedCount ? ' submitted' : '');
-    checkmark.textContent = '\u2713';
-    submitCheckmarks.appendChild(checkmark);
-  }
-
-  // Update the status text as well
-  const submitStatus = document.getElementById('submitStatus');
-  if (submitStatus) {
-    if (submittedCount === totalPlayers && totalPlayers > 0) {
-      submitStatus.textContent = 'All answers submitted!';
-    } else {
-      submitStatus.textContent = `${submittedCount}/${totalPlayers} players submitted`;
-    }
-  }
 }

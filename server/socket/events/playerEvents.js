@@ -25,9 +25,10 @@ function setupPlayerEvents(io, socket, gameManager) {
 
       // Notify all players of submission count
       const playerCount = gameState.players.length;
-      const submittedCount = gameState.players.filter(p => gameState.submittedAnswers[p.id]).length;
+      const submittedPlayerIds = gameState.players.filter(p => gameState.submittedAnswers[p.id]).map(p => p.id);
       io.to(roomCode).emit('answerSubmitted', {
-        submittedCount,
+        submittedCount: submittedPlayerIds.length,
+        submittedPlayerIds,
         totalPlayers: playerCount
       });
 
@@ -90,9 +91,11 @@ function setupPlayerEvents(io, socket, gameManager) {
 
       // Notify all players of vote count
       const playerCount = gameState.players.length;
-      const voteCount = gameState.players.filter(p => gameState.votes[p.id]).length;
+      const votedPlayerIds = gameState.players.filter(p => gameState.votes[p.id]).map(p => p.id);
+      const voteCount = votedPlayerIds.length;
       io.to(roomCode).emit('voteSubmitted', {
         voteCount,
+        votedPlayerIds,
         totalPlayers: playerCount,
         votedForId: votedForId
       });

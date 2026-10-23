@@ -80,19 +80,18 @@ function setupHostSocketHandlers(socket, state) {
 
     // Update checkmarks if player joined during submit or reading phase
     if (data.phase === 'submit' || data.phase === 'reading') {
-      console.log('[SocketHandlers] Player joined mid-game, updating checkmarks. Total:', data.totalPlayers, 'Submitted:', data.submittedCount);
-      rerenderSubmitCheckmarks(data.totalPlayers, data.submittedCount || 0);
+      console.log('[SocketHandlers] Player joined mid-game, updating status. Total:', data.totalPlayers, 'Submitted:', data.submittedCount);
+      updateSubmitStatus(state.players, data.submittedPlayerIds || []);
     }
   });
 
   socket.on('playerDisconnected', (data) => {
     console.log('[SocketHandlers] Player disconnected:', data);
+    // state.players was already refreshed by the playerJoined emitted just before this
     if (data.phase === 'submit') {
-      // Re-render checkmarks with new player count
-      rerenderSubmitCheckmarks(data.totalPlayers, data.submittedCount);
+      updateSubmitStatus(state.players, data.submittedPlayerIds || []);
     } else if (data.phase === 'voting') {
-      // Re-render voting checkmarks with new player count
-      rerenderVotingCheckmarks(data.totalPlayers, data.voteCount);
+      updateVotingStatus(state.players, data.votedPlayerIds || []);
     }
   });
 
@@ -105,14 +104,17 @@ function setupHostSocketHandlers(socket, state) {
     const questionDisplay = document.getElementById('questionDisplay');
     const questionNumber = document.getElementById('questionNumber');
 
-    questionDisplay.textContent = question;
+    questionDisplay.innerHTML = formatQuestion(question);
+    questionDisplay.classList.toggle('long', question.length > 140);
     questionNumber.textContent = `Question ${questionIndex + 1} of ${totalQuestions}`;
+    document.getElementById('questionMascot').textContent = questionMascot(questionIndex);
 
     // Show question elements and restore normal size (remove results-mode class)
     questionDisplay.style.display = 'block';
     questionDisplay.classList.remove('results-mode');
-    questionNumber.style.display = 'block';
+    questionNumber.style.display = 'inline-block';
     questionNumber.classList.remove('results-mode');
+    setTheme('play');
 
     // Show game screen
     hideLobbyScreen();
@@ -122,7 +124,7 @@ function setupHostSocketHandlers(socket, state) {
     gameOverScreen.classList.remove('active');
 
     // Reset phases
-    showSubmitPhase(state.players.length);
+    showSubmitPhase(state.players);
 
     // Show timer for new question
     showTimer();
@@ -137,17 +139,21 @@ function setupHostSocketHandlers(socket, state) {
       stopTickingSound();
     }
 
+    setTheme(data.phase === 'results' ? 'results' : 'play');
+
     if (data.phase === 'reading') {
       showReadingPhase(data.timeRemaining);
       // Stop game music during reading phase
       stopGameMusic();
     } else if (data.phase === 'submit') {
-      showSubmitPhase(state.players.length);
+      showSubmitPhase(state.players);
+      drawWave(document.getElementById('questionWave'), data.timeRemaining);
       // Start game music for submit phase (volume already set in playRandomGameMusic)
       playRandomGameMusic();
     } else if (data.phase === 'voting') {
       console.log('[SocketHandlers] Showing voting phase...');
-      showVotingPhase(state.players.length);
+      showVotingPhase(state.players);
+      drawWave(document.getElementById('questionWave'), data.timeRemaining);
       // Continue game music into voting phase (or start if not playing)
       if (!isGameMusicPlaying()) {
         playRandomGameMusic();
@@ -170,8 +176,7 @@ function setupHostSocketHandlers(socket, state) {
   });
 
   socket.on('answerSubmitted', (data) => {
-    const { submittedCount, totalPlayers } = data;
-    updateSubmitStatus(submittedCount, totalPlayers);
+    updateSubmitStatus(state.players, data.submittedPlayerIds || []);
     // Play pop sound when an answer is submitted
     playSoundEffect('pop', AUDIO_CONFIG.SFX_ANSWER_SUBMIT_VOLUME);
   });
@@ -186,7 +191,7 @@ function setupHostSocketHandlers(socket, state) {
 
   socket.on('voteSubmitted', (data) => {
     const { voteCount, totalPlayers } = data;
-    updateVotingStatus(voteCount, totalPlayers);
+    updateVotingStatus(state.players, data.votedPlayerIds || []);
     // Play pop sound when a vote is cast
     playSoundEffect('pop', AUDIO_CONFIG.SFX_VOTE_CAST_VOLUME);
 
