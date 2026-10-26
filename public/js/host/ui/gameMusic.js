@@ -12,22 +12,18 @@ let musicPlaying = false;
 const introMusicFiles = [
   'sounds/intro/CASIOPEA.mp3',
   'sounds/intro/Monogatari.mp3',
-  'sounds/intro/abandoned_plaza.mp3',
   'sounds/intro/Blissful.mp3'
 ];
 
 // Available playing phase music files (gameplay)
 const playingMusicFiles = [
   'sounds/playing/BotanicPanic.mp3',
-  'sounds/playing/Caravan.mp3',
   'sounds/playing/CoconutMall.mp3',
   'sounds/playing/Forcast.mp3',
   'sounds/playing/GreatPretender.mp3',
-  'sounds/playing/Loonboon.mp3',
   'sounds/playing/PedestriansCrossing.mp3',
   'sounds/playing/Piano_Black.mp3',
   'sounds/playing/PumpItUp.mp3',
-  'sounds/playing/Sepia.mp3',
   'sounds/playing/Windmill_Isle.mp3',
   'sounds/playing/HellTime.mp3',
   'sounds/playing/Temperado.mp3'
@@ -36,7 +32,6 @@ const playingMusicFiles = [
 // Available ending music files (game over)
 const endingMusicFiles = [
   'sounds/endings/AquaticGroove.mp3',
-  'sounds/endings/FunkMagic.mp3',
   'sounds/endings/SmoothJazz.mp3',
   'sounds/endings/GoldenWhisper.mp3',
   'sounds/endings/HitsJazz.mp3',

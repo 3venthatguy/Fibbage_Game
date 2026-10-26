@@ -11,13 +11,13 @@ module.exports = {
   icon: '📈',
   questions: [
     {
-      question: "The Dutch _____ Mania bubble of 1637 saw a single tulip bulb sell for the price of a mansion.",
-      answer: "TULIP",
-      explanation: "At the height of Tulip Mania, some rare bulbs sold for more than 10 times the annual income of a skilled craftsman. Imagine how much it would've cost if it were marketed as organic!"
+      question: "During the 1630s Dutch Tulip Mania, tulips as a luxury commodity became one of the earliest recorded historical bubbles driven by _____.",
+      answer: "futures trading",
+      explanation: "Because tulips were mostly in the ground during trading seasons, traders signed contracts promising to buy bulbs at the end of the season when harvested, effectively creating a secondary financial derivatives market long before modern exchanges existed."
     },
     {
-      question: "The _____ production function, commonly used in growth models like Solow-Swan, takes the form Y = A K^α L^(1-α), where α represents the capital share of income.",
-      answer: "COBB-DOUGLAS",
+      question: "The Cobb-Douglas production function, commonly used in growth models like Solow-Swan, takes the form Y = A K^α L^(1-α), where α represents _____.",
+      answer: "the capital share of income",
       explanation: "Named after Charles Cobb and Paul Douglas, this functional form exhibits constant returns to scale and diminishing marginal returns, making it a standard tool in empirical macroeconomics and growth theory. By the way for all the smooth-brained players, α is the greek letter alpha."
     },
     {
@@ -61,29 +61,14 @@ module.exports = {
       explanation: "Britain's Corn Laws levied tariffs on imported grain to protect domestic landowners, but their 1846 repeal signaled a move toward liberal trade policy. This was a big deal back then because bread is life."
     },
     {
-      question: "The _____ craze of the 1990s saw some collectors paying over $5,000 for a single stuffed animal.",
-      answer: "BEANIE BABY",
-      explanation: "At the height of Beanie Baby mania, rare specimens like 'Princess the Bear' sold for thousands. People treated them as serious investments, storing them in climate-controlled rooms. *ahem* Labubu *ahem*."
-    },
-    {
-      question: "During the 17th century, the Dutch _____ Company was the first company to issue stocks to the public.",
-      answer: "EAST INDIA",
+      question: "During the 17th century, the _____ Company was the first company to issue stocks to the public.",
+      answer: "DUTCH EAST INDIA",
       explanation: "The Dutch East India Company pioneered the concept of publicly traded shares, allowing investors to buy ownership stakes. So next time your portfolio tanks, blame it on them."
     },
     {
       question: "In 1976, Gary Dahl became a millionaire by selling _____ as pets for $3.95 each.",
       answer: "ROCKS",
       explanation: "The Pet Rock craze lasted six months but made Dahl a millionaire. Each rock came in a cardboard box with breathing holes and an instruction manual for 'training' your pet rock."
-    },
-    {
-      question: "In 2021, a digital artwork by Beeple sold as an _____ for $69 million.",
-      answer: "NFT",
-      explanation: "The NFT (non-fungible token) craze reached new heights when Beeple's digital collage 'Everydays: The First 5000 Days' sold for $69 million at Christie's auction house. I've even got like 5 pictures of it saved on my hard drive!"
-    },
-    {
-      question: "In 1636, a Dutch sailor mistook a valuable tulip bulb for an _____ and ate it.",
-      answer: "ONION",
-      explanation: "Tulip bulbs were so valuable during the Tulip Mania the sailor's expensive snack cost his employer the price of an entire ship. He was thrown in jail and was reported to have bad breath."
     },
     {
       question: "The country that saw the first recorded stock market crash in 1637 was the _____.",
@@ -101,18 +86,13 @@ module.exports = {
       explanation: "The term 'Dutch Disease' originated from the Netherlands' experience after discovering large natural gas reserves, which led to currency appreciation and harm to other export sectors. Back then even resources like the pretty tulip flower got grandpa go wild."
     },
     {
-      question: "In 2010, a programmer famously bought two pizzas for 10,000 _____, now worth over $600 million.",
-      answer: "BITCOIN",
-      explanation: "On May 22, 2010, Laszlo Hanyecz made the first real-world transaction using Bitcoin by purchasing two pizzas for 10,000 BTC, which would be worth hundreds of millions today."
-    },
-    {
       question: "When Ireland was having its bank strikes in the early 70s, people used _____ as a replacement currency.",
       answer: "NAPKINS",
       explanation: "To deal with not being able to withdraw their money from banks, people just wrote IOUs to each other in napkins. Ireland's national GDP even increased during the period of the bank strike."
     },
     {
-      question: "In the 21st century after the natural disaster known as Hurricane _____, insurance companies paid out approximately $41 billion in claims, the costliest natural disaster in U.S. history.",
-      answer: "KATRINA",
+      question: "In the 21st century after the natural disaster known as _____, insurance companies paid out approximately $41 billion in claims, the costliest natural disaster in U.S. history.",
+      answer: "HURRICANE KATRINA",
       explanation: "Katrina's insurance payouts bankrupted several insurers and caused many to stop offering coverage in coastal areas. The disaster fundamentally changed how insurance companies assess climate risk, price policies, and your bank account."
     },
     {
@@ -121,13 +101,13 @@ module.exports = {
       explanation: "This optimal growth model incorporates forward-looking consumers and a social planner, showing that the economy converges to a balanced growth path where consumption and capital grow at the exogenous rate of technological progress."
     },
     {
-      question: "The _____ model is widely used to explain fluctuations in output and price levels, including short-run effects of demand shocks and long-run neutrality of money.",
-      answer: "AD-AS",
+      question: "The AD-AS model is widely used to explain _____ in output and price levels, including short-run effects of demand shocks and long-run neutrality of money.",
+      answer: "FLUCTUATIONS",
       explanation: "The AD-AS model depicts how shifts in aggregate demand or supply affect real GDP and the price level, with the vertical long-run aggregate supply curve reflecting classical assumptions of full employment and flexible prices."
     },
     {
-      question: "The _____ model, developed by John Hicks in 1937, illustrates the short-run equilibrium between interest rates and output by combining the investment-saving curve with the liquidity preference-money supply curve.",
-      answer: "IS-LM",
+      question: "The IS-LM model, illustrates the short-run equilibrium between _____ and output by combining the investment-saving curve with the liquidity preference-money supply curve.",
+      answer: "INTEREST RATES",
       explanation: "The IS-LM model is a foundational Keynesian framework used to analyze the interaction between the goods market and money market, helping explain how fiscal and monetary policy affect interest rates and aggregate output in a closed economy."
     },
     {
@@ -136,8 +116,8 @@ module.exports = {
       explanation: "Fluctuations in total factor productivity explain output volatility without relying on monetary factors. The economy sneezes, and everyone works a little less."
     },
     {
-      question: "Rational consumers maximize _____ subject to the constraint of their income and the prices they face, leading them to equate the marginal utility per dollar across all goods.",
-      answer: "UTILITY",
+      question: "Rational consumers maximize their total satisfaction by allocating their _____ so that the marginal utility per dollar spent is equal across all goods and services.",
+      answer: "LIMITED INCOME",
       explanation: "The utility-maximization rule (MUx/Px = MUy/Py = …) is the core of consumer choice theory and explains how people allocate limited budgets among competing demands."
     },
     {
