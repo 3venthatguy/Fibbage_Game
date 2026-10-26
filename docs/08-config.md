@@ -20,7 +20,7 @@ Loaded with `require('../config')`. Changes take effect after a server restart.
 | `READING_PHASE_DURATION` | 8 s | GameRoom, gameEvents, roomEvents | |
 | `SUBMIT_PHASE_DURATION` | 40 s | GameRoom, timerBroadcast | |
 | `VOTING_PHASE_DURATION` | 20 s | GameRoom, playerEvents, timerBroadcast, connectionEvents | |
-| `GAME_START_DELAY` | 2000 ms | gameEvents (start) | Gap between `gameStarted` and the first `newQuestion`. The clients show the ROUND ONE card for `MULTIPLIER_CONFIG.roundOneDuration` (keep them equal) |
+| `GAME_START_DELAY` | 4000 ms | gameEvents (start) | Gap between `gameStarted` and the first `newQuestion`. Sent as `gameStarted{duration}`; the clients show the ROUND ONE card for that long |
 | `NEXT_QUESTION_DELAY` | 0 | gameEvents | |
 | `VOTING_TRANSITION_DELAY` | 1000 ms | 3 copies of the voting transition | |
 | `RESULTS_TRANSITION_DELAY` | 3000 ms | before `startResultsAnimation` | Leaves time for the `time_to_vote.mp3` sting |
@@ -55,15 +55,15 @@ A classic script that sets `window.AUDIO_CONFIG` and `window.MULTIPLIER_CONFIG`.
 | `SFX_SUCCESS_ENDING_VOLUME` | 0.7 | game over |
 | `SFX_MULTIPLIER_FANFARE_VOLUME` | 0.6 | double/triple announcement (host **and** player) |
 
-**`MULTIPLIER_CONFIG`** (round card timings, [shared/roundCard.js](../public/js/shared/roundCard.js)): `fadeToBlack 500`, `textZoomIn 800`, `holdDuration 3500`, `fadeOut 500`, `roundOneDuration 2000`.
+**`MULTIPLIER_CONFIG`** (round card timings, [shared/roundCard.js](../public/js/shared/roundCard.js)): `fadeToBlack 500`, `textZoomIn 800`, `holdDuration 3500`, `fadeOut 500`, `roundOneDuration 4000`.
 - The ROUND TWO / FINAL ROUND card lasts the sum of the first four (5300ms). **Keep that equal to the server's `MULTIPLIER_ANIMATION_TIMINGS` sum**, which is how long the server waits before the next question.
-- `roundOneDuration` should match the server's `GAME_START_DELAY`. Raise both together for a longer ROUND ONE card.
+- `roundOneDuration` is only a fallback: the ROUND ONE card uses the `duration` the server sends with `gameStarted` (`GAME_START_DELAY`). Change `GAME_START_DELAY` for a longer or shorter card.
 
 ## Client vs server mismatches
 
 | Thing | Server | Client | Effect |
 |---|---|---|---|
-| Round card length | `MULTIPLIER_ANIMATION_TIMINGS` sum (5300ms) and `GAME_START_DELAY` (2000ms) | `MULTIPLIER_CONFIG` sum (5300ms) and `roundOneDuration` (2000ms) | In sync today. If they drift apart, the reading phase starts under the card (or the card ends early) |
+| Round card length | `MULTIPLIER_ANIMATION_TIMINGS` sum (5300ms) | `MULTIPLIER_CONFIG` sum (5300ms) | In sync today. If they drift apart, the reading phase starts under the card (or the card ends early). ROUND ONE no longer has this problem: its length comes from the server's `GAME_START_DELAY` via `gameStarted{duration}` |
 | Min players to start | `MIN_PLAYERS` | hard-coded `2` in host `updateStartButton` | Change both |
 | Max name / answer length | 20 / (none enforced) | 20 / 100 in the inputs and JS | The server doesn't enforce the answer limit |
 

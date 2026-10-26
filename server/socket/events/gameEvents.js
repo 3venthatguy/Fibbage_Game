@@ -18,8 +18,8 @@ function setupGameEvents(io, socket, gameManager) {
     try {
       const gameState = gameManager.startGame(roomCode, socket.id);
 
-      // Broadcast game started
-      io.to(roomCode).emit('gameStarted');
+      // Broadcast game started (clients show the ROUND ONE card for the start delay)
+      io.to(roomCode).emit('gameStarted', { duration: config.GAME_START_DELAY });
 
       // Start first question
       setTimeout(() => {

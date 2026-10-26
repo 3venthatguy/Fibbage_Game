@@ -79,8 +79,8 @@ const MULTIPLIER_CONFIG = {
   /** Duration for fade out transition */
   fadeOut: 500,
 
-  /** ROUND ONE card length; matches the server's GAME_START_DELAY */
-  roundOneDuration: 2000
+  /** Fallback ROUND ONE card length; the server sends GAME_START_DELAY with gameStarted */
+  roundOneDuration: 4000
 };
 
 // Make config available globally

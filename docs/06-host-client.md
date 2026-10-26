@@ -105,7 +105,7 @@ State lives in module-level `let`s in [resultsScreen.js](../public/js/host/scree
 ## Round cards
 
 [shared/roundCard.js](../public/js/shared/roundCard.js) (same file on host and player) fills `#multiplierOverlay.round-card`: an avatar "hero" badge, two black tape stripes with the round's points ("500 for everyone you fool" / "1000 for finding the truth", × multiplier) and a big title.
-- `gameStarted` → `showRoundCard(1, 1, MULTIPLIER_CONFIG.roundOneDuration)`: ROUND ONE, during the server's 2s `GAME_START_DELAY`.
+- `gameStarted{duration}` → `showRoundCard(1, 1, duration)`: ROUND ONE, for the server's `GAME_START_DELAY` (falls back to `MULTIPLIER_CONFIG.roundOneDuration`).
 - `multiplierAnnouncement{type}` → `showMultiplierAnnouncement`: double = ROUND TWO with `RevealSound.mp3`, triple = FINAL ROUND with `EvilString.mp3`. It lasts `fadeToBlack + textZoomIn + holdDuration + fadeOut` = 5300ms, matching the server's wait.
 
 The sounds play through `new Audio(...)` directly, **ignoring the SFX toggle**.

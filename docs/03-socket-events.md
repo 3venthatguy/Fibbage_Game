@@ -40,7 +40,7 @@ The `submitAnswer` and `submitVote` handlers look up the player from `socket.id`
 
 | Event | Delivery | Payload | Emitted from |
 |---|---|---|---|
-| `gameStarted` | room | none | gameEvents.js (start). Both clients show the ROUND ONE card during `GAME_START_DELAY` |
+| `gameStarted` | room | `{ duration }` (= `GAME_START_DELAY` ms) | gameEvents.js (start). Both clients show the ROUND ONE card for `duration` |
 | `newQuestion` | room (or sender on mid-join) | `{question, questionIndex, totalQuestions, multiplier?}` | gameEvents.js, roomEvents.js |
 | `phaseChange` | room (or sender on mid-join) | `{phase, timeRemaining}` | gameEvents, timerBroadcast, playerEvents, connectionEvents, resultsEvents |
 | `timerUpdate` | room | `{timeRemaining}` (whole seconds) | timerBroadcast.js, every 1s while > 0 and not paused |

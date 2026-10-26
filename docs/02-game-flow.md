@@ -41,7 +41,7 @@ Each row says **what triggers it**, **where the code is**, and **what is emitted
 ### lobby → reading (game start)
 - Trigger: host emits `startGame`. [gameEvents.js:17](../server/socket/events/gameEvents.js#L17)
 - `GameRoom.startGame` checks that the sender is the host, that there are `players.length >= MIN_PLAYERS` (2), and that the phase is still lobby. It then calls `loadQuestion(0)`, which sets the question, resets answers, votes and timer, sets phase `reading` and starts an 8s timer.
-- Emits `gameStarted` right away. After `GAME_START_DELAY` (2000ms) it **restarts the timer** (so the countdown matches the client), then emits `newQuestion`, then `phaseChange{reading}`, and calls `startTimerBroadcast`.
+- Emits `gameStarted{duration: GAME_START_DELAY}` right away. After `GAME_START_DELAY` (4000ms) it **restarts the timer** (so the countdown matches the client), then emits `newQuestion`, then `phaseChange{reading}`, and calls `startTimerBroadcast`.
 
 ### reading → submit
 - Trigger: **only timer expiry**, in `handleReadingPhaseExpiry`. [timerBroadcast.js:49](../server/socket/timerBroadcast.js#L49)

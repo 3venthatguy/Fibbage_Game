@@ -63,10 +63,10 @@ function setupPlayerSocketHandlers(socket, state) {
     }
   });
 
-  socket.on('gameStarted', () => {
+  socket.on('gameStarted', (data) => {
     state.currentPhase = 'submit';
     // ROUND ONE card covers the server's start delay
-    showRoundCard(1, 1, MULTIPLIER_CONFIG.roundOneDuration);
+    showRoundCard(1, 1, data?.duration || MULTIPLIER_CONFIG.roundOneDuration);
   });
 
   socket.on('newQuestion', (data) => {

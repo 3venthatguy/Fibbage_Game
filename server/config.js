@@ -20,12 +20,12 @@ module.exports = {
   MAX_ANSWER_LENGTH: 100,
 
   // Phase durations (in seconds)
-  READING_PHASE_DURATION: 8,
+  READING_PHASE_DURATION: 10,
   SUBMIT_PHASE_DURATION: 40,
   VOTING_PHASE_DURATION: 20,
 
   // Transition delays (in milliseconds)
-  GAME_START_DELAY: 2000,
+  GAME_START_DELAY: 4000,
   NEXT_QUESTION_DELAY: 0, // No delay when advancing to next question from leaderboard
   VOTING_TRANSITION_DELAY: 1000,
   RESULTS_TRANSITION_DELAY: 3000, // Increased to allow time_to_vote.mp3 to play + 2s delay
