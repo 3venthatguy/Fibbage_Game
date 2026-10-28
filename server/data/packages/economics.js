@@ -495,5 +495,76 @@ module.exports = {
       answer: "MORTGAGE-BACKED", 
       explanation: "The failure was driven by asymmetric information and misaligned incentives. Agencies were paid by the banks issuing the securities, leading to inflated ratings for subprime debt that eventually defaulted." 
     },
+    //new questions
+    {
+      question: "In 1981, with interest rates near 20%, car dealers who couldn't sell cars protested by mailing Fed Chair Paul Volcker the _____ to their unsold inventory.",
+      answer: "KEYS",
+      explanation: "Homebuilders mailed him pieces of lumber too. Volcker held the line anyway, and inflation broke. Nobody said saving the economy would get you good mail."
+    },
+    {
+      question: "At its worst in November 2008, Zimbabwe's inflation was so extreme that prices were doubling roughly once every _____.",
+      answer: "DAY",
+      explanation: "Zimbabwe printed a 100 trillion dollar note, which is now worth more as a collector's item than as money. Estimates of the exact doubling time vary, but it was about a day."
+    },
+    {
+      question: "In April 2020, US oil futures prices fell below zero, meaning sellers paid people to take oil, mainly because the world was running out of _____.",
+      answer: "STORAGE",
+      explanation: "Demand cratered in lockdown, and contract holders couldn't physically take delivery with every tank nearly full. It's the one time in history oil was literally a liability."
+    },
+    {
+      question: "In January 2021, a Reddit community called r/_____ helped push GameStop's stock up more than 1,000% and hammered hedge funds that had bet against it.",
+      answer: "WALLSTREETBETS",
+      explanation: "The short squeeze forced funds like Melvin Capital to buy shares at brutal prices (Melvin needed a $2.75 billion rescue). Retail traders learned that 'stonks only go up' is not a risk model."
+    },
+    {
+      question: "In March 2023, customers tried to pull about $42 billion out of _____ Bank in a single day, and the bank collapsed within about 48 hours.",
+      answer: "SILICON VALLEY",
+      explanation: "A concentrated depositor base plus instant mobile banking made it the fastest bank run on record at that point. Old problem, new speed."
+    },
+    {
+      question: "Turkey's president argued in 2021-22 that raising interest rates causes _____, so he pushed for cuts while annual inflation climbed above 80%.",
+      answer: "INFLATION",
+      explanation: "This is the opposite of the standard economic view. The lira lost a huge share of its value as the experiment ran."
+    },
+    {
+      question: "Before it collapsed in 2008, Iceland's banking system had ballooned to about _____ times the size of the entire Icelandic economy.",
+      answer: "NINE",
+      explanation: "When your banks are nine times your GDP, there's no 'too big to fail' because the country can't afford the bailout. Iceland let them fail, and later set up capital controls."
+    },
+    {
+      question: "During Ireland's roughly six-month bank strike in 1970, people kept the economy running by writing personal cheques that were cashed and trusted at local _____.",
+      answer: "PUBS",
+      explanation: "Publicans knew their customers, so a cheque was only as good as your reputation. Money worked on trust and social memory, not banks."
+    },
+    {
+      question: "The website 'Spurious Correlations' found that per-person US cheese consumption tracked almost perfectly with the number of people who died by getting tangled in their _____.",
+      answer: "BEDSHEETS",
+      explanation: "Correlation = Causation."
+    },
+    {
+      question: "To study how military service affects later earnings, economist Joshua Angrist used the 1969 Vietnam draft lottery, which was decided by a man's _____.",
+      answer: "BIRTHDAY",
+      explanation: "Random draft numbers created a natural experiment, which is a gift to economists who can't randomize people's lives themselves."
+    },
+    {
+      question: "During WWII, statistician Abraham Wald advised the military to add armor to the parts of returning planes that had no _____.",
+      answer: "BULLET HOLES",
+      explanation: "The planes that were hit in those spots never made it back, so they weren't in the sample. It's survivorship bias, and it saved lives."
+    },
+    {
+      question: "Robert Fogel estimated that without railroads in 1890 the US economy would have been only a few percent poorer, because _____ could have carried much of the freight.",
+      answer: "CANALS",
+      explanation: "Fogel's counterfactual shook up the idea that railroads were indispensable. He shared the 1993 Nobel partly for this kind of thinking."
+    },
+    {
+      question: "The 'equity premium puzzle' is that stocks have beaten bonds by about 6 points a year, which only makes sense if people were absurdly _____.",
+      answer: "RISK-AVERSE",
+      explanation: "Mehra and Prescott (1985) found standard models couldn't explain it without implausible fear of risk. Either investors are terrified, or the models are missing something."
+    },
+    {
+      question: "In 1902, colonial Hanoi paid a bounty for rat tails, so residents caught rats, cut off the tails, and then released them to _____.",
+      answer: "KEEP SUPPLY HIGH",
+      explanation: "Bounties create the behavior they pay for, not necessarily the one you wanted. Economists call this an incentive problem, and so does every rat."
+    }
   ]
 };
