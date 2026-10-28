@@ -11,7 +11,7 @@ This folder describes the codebase as it actually is. It is written to be read b
 - Two clients:
   - **Host** (`public/host.html`): the shared TV/projector screen.
   - **Player** (`public/player.html`): each person's phone controller.
-- 3 question packs (Economics 101, Architecture 33, Bioinformatics 29). Each game is **6 questions**; points are 2× on questions 4–5 and 3× on question 6.
+- 3 question packs (Economics 100, Architecture 33, Bioinformatics 29). Each game is **6 questions**; points are 2× on questions 4–5 and 3× on question 6.
 - Run it with `npm start` and open `http://localhost:3000/host.html`. It **cannot** run on GitHub Pages because it needs the Node server.
 
 ## Routing table: which doc to read

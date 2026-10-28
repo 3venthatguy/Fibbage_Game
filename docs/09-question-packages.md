@@ -5,7 +5,7 @@
 ```
 server/data/packages/
   index.js            registry + helpers
-  economics.js        101 questions  (default)
+  economics.js        100 questions  (default)
   architecture.js      33 questions
   bioinformatics.js    29 questions
 server/data/questions.js   legacy re-export of economics (nothing uses it)

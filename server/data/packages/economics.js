@@ -12,13 +12,13 @@ module.exports = {
   questions: [
     {
       question: "During the 1630s Dutch Tulip Mania, tulips as a luxury commodity became one of the earliest recorded historical bubbles driven by _____.",
-      answer: "futures trading",
+      answer: "FUTURES",
       explanation: "Because tulips were mostly in the ground during trading seasons, traders signed contracts promising to buy bulbs at the end of the season when harvested, effectively creating a secondary financial derivatives market long before modern exchanges existed."
     },
     {
-      question: "The Cobb-Douglas production function, commonly used in growth models like Solow-Swan, takes the form Y = A K^α L^(1-α), where α represents _____.",
-      answer: "the capital share of income",
-      explanation: "Named after Charles Cobb and Paul Douglas, this functional form exhibits constant returns to scale and diminishing marginal returns, making it a standard tool in empirical macroeconomics and growth theory. By the way for all the smooth-brained players, α is the greek letter alpha."
+      question: "The Cobb-Douglas production function, commonly used in growth models like Solow-Swan, takes the form Y = A K^α L^(1-α), where α represents capital share of _____.",
+      answer: "INCOME",
+      explanation: "Named after Charles Cobb and Paul Douglas, this functional form exhibits constant returns to scale and diminishing marginal returns, making it a standard tool in empirical macroeconomics and growth theory. By the way for all the smooth-brained players, α is the Greek letter alpha."
     },
     {
       question: "In 1980, the Fed Chairman named _____ raised interest rates to 20% to fight inflation.",
@@ -46,12 +46,12 @@ module.exports = {
       explanation: "The Smoot-Hawley Tariff Act of 1930 significantly increased U.S. tariffs, provoking foreign retaliation and contributing to a collapse in world trade. Noted, too much protectionism is bad."
     },
     {
-      question: "In early 19th-century U.S. history, high tariffs that protected 'infant industries' from British competition were a key feature of the economic system as highly popularized by _____.",
-      answer: "ALEXANDER HAMILTON",
+      question: "In early 19th-century U.S. history, Alexander Hamilton popularized an economic system with high tariffs to protect 'infant industries' from _____ competition.",
+      answer: "BRITISH",
       explanation: "Alexander Hamilton advocated for protective tariffs with the goal of nurturing young American industries, an approach highly employed in early U.S. tariff policy. He was also on the $10 bill, so you know he's important."
     },
     {
-      question: "In international trade, a policy that deliberately harms another country's economic welfare is often described as a 'beggar-thy-_____' policy",
+      question: "In international trade, a policy that deliberately harms another country's economic welfare is often described as a 'beggar-thy-_____' policy.",
       answer: "NEIGHBOR",
       explanation: "When a country sets an optimal tariff that improves its own welfare while worsening that of its trading partner, the policy is described as beggar-thy-neighbor. Not a very neighborly thing to do unfortunately."
     },
@@ -64,11 +64,6 @@ module.exports = {
       question: "During the 17th century, the _____ Company was the first company to issue stocks to the public.",
       answer: "DUTCH EAST INDIA",
       explanation: "The Dutch East India Company pioneered the concept of publicly traded shares, allowing investors to buy ownership stakes. So next time your portfolio tanks, blame it on them."
-    },
-    {
-      question: "In 1976, Gary Dahl became a millionaire by selling _____ as pets for $3.95 each.",
-      answer: "ROCKS",
-      explanation: "The Pet Rock craze lasted six months but made Dahl a millionaire. Each rock came in a cardboard box with breathing holes and an instruction manual for 'training' your pet rock."
     },
     {
       question: "The country that saw the first recorded stock market crash in 1637 was the _____.",
@@ -106,7 +101,7 @@ module.exports = {
       explanation: "The AD-AS model depicts how shifts in aggregate demand or supply affect real GDP and the price level, with the vertical long-run aggregate supply curve reflecting classical assumptions of full employment and flexible prices."
     },
     {
-      question: "The IS-LM model, illustrates the short-run equilibrium between _____ and output by combining the investment-saving curve with the liquidity preference-money supply curve.",
+      question: "The IS-LM model illustrates the short-run equilibrium between _____ and output by combining the investment-saving curve with the liquidity preference-money supply curve.",
       answer: "INTEREST RATES",
       explanation: "The IS-LM model is a foundational Keynesian framework used to analyze the interaction between the goods market and money market, helping explain how fiscal and monetary policy affect interest rates and aggregate output in a closed economy."
     },
@@ -126,19 +121,9 @@ module.exports = {
       explanation: "Law sold the French aristocracy on the idea that mosquito-infested, alligator-filled bayous were the next gold rush. The bubble popped so hard it helped cause the French Revolution."
     },
     {
-      question: "In 1980s Britain, the 'Big Bang' financial deregulation led to so much cocaine-fueled trading that dealers started accepting _____ as payment from stressed-out yuppies on the trading floor.",
-      answer: "SHARE CERTIFICATES",
-      explanation: "For a brief period in the late 80s, powdered Peruvian marching powder was like a secondary currency in the City of London. Peak Thatcher-era degeneracy."
-    },
-    {
-      question: "In 2008-2009 Iceland, after the banking collapse, citizens jokingly started a campaign to make their new prime minister the world's first '_____ of the nation' because she was the only politician who hadn't screwed them.",
-      answer: "LESBIAN",
-      explanation: "Jóhanna Sigurðardóttir became the world's first openly lesbian head of government. Icelanders' dark humor during bankruptcy was world-class."
-    },
-    {
-      question: "Since the 1900, _____ freed up 4-6 hours weekly per household, boosting women's workforce participation by 50%.",
+      question: "Since 1900, women's workforce participation increased by 50%, freeing up 4-6 hours weekly per household, because of _____.",
       answer: "WASHING MACHINES",
-      explanation: "For high demand services in such as cleaning laundry, technological innovations allowed for vastly lower labor input costs."
+      explanation: "For labor-heavy chores such as cleaning laundry, technological innovations allowed for vastly lower labor input costs."
     },
     {
       question: "The quantity equation MV = PY links money supply and velocity to the price level and real output, assuming velocity is relatively _____.",
@@ -151,11 +136,6 @@ module.exports = {
       explanation: "'Mas', translated as 'neck-stock', was used because defaulting debtors could be literally collared like animals. If you couldn't pay, they put a wooden neck-stock on you until someone else bought your labor. Ancient creditors did not mess around."
     },
     {
-      question: "The first known use of 'futures contracts' appears in ancient Mesopotamia, where merchants agreed to deliver _____ at a fixed price after the harvest, hedging against price drops.",
-      answer: "DATES",
-      explanation: "Date futures were the original commodity derivatives. Ancient risk management tasted very sweet."
-    },
-    {
       question: "The Roman Republic's first known financial crisis (c. 352 BCE) was solved by creating a public debt registry and allowing debtors to pay off loans by surrendering their _____ instead of their land.",
       answer: "FREEDOM",
       explanation: "Debt bondage was so common they basically legalized voluntary temporary slavery as a repayment option. Ancient debt-relief had strings attached."
@@ -166,17 +146,17 @@ module.exports = {
       explanation: "Fogel's counterfactual analysis showed that while railroads were important, their overall contribution to economic growth was less than previously thought, as other transportation modes could have filled much of the gap."
     },
     {
-      question: "The phenomenon observed in Jeffrey Sachs and Andrew Warner's 1995 paper, where countries abundant in _____ often experience poorer economic performance, is termed the Resource Curse.",
+      question: "The Resource Curse states that countries abundant in _____ often experience poorer economic performance (Jeffrey Sachs and Andrew Warner's 1995 paper).",
       answer: "NATURAL RESOURCES",
       explanation: "In their seminal paper, Sachs and Warner analyzed data from 1970-1990 across 97 countries and found that resource-dependent economies grew 1% slower annually than non-resource ones—think of it as nature's prank where oil gushes but growth sputters."
     },
     {
-      question: "William Baumol's 1967 insight explains why productivity stagnates in _____-intensive sectors like healthcare and education, leading to rising costs.",
+      question: "In the long run, productivity stagnates in _____-intensive sectors like healthcare and education, leading to rising costs (William Baumol, 1967).",
       answer: "LABOR",
-      explanation: "Baumol's research showed that while manufacturing productivity soared (e.g., cars per worker doubled from 1950-2000), services like healthcare couldn't as efficiently automate surgical procedures helping sad people talk through their feelings."
+      explanation: "Baumol's research showed that while manufacturing productivity soared (e.g., cars per worker doubled from 1950-2000), services like healthcare can't easily automate surgery or helping sad people talk through their feelings."
     },
     {
-      question: "The puzzle identified by Martin Feldstein and Charles Horioka in 1980 highlights that national savings and _____ rates are highly correlated despite global capital flows.",
+      question: "Despite global capital flows, national savings and _____ rates are highly correlated (Martin Feldstein & Charles Horioka, 1980).",
       answer: "INVESTMENT",
       explanation: "Using OECD data from 1960-1974, they found a correlation coefficient of 0.89, baffling economists who expected free-flowing capital to break the link—imagine money stubbornly staying home like a couch potato."
     },
@@ -186,7 +166,7 @@ module.exports = {
       explanation: "Lucas drew from post-WWII data showing Phillips Curve breakdowns in the 1970s, where inflation-unemployment trade-offs vanished as expectations adjusted—it's the economy's version of 'fool me once,' making policymakers chuckle (or cry) over outdated models during party trivia!"
     },
     {
-      question: "The effect described by Bela Balassa and Paul Samuelson in the 1960s explains higher price levels in wealthier countries due to _____ differences in tradable vs. non-tradable goods.",
+      question: "Higher price levels are observed in wealthier countries due to _____ differences in tradable vs. non-tradable goods (Bela Balassa & Paul Samuelson 1960s).",
       answer: "PRODUCTIVITY",
       explanation: "Empirical studies using PPP data from 1950-2000 show rich countries' prices 2-3 times higher, as tradable tech boosts wages that spill into services—picture it as productivity's funhouse mirror, distorting Big Mac indexes and sparking light-hearted arguments on why your vacation coffee costs a fortune."
     },
@@ -196,22 +176,12 @@ module.exports = {
       explanation: "Richard Easterlin's 1974 research found that beyond a certain income threshold, national wealth increases don't boost happiness, now known as the Easterlin Paradox. Use this argument next time you meet someone with a larger wallet than yours."
     },
     {
-      question: "The Dutch Disease economic malady coined by The Economist in 1977 is where a resource boom causes currency appreciation and harms _____, as seen in the Netherlands' gas discoveries.",
-      answer: "MANUFACTURING",
-      explanation: "In the 1960s, Dutch manufacturing exports fell 20% as the guilder currency strengthened post-gas boom."
-    },
-    {
-      question: "The anomaly noted by Rajnish Mehra and Edward Prescott in 1985, where historical stock returns exceed bond returns by an inexplicably large margin, is the Equity _____ Puzzle.",
-      answer: "PREMIUM",
-      explanation: "U.S. data from 1889-1978 revealed a 6% annual premium, far above what standard models predict (should be <1%); it's the market's overgenerous tip, baffling risk-averse economists and fueling fun debates on whether or not stocks are a gamble."
-    },
-    {
-      question: "Maurice Obstfeld and Kenneth Rogoff's 2000 paper highlighted six major puzzles in international macroeconomics, one being the Home Bias Puzzle, where investors _____ domestic assets.",
-      answer: "OVERWEIGH",
+      question: "The Home Bias Puzzle highlights that investors typically _____ domestic assets (Maurice Obstfeld & Kenneth Rogoff 2000).",
+      answer: "OVERWEIGHT",
       explanation: "Data shows U.S. investors hold 80-90% domestic equities despite global diversification benefits reducing risk by 40%."
     },
     {
-      question: "James Heckman's 1979 Heckman Correction is an statistical/econometric technique to account for _____ bias when a sample is not randomly chosen but selected based some characteristic.",
+      question: "James Heckman's 1979 Heckman Correction is a statistical/econometric technique to account for _____ bias when a sample is not randomly chosen but selected based on some characteristic.",
       answer: "SELECTION",
       explanation: "Using NLS data, Heckman showed uncorrected estimates biased wages upward by 30%."
     },
@@ -224,16 +194,6 @@ module.exports = {
       question: "Raghuram Rajan's 2005 warning at Jackson Hole highlighted how low interest rates fueled risky credit, contributing to the subprime bubble, a phenomenon of Credit _____.",
       answer: "EXPANSION",
       explanation: "U.S. household debt rose from 80% to 130% of GDP from 2000-2007—envision easy credit as the economy's candy store, leading to a sugar crash and a whole bunch of yodeling children."
-    },
-    {
-      question: "During the late Roman Empire, chronic debasement of the denarius gradually replaced silver with base metals, contributing to inflation and a loss of trust that pushed economic activity toward localized barter systems known as a _____ economy.",
-      answer: "NATURAL",
-      explanation: "By the 3rd century CE, Roman coin silver content had fallen below 5%, destroying confidence in money and encouraging in-kind exchange. When your currency becomes decorative tin foil, farmers start accepting goats instead—and honestly, the goats were probably more reliable."
-    },
-    {
-      question: "In early modern Europe, state-chartered monopolies like the Dutch VOC pioneered tradable equity and permanent capital, laying the groundwork for modern capitalism through the institution of the _____ Company.",
-      answer: "JOINT-STOCK",
-      explanation: "The VOC allowed investors to buy and sell shares without dissolving the firm, a radical innovation around 1602. This was the moment capitalism realized it could crowdsource risk instead of crying alone in a ledger book."
     },
     {
       question: "Alexander Hamilton's financial program after 1790 centered on federal assumption of state debts, which helped establish U.S. creditworthiness and solidified the power of the _____ class.",
@@ -256,29 +216,19 @@ module.exports = {
       explanation: "Despite real growth, falling prices and repeated bank failures plagued advanced economies until the 1890s. It's called a depression because calling it 'a vibe shift' felt insensitive."
     },
     {
-      question: "In colonial Spanish America, silver extraction at Potosí fueled global trade but also entrenched extractive institutions economists now associate with _____ development paths.",
-      answer: "DEPENDENT",
-      explanation: "Massive silver flows enriched Spain but distorted local economies, discouraging diversification. When your whole economy is shiny rocks, you tend to ignore, well, everything else."
-    },
-    {
       question: "During the Gold Standard era, balance-of-payments adjustment relied on price and wage flexibility rather than monetary autonomy, a mechanism later termed Internal _____.",
       answer: "DEVALUATION",
       explanation: "Countries restored competitiveness through falling wages and prices instead of currency depreciation. In practice, this meant prolonged unemployment while policymakers nodded gravely and said 'discipline.'"
     },
     {
-      question: "After the 2008 crisis and throughout the 2010s, central banks increasingly relied on large-scale asset purchases to suppress long-term yields, a policy framework commonly referred to as _____.",
-      answer: "QUANTITATIVE EASING",
+      question: "After the 2008 crisis, central banks increasingly relied on large-scale asset purchases to suppress long-term yields, a policy framework commonly referred to as _____ Easing.",
+      answer: "QUANTITATIVE",
       explanation: "By buying trillions in government bonds and mortgage-backed securities, central banks expanded balance sheets at record speed. Money printers didn't literally go brrr, but vibes-wise they absolutely did."
     },
     {
-      question: "The rise of platform-based firms like Uber and TaskRabbit in the 2010s popularized a labor market structure characterized by flexible contracts, algorithmic management, and _____ employment.",
+      question: "The rise of platform-based firms like Uber popularized a labor market structure characterized by flexible contracts, algorithmic management, and _____ employment.",
       answer: "PRECARIOUS",
       explanation: "Gig workers gained flexibility but sacrificed stability, benefits, and bargaining power. Capital discovered it could outsource risk while keeping the five-star ratings."
-    },
-    {
-      question: "Persistently low inflation despite tight labor markets after 2015 challenged the traditional Phillips Curve relationship, leading economists to argue it had effectively _____.",
-      answer: "FLATTENED",
-      explanation: "Unemployment fell below 4% in the U.S. without triggering runaway inflation. Economists stared at their models like they'd just gaslit themselves for 40 years."
     },
     {
       question: "China's post-2010 growth model increasingly relied on credit expansion through state-owned banks, fueling concerns about financial fragility linked to debt _____.",
@@ -296,16 +246,6 @@ module.exports = {
       explanation: "Asset holders benefited disproportionately from rising equity and housing prices. If you owned nothing, you were encouraged to enjoy the 'strong fundamentals.'"
     },
     {
-      question: "The post-2010 surge in passive investing through ETFs and index funds raised concerns about price discovery and _____ ownership.",
-      answer: "COMMON",
-      explanation: "Large asset managers began owning significant stakes across competing firms. Capitalism achieved efficiency, then accidentally tried monopoly cosplay."
-    },
-    {
-      question: "After the COVID-19 shock, governments embraced large-scale fiscal stimulus funded by central bank accommodation, reviving interest in _____ coordination.",
-      answer: "FISCAL-MONETARY",
-      explanation: "Deficits exploded while interest rates stayed near zero. Economists who spent decades warning about inflation suddenly discovered nuance."
-    },
-    {
       question: "The rapid adoption of artificial intelligence tools in the early 2020s reignited fears of job displacement driven by _____-biased change.",
       answer: "SKILL",
       explanation: "High-skill workers benefited while routine tasks faced automation. The future arrived quickly and immediately asked for credentials."
@@ -319,11 +259,6 @@ module.exports = {
       question: "The prolonged period of near-zero interest rates after 2010 incentivized firms to engage in financial engineering, particularly through share buybacks, a trend often described as _____ behavior.",
       answer: "RENT-SEEKING",
       explanation: "S&P 500 firms repurchased over $5 trillion in shares between 2010 and 2019, often outpacing capital investment growth. When borrowing is cheaper than ambition, spreadsheets start lifting weights instead of workers."
-    },
-    {
-      question: "The sharp rise in market concentration across U.S. industries since the 2010s revived concerns that declining competition was enabling excess _____.",
-      answer: "MARKUPS",
-      explanation: "Empirical work by De Loecker and Eeckhout shows average markups rising from about 18% in 1980 to over 60% by the late 2010s. Apparently pricing power also benefited from quantitative easing."
     },
     {
       question: "Following the Global Financial Crisis, tighter bank capital requirements under Basel III encouraged the growth of non-bank lending institutions collectively known as the _____ banking system.",
@@ -346,34 +281,9 @@ module.exports = {
       explanation: "U.S. CPI inflation peaked at over 9% in mid-2022 while fiscal transfers exceeded 25% of GDP across major economies. Everyone went shopping at once and the shelves noticed."
     },
     {
-      question: "The accelerating transition toward renewable energy has required massive upfront investment, renewing debates around green growth and _____ risk.",
-      answer: "STRANDED ASSET",
-      explanation: "Fossil fuel assets worth trillions may lose value before their expected lifespans. Turns out 'long-term investment' has a terms-and-conditions section."
-    },
-    {
       question: "Rising housing costs in major urban centers during the 2010s reflected zoning restrictions and limited supply elasticity, a problem economists classify as _____ constraints.",
       answer: "REGULATORY",
       explanation: "In cities like San Francisco and New York, rents rose over 50% between 2010 and 2020 despite sluggish population growth. Housing wasn't scarce, permits were."
-    },
-    {
-      question: "The spread of central bank digital currency proposals in the early 2020s signaled growing interest in public alternatives to private _____ systems.",
-      answer: "PAYMENT",
-      explanation: "Over 100 central banks explored CBDCs by 2023, citing efficiency and financial inclusion. When Venmo becomes systemic, policymakers start clearing their throats."
-    },
-    {
-      question: "The renewed use of industrial policy in advanced economies after 2018 marked a shift away from laissez-faire toward _____ capitalism.",
-      answer: "STRATEGIC",
-      explanation: "Programs like the CHIPS Act committed over $50 billion to domestic semiconductor production. Free markets were still invited—just no longer running the meeting."
-    },
-    {
-      question: "The breakdown of the Bretton Woods system in the early 1970s marked the global transition from fixed exchange rates to a regime dominated by _____ currencies.",
-      answer: "FLOATING",
-      explanation: "After the U.S. closed the gold window in 1971, major currencies began to float against one another. Exchange rates discovered freedom and immediately became volatile hobbyists."
-    },
-    {
-      question: "During the late 19th century, rapid industrialization in the United States was financed largely through railroad expansion and the accumulation of long-term manufacturing assets, also known as _____ capital.",
-      answer: "FIXED",
-      explanation: "Railroads accounted for nearly 40% of U.S. capital investment by 1900. Steel tracks, not vibes, were doing the heavy lifting."
     },
     {
       question: "The post-World War II economic boom in Western Europe was accelerated by U.S. financial assistance aimed at reconstruction and stabilization, formally known as the _____ Plan.",
@@ -381,19 +291,9 @@ module.exports = {
       explanation: "Between 1948 and 1951, the U.S. transferred over $13 billion (about $150 billion today) to Europe. Soft power, but with receipts."
     },
     {
-      question: "In the 1980s, many Latin American economies faced severe debt crises after borrowing heavily in foreign currencies, exposing them to _____ mismatches.",
-      answer: "CURRENCY",
-      explanation: "When U.S. interest rates spiked in the early 1980s, dollar-denominated debts ballooned overnight. Exchange rates moved faster than finance ministers could apologize."
-    },
-    {
       question: "The rapid rise of East Asian economies during the late 20th century was supported by export-led growth strategies emphasizing _____ policy.",
       answer: "INDUSTRIAL",
       explanation: "Countries like South Korea and Taiwan used targeted subsidies and protection to build competitive industries. Markets worked best when politely supervised."
-    },
-    {
-      question: "The Great Inflation of the 1970s in the United States was driven by oil price shocks combined with accommodative monetary policy and unanchored _____ expectations.",
-      answer: "INFLATION",
-      explanation: "U.S. CPI inflation averaged over 7% from 1970 to 1980. Once people expect prices to rise, they behave accordingly—and then act surprised when they're right."
     },
     {
       question: "During the Great Depression, U.S. agricultural policy attempted to raise farm incomes by restricting output through _____ controls.",
@@ -401,8 +301,8 @@ module.exports = {
       explanation: "Programs like the Agricultural Adjustment Act paid farmers to destroy crops to regulate their supply and thus their price. Economics was still working out the optics."
     },
     {
-      question: "The expansion of social insurance programs in the mid-20th century reflected the rise of the welfare _____ in advanced economies.",
-      answer: "STATE",
+      question: "The expansion of social _____ programs in the mid-20th century reflected the rise of the welfare state in advanced economies.",
+      answer: "INSURANCE",
       explanation: "Public spending as a share of GDP doubled in many OECD countries between 1930 and 1970. Governments decided markets needed a safety net—and maybe a helmet."
     },
     {
@@ -426,7 +326,7 @@ module.exports = {
       explanation: "Global FDI flows expanded from under $50 billion in 1970 to over $1.5 trillion by 2000. Capital discovered frequent-flyer miles."
     },
     {
-      question: "During the early Industrial Revolution, productivity gains were initially offset by poor _____ conditions, a phenomenon known as the Engel's paradox.",
+      question: "During the early Industrial Revolution, productivity gains were initially offset by poor _____ conditions, a phenomenon known as Engels' pause.",
       answer: "LIVING",
       explanation: "Despite rising output in 19th-century Britain, worker welfare stagnated for decades. Growth was strong, vibes were not."
     },
@@ -435,10 +335,10 @@ module.exports = {
       answer: "MONETARY",
       explanation: "By 2005, over 20 central banks had explicit inflation targets, contributing to lower and more stable inflation. Saying what you'll do turns out to matter. Who knew."
     },
-    { 
-      question: "In the study of Economic Development, Daron Acemoglu and others argued in a 2001 paper that the historical _____ of a region determined whether inclusive or extractive institutions were formed.", 
-      answer: "GEOGRAPHY", 
-      explanation: "In 'The Colonial Origins of Comparative Development,' the authors use settler mortality as an instrumental variable to show that where Europeans could settle, they built inclusive institutions that fostered long-term growth, whereas high-mortality areas led to extractive institutions that persist today." 
+    {
+      question: "In the study of Economic Development, historical _____ of a region determined whether inclusive or extractive institutions were formed (Acemoglu et al., 2001).",
+      answer: "GEOGRAPHY",
+      explanation: "In 'The Colonial Origins of Comparative Development,' the authors use settler mortality as an instrumental variable to show that where Europeans could settle, they built inclusive institutions that fostered long-term growth, whereas high-mortality areas led to extractive institutions that persist today."
     },
     {
       question: "The 'Lucas Critique,' articulated by Robert Lucas in 1976, argues that traditional econometric models fail to predict the effects of policy changes because they do not account for changes in _____.",
@@ -446,65 +346,39 @@ module.exports = {
       explanation: "Lucas emphasized that economic agents adjust their behavior based on anticipated policy changes, rendering models that assume fixed relationships between variables unreliable for policy analysis."
     },
     {
-      question: "The 'Impossible Trinity' in international economics states that it is impossible for a country to simultaneously maintain a fixed foreign exchange rate, free capital movement, and an independent _____.",
-      answer: "MONETARY POLICY",
-      explanation: "Countries must choose two of the three policy goals, as attempting to achieve all three leads to conflicts that undermine economic stability."
-    },
-    {
-      question: "The 'Triffin Dilemma,' identified by Robert Triffin in the 1960s, highlights the inherent conflict between a national currency serving as a global reserve currency and the need for that country to maintain _____ stability.",
-      answer: "DOMESTIC ECONOMIC",
-      explanation: "To supply the world with liquidity, the reserve currency country must run balance of payments deficits, which can undermine confidence in the currency over time."
-    },
-    {
-      question: "The 'Calvo Doctrine,' proposed by Guillermo Calvo in 1988, suggests that in emerging markets, sudden stops in capital flows can lead to severe economic crises due to the reliance on short-term foreign debt and the lack of credible _____.",
-      answer: "COMMITMENTS",
-      explanation: "Calvo argued that without credible policy frameworks, countries are vulnerable to abrupt reversals in investor sentiment, leading to currency crashes and economic downturns."
-    },
-    {
-      question: "The 'Sargent-Wallace' model of rational expectations in macroeconomics demonstrates that anticipated government policies, such as fiscal expansions, have no real effects on output and employment in the long run due to adjustments in _____.",
-      answer: "PRICE LEVELS",
-      explanation: "According to Sargent and Wallace, if agents anticipate inflationary policies, they will adjust their expectations accordingly, leading to higher prices without changes in real economic activity."
-    },
-    {
-      question: "In Macroeconomics, the relationship between a short-run trade-off between inflation and unemployment is described by the _____.",
-      answer: "PHILIPPS CURVE",
+      question: "In macroeconomics, the short-run trade-off between inflation and unemployment is described by the _____.",
+      answer: "PHILLIPS CURVE",
       explanation: "The Phillips Curve illustrates the inverse relationship between inflation and unemployment in the short run, showing that lower unemployment is associated with higher inflation."
     },
-    { 
-      question: "In Econometrics, Instrumental Variables (IV) are used to estimate causal relationships when an explanatory variable is correlated with the error term, a problem known as _____.", 
-      answer: "ENDOGENEITY", 
-      explanation: "Endogeneity often arises from omitted variable bias, measurement error, or simultaneity. An instrument must be correlated with the endogenous regressor (relevance) but uncorrelated with the error term (exogenous)." 
+    {
+      question: "In Econometrics, Instrumental Variables (IV) are used to estimate causal relationships when an explanatory variable is correlated with the error term, a problem known as _____.",
+      answer: "ENDOGENEITY",
+      explanation: "Endogeneity often arises from omitted variable bias, measurement error, or simultaneity. An instrument must be correlated with the endogenous regressor (relevance) but uncorrelated with the error term (exogenous)."
     },
-    { 
-      question: "The Great Leap Forward in China is a historical example of an economic failure where _____ agricultural planning led to a massive famine.", 
-      answer: "CENTRALIZED", 
-      explanation: "From 1958 to 1962, the diversion of labor from farming to steel production, combined with mandatory radical agricultural techniques and false production reporting, resulted in tens of millions of deaths due to food shortages." 
+    {
+      question: "The Great Leap Forward in China is a historical example of an economic failure where _____ agricultural planning led to a massive famine.",
+      answer: "CENTRALIZED",
+      explanation: "From 1958 to 1962, the diversion of labor from farming to steel production, combined with mandatory radical agricultural techniques and false production reporting, resulted in tens of millions of deaths due to food shortages."
     },
-    { 
-      question: "In the context of Economic Failures, a Bank Run occurs when a large number of customers withdraw their deposits simultaneously due to fears of the bank's _____.", 
-      answer: "INSOLVENCY", 
-      explanation: "Bank runs are a classic 'coordination failure.' Even a healthy bank can fail if everyone believes it will fail; the Diamond-Dybvig model explains how banks are susceptible to this due to the illiquid nature of their long-term loans versus liquid deposits." 
+    {
+      question: "In the context of Economic Failures, a Bank Run occurs when a large number of customers withdraw their deposits simultaneously due to fears of the bank's _____.",
+      answer: "INSOLVENCY",
+      explanation: "Bank runs are a classic 'coordination failure.' Even a healthy bank can fail if everyone believes it will fail; the Diamond-Dybvig model explains how banks are susceptible to this due to the illiquid nature of their long-term loans versus liquid deposits."
     },
-    { 
-      question: "In Econometrics, the Difference-in-Differences (DiD) method is often used to estimate the effect of a specific _____ by comparing a treatment group to a control group over time.", 
-      answer: "INTERVENTION", 
-      explanation: "DiD mimics an experimental design using observational data. It calculates the change in the treatment group's outcome and subtracts the change in the control group's outcome to isolate the impact of the policy, assuming 'parallel trends'." 
+    {
+      question: "In Econometrics, the Difference-in-Differences (DiD) method is often used to estimate the effect of a specific _____ by comparing a treatment group to a control group over time.",
+      answer: "INTERVENTION",
+      explanation: "DiD mimics an experimental design using observational data. It calculates the change in the treatment group's outcome and subtracts the change in the control group's outcome to isolate the impact of the policy, assuming 'parallel trends'."
     },
-    { 
-      question: "The 2008 Financial Crisis highlighted the failure of Credit Rating Agencies, which assigned 'AAA' ratings to risky _____ securities.", 
-      answer: "MORTGAGE-BACKED", 
-      explanation: "The failure was driven by asymmetric information and misaligned incentives. Agencies were paid by the banks issuing the securities, leading to inflated ratings for subprime debt that eventually defaulted." 
+    {
+      question: "The 2008 Financial Crisis highlighted the failure of Credit Rating Agencies, which assigned 'AAA' ratings to risky _____ securities.",
+      answer: "MORTGAGE-BACKED",
+      explanation: "The failure was driven by asymmetric information and misaligned incentives. Agencies were paid by the banks issuing the securities, leading to inflated ratings for subprime debt that eventually defaulted."
     },
-    //new questions
     {
       question: "In 1981, with interest rates near 20%, car dealers who couldn't sell cars protested by mailing Fed Chair Paul Volcker the _____ to their unsold inventory.",
       answer: "KEYS",
       explanation: "Homebuilders mailed him pieces of lumber too. Volcker held the line anyway, and inflation broke. Nobody said saving the economy would get you good mail."
-    },
-    {
-      question: "At its worst in November 2008, Zimbabwe's inflation was so extreme that prices were doubling roughly once every _____.",
-      answer: "DAY",
-      explanation: "Zimbabwe printed a 100 trillion dollar note, which is now worth more as a collector's item than as money. Estimates of the exact doubling time vary, but it was about a day."
     },
     {
       question: "In April 2020, US oil futures prices fell below zero, meaning sellers paid people to take oil, mainly because the world was running out of _____.",
@@ -527,8 +401,8 @@ module.exports = {
       explanation: "This is the opposite of the standard economic view. The lira lost a huge share of its value as the experiment ran."
     },
     {
-      question: "Before it collapsed in 2008, Iceland's banking system had ballooned to about _____ times the size of the entire Icelandic economy.",
-      answer: "NINE",
+      question: "Before it collapsed in 2008, _____'s banking system had ballooned to about 9x the size of its entire economy.",
+      answer: "ICELAND",
       explanation: "When your banks are nine times your GDP, there's no 'too big to fail' because the country can't afford the bailout. Iceland let them fail, and later set up capital controls."
     },
     {
@@ -542,11 +416,6 @@ module.exports = {
       explanation: "Correlation = Causation."
     },
     {
-      question: "To study how military service affects later earnings, economist Joshua Angrist used the 1969 Vietnam draft lottery, which was decided by a man's _____.",
-      answer: "BIRTHDAY",
-      explanation: "Random draft numbers created a natural experiment, which is a gift to economists who can't randomize people's lives themselves."
-    },
-    {
       question: "During WWII, statistician Abraham Wald advised the military to add armor to the parts of returning planes that had no _____.",
       answer: "BULLET HOLES",
       explanation: "The planes that were hit in those spots never made it back, so they weren't in the sample. It's survivorship bias, and it saved lives."
@@ -557,14 +426,89 @@ module.exports = {
       explanation: "Fogel's counterfactual shook up the idea that railroads were indispensable. He shared the 1993 Nobel partly for this kind of thinking."
     },
     {
-      question: "The 'equity premium puzzle' is that stocks have beaten bonds by about 6 points a year, which only makes sense if people were absurdly _____.",
-      answer: "RISK-AVERSE",
-      explanation: "Mehra and Prescott (1985) found standard models couldn't explain it without implausible fear of risk. Either investors are terrified, or the models are missing something."
+      question: "In 1902, colonial Hanoi paid a bounty for _____ tails, so residents caught the animal, cut off the tails, and then released them to keep supply high.",
+      answer: "RAT",
+      explanation: "Bounties create the behavior they pay for, not necessarily the one you wanted. Economists call this an incentive problem, and so does every rat."
     },
     {
-      question: "In 1902, colonial Hanoi paid a bounty for rat tails, so residents caught rats, cut off the tails, and then released them to _____.",
-      answer: "KEEP SUPPLY HIGH",
-      explanation: "Bounties create the behavior they pay for, not necessarily the one you wanted. Economists call this an incentive problem, and so does every rat."
+      question: "China's 1978 rural reforms let farmers keep what they grew beyond a government _____.",
+      answer: "QUOTA",
+      explanation: "Once farmers could sell surplus crops, output surged. A simple incentive change started the biggest growth miracle in history."
+    },
+    {
+      question: "The 25% 'chicken tax' on imported light trucks dates to 1964, and carmakers have dodged it by importing vans as passenger models, then ripping out the rear _____.",
+      answer: "SEATS",
+      explanation: "A retaliation over chicken exports still shapes which trucks you can buy in the US. Ford famously did this with its Transit Connect."
+    },
+    {
+      question: "The Economist created the “_____ Index” in 1986 as a lighthearted joke, but now economists actually use it to study currency valuation.",
+      answer: "BIG MAC",
+      explanation: "It's based on purchasing power parity: a burger should cost about the same everywhere once you adjust for exchange rates. 'Burgernomics' became a real field."
+    },
+    {
+      question: "Fed Chair Alan Greenspan was said to keep an eye on sales of men's _____ as a quirky signal of how the economy was doing.",
+      answer: "UNDERWEAR",
+      explanation: "The theory is that men cut back on underwear purchases when times get tough, and then buy again when things improve. Probably more fun than rigorous."
+    },
+    {
+      question: "In a WWII POW camp, economist R.A. Radford observed that prisoners used _____ as currency, complete with prices, inflation, and shortages.",
+      answer: "CIGARETTES",
+      explanation: "His 1945 paper 'The Economic Organisation of a P.O.W. Camp' is a classic. Even in a camp, money and markets emerged on their own."
+    },
+    {
+      question: "The Nobel Prize in economics wasn't created by Alfred Nobel. It was established in 1968 by Sweden's _____.",
+      answer: "CENTRAL BANK",
+      explanation: "It's officially the Riksbank Prize in Economic Sciences in Memory of Alfred Nobel, and some of Nobel's family objected. So it's a Nobel prize with an asterisk."
+    },
+    {
+      question: "The word 'economics' comes from the Greek 'oikonomia,' meaning the management of a _____.",
+      answer: "HOUSEHOLD",
+      explanation: "Economics began as home management and grew up to cover all of society. Your parents were doing macroeconomics at the kitchen table."
+    },
+    {
+      question: "Paul Samuelson joked in 1966 that the stock market had predicted nine of the last five _____.",
+      answer: "RECESSIONS",
+      explanation: "Markets overreact to scary news, so they signal downturns that never happen. It's also a rare economist joke that is actually funny and actually true."
+    },
+    {
+      question: "Keynes compared investing to a newspaper beauty contest in which you win by picking the faces that _____ picks.",
+      answer: "EVERYONE ELSE",
+      explanation: "You don't pick the prettiest, you pick the one you think the average person will pick. Asset prices follow what people expect other people to believe, which is why bubbles feel so reasonable from inside."
+    },
+    {
+      question: "_____'s 1946 hyperinflation is the worst on record, with prices doubling roughly every 15 hours.",
+      answer: "HUNGARY",
+      explanation: "By the end the government issued a 100 quintillion pengő note. Your paycheck was basically a countdown timer."
+    },
+    {
+      question: "In May 2010, a programmer paid 10,000 bitcoin for two _____ pizzas, now celebrated every year as 'Bitcoin Pizza Day.'",
+      answer: "PAPA JOHN'S",
+      explanation: "At bitcoin's later peaks, that was worth hundreds of millions of dollars. Opportunity cost has never been so cheesy."
+    },
+    {
+      question: "In 1949, economist Bill Phillips built a working model of the British economy out of tanks, pipes, and flowing _____.",
+      answer: "COLORED WATER",
+      explanation: "The MONIAC was a hydraulic computer where water represented money flowing through the economy. Real central banks and universities bought them. Yes, it also leaked."
+    },
+    {
+      question: "In 1698, Peter the Great taxed Russian men for wearing beards, mainly to make Russia look more like _____.",
+      answer: "WESTERN EUROPE",
+      explanation: "Payers got a token to prove they'd paid. A tax to change behavior, and a very dramatic example of fashion policy."
+    },
+    {
+      question: "Costco's hot dog and soda combo has cost $_____ since 1985.",
+      answer: "1.50",
+      explanation: "It's a loss leader meant to get you in the door to buy a 48-pack of paper towels. Over 40 years of inflation, it has outperformed most central banks."
+    },
+    {
+      question: "The Dodd-Frank 'Eddie Murphy rule,' named after the film 'Trading Places,' bans trading on stolen government crop reports in futures for frozen concentrated _____.",
+      answer: "ORANGE JUICE",
+      explanation: "In the movie, the heroes use a fake crop report to corner the OJ market. Congress decided Hollywood had made a good point."
+    },
+    {
+      question: "In George Soros's famous 1992 bet, his fund built a short position worth roughly $10 billion betting against the _____, profiting roughly $1 billion.",
+      answer: "BRITISH POUND",
+      explanation: "Britain had joined the European Exchange Rate Mechanism at a rate many thought was too high, and Germany's post-reunification interest rates kept pulling the pound down. Soros's bet was the pile-on that broke it. The Bank of England burned billions in reserves defending the peg, then gave up. The press dubbed Soros 'the man who broke the Bank of England,' and he made about $1 billion."
     }
   ]
 };
