@@ -24,8 +24,9 @@ Key methods:
 - `joinRoom`, `startGame`, `submitAnswer`, `submitVote`, `nextQuestion`: look up the room (throwing `'Room not found'` if missing) and delegate to GameRoom.
 - `transitionToVoting(gameState)`, `calculateResults(gameState)`, `getShuffledAnswers(gameState)`: take a GameState and look up the room by `gameState.roomCode`. This is legacy style.
 - `handleDisconnect(socketId)` (line 246): returns `null` for any socket not in `socketToPlayer`, **which includes the host**. For players it calls `gameRoom.handleDisconnect(playerId)` and `transferHostIfNeeded(socketId)`, then deletes the mappings.
-- `cleanupEmptyRooms()`: deletes rooms where `players.length === 0`.
-- **Dead code**: `reconnectPlayer` (calls `gameRoom.reconnectPlayer`, which doesn't exist) and `getPlayerBySocket`. Nothing calls either.
+- `cleanupEmptyRooms()`: deletes rooms where `gameRoom.isEmpty()` (see GameRoom below).
+- `reconnectPlayer(socketId, roomCode, playerId, reconnectToken)`: used by `rejoinRoom`. Calls `gameRoom.rejoinPlayer`, **deletes the old socket's map entries first** (so the stale socket's late `disconnect` is a no-op), then maps the new socket. Returns `{player, previousSocketId}`.
+- **Dead code**: `getPlayerBySocket`.
 
 ## GameRoom: rules for one room
 [server/game/GameRoom.js](../server/game/GameRoom.js). Throws `Error(message)` for invalid actions. The message is shown to the user.
@@ -43,7 +44,9 @@ Key methods:
 | `nextQuestion(hostSocketId)` | 247 | host only; does nothing unless phase is results; `loadQuestion(i+1)` |
 | `handleDisconnect(playerId)` | 275 | lobby: `removePlayer`. Otherwise `markPlayerLeft` |
 | `transferHostIfNeeded(oldSocketId)` | 308 | if `hostId === oldSocketId`, gives host to `players[0]`. Because of how GameManager calls it, this only runs for a *player* socket, so in practice it never fires |
-| `isEmpty()` | 330 | `players.length === 0` |
+| `rejoinPlayer(playerId, token, socketId)` | 284 | finds the player in `players` or `leftPlayers`, checks `reconnectToken` (throws `Session expired`), `restoreLeftPlayer` if needed, `player.reconnect(socketId)`. Returns `{player, previousSocketId}` (the old socket if the player was still active) |
+| `getShuffledAnswers()` | 268 | shuffles once per round and caches in `gameState.shuffledAnswers`, so a rejoiner sees the same voting order |
+| `isEmpty()` | 366 | true when `players` is empty **and** either nobody is in `leftPlayers` or the room has been in that state for `REJOIN_GRACE_PERIOD` (`emptySince`) |
 
 `questionLoader` is public and gets reassigned by `changePackage` ([roomEvents.js](../server/socket/events/roomEvents.js)).
 
@@ -54,7 +57,9 @@ Key methods:
 {
   roomCode, hostId,                 // hostId = host socket id
   players: Player[],                // ACTIVE players only
-  leftPlayers: Map<playerId, {id, name, score}>,  // left mid-game
+  leftPlayers: Map<playerId, {id, name, score, player, vote}>,  // left mid-game; player + vote kept for rejoin
+  nextJoinOrder,                    // counter for Player.joinOrder
+  shuffledAnswers,                  // this round's voting order (GameRoom.getShuffledAnswers), null until voting
   phase,                            // see 02-game-flow.md
   currentQuestionIndex,             // -1 before start
   currentQuestion,                  // {question, answer, explanation}
@@ -66,10 +71,10 @@ Key methods:
 }
 ```
 
-Notable methods: `getCurrentMultiplier()`, `shouldShowMultiplierAnnouncement()`, `isSubmitPhaseComplete()` / `isVotingPhaseComplete()` (these count **active** players only and are false when there are 0 players), `markPlayerLeft()`, `getPlayerName()` (adds "(left)"), `resetRound()`, `getPlayersClientData()`.
+Notable methods: `getCurrentMultiplier()`, `shouldShowMultiplierAnnouncement()`, `isSubmitPhaseComplete()` / `isVotingPhaseComplete()` (these count **active** players only and are false when there are 0 players), `markPlayerLeft()`, `restoreLeftPlayer()` (puts the `Player` back **sorted by `joinOrder`** so avatars don't move, and restores the vote if still in voting), `getPlayerName()` (adds "(left)"), `resetRound()` (also clears `shuffledAnswers`), `getPlayersClientData()`.
 
 ## Player
-[server/game/Player.js](../server/game/Player.js): `{id, name, socketId, score, connected}`. `toClientData()` returns `{id,name,score,connected}`. `generateId()` produces `player_<Date.now()>_<9 base36 chars>`. `disconnect()` and `reconnect()` exist but nothing calls them.
+[server/game/Player.js](../server/game/Player.js): `{id, name, socketId, score, connected, joinOrder, reconnectToken}`. `reconnectToken` is a random UUID sent **only** to that player (in `gameState` / `rejoinSuccess`); `toClientData()` returns `{id,name,score,connected}` and never includes it. `generateId()` produces `player_<Date.now()>_<9 base36 chars>`. `reconnect(socketId)` rebinds the socket on rejoin; `disconnect()` is unused.
 
 ## Timer
 [server/game/Timer.js](../server/game/Timer.js). A wall-clock countdown: it stores `startTime` and `duration` and doesn't tick by itself.
@@ -80,8 +85,9 @@ Notable methods: `getCurrentMultiplier()`, `shouldShowMultiplierAnnouncement()`,
 ## AnswerManager
 [server/game/AnswerManager.js](../server/game/AnswerManager.js)
 - `getShuffledAnswers(gameState)`: groups `submittedAnswers` by **exact text** (all uppercased, so effectively case-insensitive), so duplicate lies become a single card. It adds the truth card `{id:'correct', playerIds:['correct'], text: answer}`, then shuffles with Fisher-Yates. Each entry is `{id, playerIds, text, isCorrect}`.
+- `filterAnswersForPlayer(answers, playerId)`: drops the lies this player wrote (single or shared) and maps to `{id, text}`. Used by `rejoinRoom`; the three voting transitions still inline the same filter.
 - `isAnswerValid(answer, correct)`: false when the answer equals the truth after trimming and lowercasing.
-- It's called once per voting transition. The results screen uses a **separate** shuffle (ResultsAnimator), so card order differs between voting and results.
+- `GameRoom.getShuffledAnswers()` caches the result for the round, so the voting order is fixed once voting starts. The results screen uses a **separate** shuffle (ResultsAnimator), so card order differs between voting and results.
 
 ## ScoreCalculator
 [server/game/ScoreCalculator.js](../server/game/ScoreCalculator.js). Covered in [05-scoring.md](05-scoring.md). Side effect: it **calls `player.addScore()`**, so you must call it exactly once per round. `startResultsAnimation` is the only caller.
@@ -106,7 +112,7 @@ Notable methods: `getCurrentMultiplier()`, `shouldShowMultiplierAnnouncement()`,
 ## socket/events/*
 | File | Handles |
 |---|---|
-| [roomEvents.js](../server/socket/events/roomEvents.js) | `getPackages`, `createRoom`, `changePackage`, `joinRoom` (with mid-game catch-up) |
+| [roomEvents.js](../server/socket/events/roomEvents.js) | `getPackages`, `createRoom`, `changePackage`, `joinRoom` (with mid-game catch-up), `rejoinRoom` (restores a saved seat, drops the stale socket, sends a `rejoinSuccess` snapshot) |
 | [gameEvents.js](../server/socket/events/gameEvents.js) | `startGame`, `nextQuestion` (with multiplier announcement delay) |
 | [playerEvents.js](../server/socket/events/playerEvents.js) | `submitAnswer`, `submitVote`, and the emits for the transitions they cause |
 | [resultsEvents.js](../server/socket/events/resultsEvents.js) | `showLeaderboard`; exports `startResultsAnimation` (required lazily by others to avoid a circular require) |

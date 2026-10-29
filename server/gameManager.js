@@ -63,23 +63,31 @@ class GameManager {
   }
 
   /**
-   * Reconnects a player.
-   * @param {string} socketId - Socket ID
+   * Reconnects a returning player to a new socket.
+   * @param {string} socketId - New socket ID
    * @param {string} roomCode - Room code
    * @param {string} playerId - Player ID
-   * @returns {Player|null} Reconnected player or null
+   * @param {string} reconnectToken - Secret token the player was given on join
+   * @returns {{player: Player, previousSocketId: string|null}}
    */
-  reconnectPlayer(socketId, roomCode, playerId) {
+  reconnectPlayer(socketId, roomCode, playerId, reconnectToken) {
     const gameRoom = this.rooms.get(roomCode);
-    if (!gameRoom) return null;
-
-    const player = gameRoom.reconnectPlayer(socketId, playerId);
-    if (player) {
-      this.socketToRoom.set(socketId, roomCode);
-      this.socketToPlayer.set(socketId, { roomCode, playerId });
+    if (!gameRoom) {
+      throw new Error('Room not found');
     }
 
-    return player;
+    const { player, previousSocketId } = gameRoom.rejoinPlayer(playerId, reconnectToken, socketId);
+
+    // Forget the stale socket first, so its late 'disconnect' doesn't mark the player as left again
+    if (previousSocketId && previousSocketId !== socketId) {
+      this.socketToRoom.delete(previousSocketId);
+      this.socketToPlayer.delete(previousSocketId);
+    }
+
+    this.socketToRoom.set(socketId, roomCode);
+    this.socketToPlayer.set(socketId, { roomCode, playerId });
+
+    return { player, previousSocketId };
   }
 
   /**

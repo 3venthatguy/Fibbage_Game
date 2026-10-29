@@ -28,8 +28,11 @@ Only `.toUpperCase()` is applied. There's no trim, no length cap and no empty ch
 ### Some server data is inserted with innerHTML
 Package cards (`renderPackageCards`) and the explanation (`handleShowExplanation`) use innerHTML. That's trusted server data, but use `escapeHtml` (theme.js) or `textContent` for anything a player types. Player names in the leaderboard are already escaped.
 
-### Last question ends without `phase = 'gameOver'`
-`showLeaderboardNow` emits `gameOver` but leaves `gameState.phase === 'results'`. Nothing depends on it today, but a new phase-dependent feature might.
+### Rejoining players miss the round they were away for
+A player who is in `leftPlayers` when `calculateResults` runs gets no points for that round (only active players get `addScore`). Their earlier score comes back when they rejoin. Fixing this means touching `calculateResults`, which mutates scores (see Traps).
+
+### Mid-game join during reading shows the submit phase
+`joinRoom` sends `phaseChange{reading}` **before** `newQuestion`, and the player's `newQuestion` handler calls `showPlayerSubmitPhase()`, so a brand-new joiner during reading sees the answer box early. The rejoin path (`rejoinSuccess`) doesn't have this problem.
 
 ### Answers can be overwritten
 `GameRoom.submitAnswer` has no "already submitted" guard. The player UI prevents a second submit, but the server would accept one.
@@ -42,8 +45,8 @@ Package cards (`renderPackageCards`) and the explanation (`handleShowExplanation
 ## Dead code (safe to delete, or reuse)
 | Item | Location |
 |---|---|
-| `GameManager.reconnectPlayer` (calls the missing `GameRoom.reconnectPlayer`), `getPlayerBySocket` | server/gameManager.js |
-| `Player.disconnect` / `reconnect`, the `connected` flag (always true) | server/game/Player.js |
+| `getPlayerBySocket` | server/gameManager.js |
+| `Player.disconnect`, the `connected` flag (always true) | server/game/Player.js |
 | `GameState.currentMultiplier` field, `getCurrentQuestion`, `getPlayerName`, `resumeTimer` | server/game/GameState.js |
 | `sanitizeAnswer`, `isValidPlayerName`, `isValidAnswer` | server/utils/validation.js |
 | `server/data/questions.js` | legacy |

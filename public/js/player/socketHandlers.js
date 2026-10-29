@@ -8,6 +8,106 @@
  * @param {object} state - Player state object
  */
 function setupPlayerSocketHandlers(socket, state) {
+  /**
+   * Shows a question on the game screen and resets the round's submit/vote state.
+   * @param {object} data - {question, questionIndex, totalQuestions}
+   */
+  function renderPlayerQuestion(data) {
+    const { question, questionIndex, totalQuestions } = data;
+    const questionDisplay = document.getElementById('questionDisplay');
+    const questionNumber = document.getElementById('questionNumber');
+
+    questionDisplay.innerHTML = formatQuestion(question);
+    questionNumber.textContent = `Question ${questionIndex + 1} of ${totalQuestions}`;
+    setTheme('play');
+
+    // Reset state
+    state.submittedAnswer = false;
+    state.submittedVote = false;
+    state.selectedAnswerId = null;
+    resetSubmitPhase();
+
+    // Show game screen
+    hidePlayerLobbyScreen();
+    const gameScreen = document.getElementById('gameScreen');
+    const gameOverScreen = document.getElementById('gameOverScreen');
+    gameScreen.classList.add('active');
+    gameOverScreen.classList.remove('active');
+
+    // Hide watch screen if it was showing
+    const watchScreen = document.getElementById('watchScreen');
+    if (watchScreen) {
+      watchScreen.style.display = 'none';
+    }
+
+    // Reset phases
+    showPlayerSubmitPhase();
+
+    // Show timer for new question
+    showPlayerTimer();
+  }
+
+  /**
+   * Sends the vote and sends the player to the watch screen.
+   * @param {string} votedForId - Answer id
+   */
+  function onPlayerVote(votedForId) {
+    socket.emit('submitVote', { roomCode: state.roomCode, votedForId });
+    state.submittedVote = true;
+
+    // Immediately show watch screen - direct player to look at TV
+    showWatchScreen();
+  }
+
+  /**
+   * Redraws the whole screen from a rejoinSuccess snapshot.
+   * @param {object} data - Snapshot from the server
+   */
+  function restorePlayerScreen(data) {
+    hideJoinScreen();
+    showPlayerNameBadge(state.playerName);
+
+    if (data.phase === 'lobby') {
+      showPlayerLobbyScreen(state.roomCode);
+      updatePlayersList(state.players);
+      return;
+    }
+
+    if (data.phase === 'gameOver') {
+      clearPlayerSession();
+      hidePlayerLobbyScreen();
+      showPlayerGameOverScreen(data.finalScores || [], state.playerId);
+      return;
+    }
+
+    renderPlayerQuestion(data);
+    setTheme(data.phase === 'results' ? 'results' : 'play');
+
+    if (data.phase === 'reading') {
+      showPlayerReadingPhase(data.timeRemaining);
+    } else if (data.phase === 'submit') {
+      drawWave(document.getElementById('playerWave'), data.timeRemaining);
+      if (data.hasSubmitted) {
+        state.submittedAnswer = true;
+        showSubmitWaiting();
+      }
+    } else if (data.phase === 'voting') {
+      if (data.hasVoted) {
+        state.submittedAnswer = true;
+        state.submittedVote = true;
+        showWatchScreen();
+      } else {
+        showPlayerVotingPhase();
+        drawWave(document.getElementById('playerWave'), data.timeRemaining);
+        displayPlayerVotingAnswers(data.votingAnswers || [], state.playerId, onPlayerVote);
+      }
+    } else if (data.phase === 'results') {
+      showWatchScreen();
+    }
+
+    updatePlayerTimer(data.timeRemaining);
+  }
+
   socket.on('playerJoined', (data) => {
     const { players } = data;
     state.players = players;
@@ -46,6 +146,12 @@ function setupPlayerSocketHandlers(socket, state) {
     if (data.playerId) {
       state.playerId = data.playerId;
 
+      // Remember who we are so a refresh or dropped connection can rejoin this seat
+      if (data.reconnectToken) {
+        state.reconnectToken = data.reconnectToken;
+        savePlayerSession();
+      }
+
       // Show player name badge and lobby screen when joining
       if (state.playerName && state.roomCode) {
         showPlayerNameBadge(state.playerName);
@@ -70,38 +176,7 @@ function setupPlayerSocketHandlers(socket, state) {
   });
 
   socket.on('newQuestion', (data) => {
-    const { question, questionIndex, totalQuestions } = data;
-    const questionDisplay = document.getElementById('questionDisplay');
-    const questionNumber = document.getElementById('questionNumber');
-
-    questionDisplay.innerHTML = formatQuestion(question);
-    questionNumber.textContent = `Question ${questionIndex + 1} of ${totalQuestions}`;
-    setTheme('play');
-
-    // Reset state
-    state.submittedAnswer = false;
-    state.submittedVote = false;
-    state.selectedAnswerId = null;
-    resetSubmitPhase();
-
-    // Show game screen
-    hidePlayerLobbyScreen();
-    const gameScreen = document.getElementById('gameScreen');
-    const gameOverScreen = document.getElementById('gameOverScreen');
-    gameScreen.classList.add('active');
-    gameOverScreen.classList.remove('active');
-
-    // Hide watch screen if it was showing
-    const watchScreen = document.getElementById('watchScreen');
-    if (watchScreen) {
-      watchScreen.style.display = 'none';
-    }
-
-    // Reset phases
-    showPlayerSubmitPhase();
-
-    // Show timer for new question
-    showPlayerTimer();
+    renderPlayerQuestion(data);
   });
 
   socket.on('phaseChange', (data) => {
@@ -134,13 +209,48 @@ function setupPlayerSocketHandlers(socket, state) {
 
   socket.on('votingReady', (data) => {
     const { answers } = data;
-    displayPlayerVotingAnswers(answers, state.playerId, (votedForId) => {
-      socket.emit('submitVote', { roomCode: state.roomCode, votedForId });
-      state.submittedVote = true;
+    // A player who rejoined and already voted keeps the watch screen
+    if (state.submittedVote) return;
+    displayPlayerVotingAnswers(answers, state.playerId, onPlayerVote);
+  });
 
-      // Immediately show watch screen - direct player to look at TV
-      showWatchScreen();
-    });
+  socket.on('rejoinSuccess', (data) => {
+    state.roomCode = data.roomCode;
+    state.playerId = data.playerId;
+    state.playerName = data.playerName;
+    state.reconnectToken = data.reconnectToken;
+    state.players = data.players;
+    state.currentPhase = data.phase;
+    savePlayerSession();
+    hideConnectionBanner();
+    resetJoinButton();
+
+    if (data.gameTitle) {
+      document.getElementById('joinGameTitle').textContent = data.gameTitle;
+      document.getElementById('lobbyGameTitle').textContent = data.gameTitle;
+      document.title = `${data.gameTitle} - Player`;
+    }
+
+    restorePlayerScreen(data);
+  });
+
+  socket.on('rejoinFailed', (data) => {
+    clearPlayerSession();
+    state.playerId = null;
+    hideConnectionBanner();
+    resetJoinButton();
+
+    // Back to the join screen with the old code and name filled in
+    hidePlayerLobbyScreen();
+    document.getElementById('gameScreen').classList.remove('active');
+    document.getElementById('gameOverScreen').classList.remove('active');
+    document.getElementById('playerNameBadge').style.display = 'none';
+    document.getElementById('joinScreen').style.display = '';
+    setTheme('title');
+    if (state.roomCode) document.getElementById('roomCodeInput').value = state.roomCode;
+    if (state.playerName) document.getElementById('playerNameInput').value = state.playerName;
+
+    showPlayerError(`Couldn't rejoin: ${data && data.reason ? data.reason : 'game not found'}`);
   });
 
   socket.on('resultsReady', (data) => {
@@ -195,6 +305,9 @@ function setupPlayerSocketHandlers(socket, state) {
 
   socket.on('gameOver', (data) => {
     const { finalScores } = data;
+
+    // Nothing left to rejoin; a refresh should go back to the join screen for the next game
+    clearPlayerSession();
 
     // Hide watch screen if showing
     const watchScreen = document.getElementById('watchScreen');

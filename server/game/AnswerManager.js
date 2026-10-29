@@ -54,6 +54,18 @@ function getShuffledAnswers(gameState) {
 }
 
 /**
+ * Removes the answers a player wrote (including shared duplicates) from a voting list.
+ * @param {Array} answers - Shuffled answers from getShuffledAnswers
+ * @param {string} playerId - Player who will vote
+ * @returns {Array} Answers this player may vote for, as {id, text}
+ */
+function filterAnswersForPlayer(answers, playerId) {
+  return answers
+    .filter(answer => answer.id === 'correct' || !(answer.playerIds && answer.playerIds.includes(playerId)))
+    .map(a => ({ id: a.id, text: a.text }));
+}
+
+/**
  * Validates that an answer is not the same as the correct answer.
  * @param {string} answer - Submitted answer
  * @param {string} correctAnswer - The correct answer
@@ -67,5 +79,6 @@ function isAnswerValid(answer, correctAnswer) {
 
 module.exports = {
   getShuffledAnswers,
+  filterAnswersForPlayer,
   isAnswerValid
 };

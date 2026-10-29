@@ -2,13 +2,17 @@
  * Player class representing a single player in the game.
  */
 
+const crypto = require('crypto');
+
 class Player {
-  constructor(id, name, socketId) {
+  constructor(id, name, socketId, joinOrder = 0) {
     this.id = id;
     this.name = name;
     this.socketId = socketId;
     this.score = 0;
     this.connected = true;
+    this.joinOrder = joinOrder; // Keeps list order (and avatars) stable when a player rejoins
+    this.reconnectToken = crypto.randomUUID(); // Secret sent only to this player, never in toClientData
   }
 
   /**

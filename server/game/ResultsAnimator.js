@@ -431,6 +431,9 @@ class ResultsAnimator {
         // Sort by score descending for final results
         const finalScores = [...this.leaderboardData.totalScores].sort((a, b) => b.score - a.score);
 
+        // Mark the game finished so a player who rejoins now lands on the game over screen
+        this.gameState.setPhase('gameOver');
+
         // Emit game over event
         this.io.to(this.roomCode).emit('gameOver', { finalScores });
       } else {

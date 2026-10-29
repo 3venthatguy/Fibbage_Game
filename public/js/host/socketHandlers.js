@@ -82,6 +82,9 @@ function setupHostSocketHandlers(socket, state) {
     if (data.phase === 'submit' || data.phase === 'reading') {
       console.log('[SocketHandlers] Player joined mid-game, updating status. Total:', data.totalPlayers, 'Submitted:', data.submittedCount);
       updateSubmitStatus(state.players, data.submittedPlayerIds || []);
+    } else if (data.phase === 'voting') {
+      // A player rejoined during voting
+      updateVotingStatus(state.players, data.votedPlayerIds || []);
     }
   });
 

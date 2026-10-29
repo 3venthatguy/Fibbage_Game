@@ -85,6 +85,23 @@ function showPlayerError(message) {
 }
 
 /**
+ * Shows the connection banner (stays until hideConnectionBanner).
+ * @param {string} message - Text to show, e.g. "Reconnecting…"
+ */
+function showConnectionBanner(message) {
+  const banner = document.getElementById('connectionBanner');
+  banner.textContent = message;
+  banner.classList.add('show');
+}
+
+/**
+ * Hides the connection banner.
+ */
+function hideConnectionBanner() {
+  document.getElementById('connectionBanner').classList.remove('show');
+}
+
+/**
  * Updates the character counter for answer input.
  * @param {number} length - Current answer length
  */

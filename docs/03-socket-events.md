@@ -16,6 +16,7 @@ Delivery: **room** means `io.to(roomCode)`, which reaches the host and all playe
 | `getPackages` | none | **nobody** (unused) | roomEvents.js:16 | none | sender: `availablePackages{packages}` |
 | `changePackage` | `{roomCode, packageId}` | host clicks a package card | roomEvents.js:51 | host only, lobby only, package must exist | re-picks question ids; sender: `packageChanged{packageId}` |
 | `joinRoom` | `{roomCode, playerName}` | player | roomEvents.js:94 | room exists; phase ∈ lobby/reading/submit; name not taken (case-insensitive, includes `leftPlayers`) | room: `playerJoined`; sender: `gameState`, plus `phaseChange` and `newQuestion` when joining mid-game |
+| `rejoinRoom` | `{roomCode, playerId, reconnectToken, playerName}` | player, on every socket `connect` while it has a saved session | roomEvents.js (`rejoinRoom`) | room exists; token matches the player (active or in `leftPlayers`). In the lobby an unknown player is re-added with `joinRoom` under `playerName` | room: `playerJoined` (with phase and submitted/voted ids); sender: `rejoinSuccess` or `rejoinFailed`. A still-connected old socket for that player is disconnected |
 | `startGame` | `{roomCode}` | host Start button | [gameEvents.js:17](../server/socket/events/gameEvents.js#L17) | host only; ≥2 players; phase lobby | see [02-game-flow.md](02-game-flow.md) |
 | `submitAnswer` | `{roomCode, answer}` | player | [playerEvents.js:16](../server/socket/events/playerEvents.js#L16) | sender is a player; phase submit; time > 0; answer ≠ truth (case-insensitive, trimmed) | room: `answerSubmitted`; may start the voting transition |
 | `submitVote` | `{roomCode, votedForId}` | player taps an answer | playerEvents.js:81 | phase voting; time > 0; not own answer; target exists (active or left); not already voted | room: `voteSubmitted`; may start the results transition |
@@ -31,8 +32,10 @@ The `submitAnswer` and `submitVote` handlers look up the player from `socket.id`
 |---|---|---|---|---|
 | `roomCreated` | sender | `{roomCode, packageId, gameTitle, gameRules, availablePackages:[{id,name,description,icon,questionCount}]}` | sets the room code, title, rules and package cards | none |
 | `packageChanged` | sender | `{packageId}` | highlights the selected card | none |
-| `playerJoined` | room | `{players:[{id,name,score,connected}], phase?, totalPlayers?, submittedCount?, submittedPlayerIds?}` (from a disconnect: only `{players}`) | redraws the player grid and Start button, pop sound, redraws the submit status tags if mid-game | stores `players` (avatars come from list order), updates the player list and name badge; **finds its own id by matching its name** |
-| `gameState` | sender (joiner) | `{phase, currentQuestionIndex, totalQuestions, playerId, gameTitle, gameRules, currentQuestion?, timeRemaining?, joinedMidGame?}` | none | stores `playerId`, shows lobby and name badge, sets title |
+| `playerJoined` | room | `{players:[{id,name,score,connected}], phase?, totalPlayers?, submittedCount?, submittedPlayerIds?, voteCount?, votedPlayerIds?}` (from a disconnect: only `{players}`; vote fields only from a rejoin) | redraws the player grid and Start button, pop sound, redraws the submit status tags (reading/submit) or voted marks (voting) | stores `players` (avatars come from list order), updates the player list and name badge; **finds its own id by matching its name** |
+| `gameState` | sender (joiner) | `{phase, currentQuestionIndex, totalQuestions, playerId, reconnectToken, gameTitle, gameRules, currentQuestion?, timeRemaining?, joinedMidGame?}` | none | stores `playerId`, saves the session (`reconnectToken`), shows lobby and name badge, sets title |
+| `rejoinSuccess` | sender (rejoiner) | `{roomCode, playerId, playerName, reconnectToken, players, phase, gameTitle, timeRemaining, hasSubmitted, hasVoted, question?, questionIndex?, totalQuestions?, votingAnswers?:[{id,text}] (voting), finalScores? (gameOver)}` | none | saves the session, hides the banner, redraws the screen for `phase` |
+| `rejoinFailed` | sender (rejoiner) | `{reason}` | none | clears the session, back to the join screen with code and name filled in, toast |
 | `playerDisconnected` | room | `{phase:'submit', submittedCount, submittedPlayerIds, totalPlayers}` or `{phase:'voting', voteCount, votedPlayerIds, totalPlayers}` | redraws the status tags from the id list | none |
 | `error` | sender | a **string** message | toast | toast; on the "truth" error it unlocks the answer input, otherwise it resets the Join button |
 
@@ -41,7 +44,7 @@ The `submitAnswer` and `submitVote` handlers look up the player from `socket.id`
 | Event | Delivery | Payload | Emitted from |
 |---|---|---|---|
 | `gameStarted` | room | `{ duration }` (= `GAME_START_DELAY` ms) | gameEvents.js (start). Both clients show the ROUND ONE card for `duration` |
-| `newQuestion` | room (or sender on mid-join) | `{question, questionIndex, totalQuestions, multiplier?}` | gameEvents.js, roomEvents.js |
+| `newQuestion` | room (or sender on mid-join; a rejoin gets the question inside `rejoinSuccess` instead) | `{question, questionIndex, totalQuestions, multiplier?}` | gameEvents.js, roomEvents.js |
 | `phaseChange` | room (or sender on mid-join) | `{phase, timeRemaining}` | gameEvents, timerBroadcast, playerEvents, connectionEvents, resultsEvents |
 | `timerUpdate` | room | `{timeRemaining}` (whole seconds) | timerBroadcast.js, every 1s while > 0 and not paused |
 | `answerSubmitted` | room | `{submittedCount, submittedPlayerIds, totalPlayers}` | playerEvents.js. The host lights up each id's name tag |

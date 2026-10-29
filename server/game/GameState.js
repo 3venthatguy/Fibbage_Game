@@ -10,13 +10,15 @@ class GameState {
     this.roomCode = roomCode;
     this.hostId = hostId;
     this.players = [];
-    this.leftPlayers = new Map(); // playerId -> {name, id} for players who left mid-game
+    this.leftPlayers = new Map(); // playerId -> {id, name, score, player, vote} for players who left mid-game
+    this.nextJoinOrder = 0;
     this.phase = 'lobby';
     this.currentQuestionIndex = -1;
     this.currentQuestion = null;
     this.selectedQuestionIds = selectedQuestionIds;
     this.submittedAnswers = {};
     this.votes = {};
+    this.shuffledAnswers = null; // Voting order for this round, cached so rejoiners see the same order
     this.timer = new Timer();
     this.currentMultiplier = 1; // Point multiplier (1x, 2x, or 3x)
   }
@@ -152,6 +154,7 @@ class GameState {
   resetRound() {
     this.submittedAnswers = {};
     this.votes = {};
+    this.shuffledAnswers = null;
     this.timer.reset();
   }
 
@@ -244,11 +247,14 @@ class GameState {
     const player = this.getPlayer(playerId);
     if (!player) return null;
 
-    // Store in leftPlayers map for name blocking and results display
+    // Store in leftPlayers map for name blocking and results display.
+    // The Player object and vote are kept so restoreLeftPlayer can put them back.
     this.leftPlayers.set(playerId, {
       id: player.id,
       name: player.name,
-      score: player.score
+      score: player.score,
+      player,
+      vote: this.votes[playerId]
     });
 
     // Remove from active players but keep their answer
@@ -258,6 +264,34 @@ class GameState {
     delete this.votes[playerId];
 
     return this.leftPlayers.get(playerId);
+  }
+
+  /**
+   * Puts a player who left mid-game back into the active players.
+   * Keeps their original list position (avatars come from list order) and,
+   * if voting is still open, the vote they cast before leaving.
+   * @param {string} playerId - Player ID
+   * @returns {Player|null} The restored player or null
+   */
+  restoreLeftPlayer(playerId) {
+    const leftPlayer = this.leftPlayers.get(playerId);
+    if (!leftPlayer) return null;
+
+    this.leftPlayers.delete(playerId);
+
+    const { player } = leftPlayer;
+    const index = this.players.findIndex(p => p.joinOrder > player.joinOrder);
+    if (index === -1) {
+      this.players.push(player);
+    } else {
+      this.players.splice(index, 0, player);
+    }
+
+    if (this.phase === 'voting' && leftPlayer.vote !== undefined) {
+      this.votes[playerId] = leftPlayer.vote;
+    }
+
+    return player;
   }
 
   /**

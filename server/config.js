@@ -12,6 +12,7 @@ module.exports = {
   ROOM_CODE_LENGTH: 4,
   ROOM_CODE_CHARS: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
   CLEANUP_INTERVAL: 5 * 60 * 1000, // 5 minutes
+  REJOIN_GRACE_PERIOD: 5 * 60 * 1000, // Keep a room with only left players this long so they can rejoin
 
   // Game configuration
   MIN_PLAYERS: 2,

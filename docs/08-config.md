@@ -11,7 +11,8 @@ Loaded with `require('../config')`. Changes take effect after a server restart.
 | `PORT` | `process.env.PORT \|\| 3000` | server.js | |
 | `CORS_ORIGIN` | `"*"` | server.js | |
 | `ROOM_CODE_LENGTH` / `ROOM_CODE_CHARS` | 4 / `A–Z` | roomCodeGenerator.js | The player input also allows digits, but codes never contain them |
-| `CLEANUP_INTERVAL` | 5 min | server.js | Deletes rooms with 0 active players |
+| `CLEANUP_INTERVAL` | 5 min | server.js | Deletes rooms with 0 active players (see `REJOIN_GRACE_PERIOD`) |
+| `REJOIN_GRACE_PERIOD` | 5 min | GameRoom.isEmpty | A room whose players have all left mid-game is kept this long (counted from the first sweep that sees it) so they can rejoin |
 | `MIN_PLAYERS` | 2 | GameRoom.startGame | The host button has its own **hard-coded** `< 2` |
 | `QUESTIONS_PER_GAME` | 6 | GameManager.generateRandomQuestionIds | **The real question count** |
 | `TOTAL_QUESTIONS` | 6 | **unused** | |

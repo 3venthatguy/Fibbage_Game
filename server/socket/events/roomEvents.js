@@ -4,6 +4,7 @@
 
 const { logError } = require('../../utils/logger');
 const config = require('../../config');
+const { filterAnswersForPlayer } = require('../../game/AnswerManager');
 
 /**
  * Sets up room-related event handlers.
@@ -133,6 +134,7 @@ function setupRoomEvents(io, socket, gameManager) {
         currentQuestionIndex: gameState.currentQuestionIndex,
         totalQuestions: gameState.selectedQuestionIds.length || 8,
         playerId: player.id,
+        reconnectToken: player.reconnectToken,
         gameTitle: config.GAME_TITLE,
         gameRules: config.GAME_RULES
       };
@@ -171,6 +173,80 @@ function setupRoomEvents(io, socket, gameManager) {
     } catch (error) {
       socket.emit('error', error.message);
       logError('joining room', error);
+    }
+  });
+
+  // Rejoin a room with the identity saved on the phone (after a refresh or a dropped connection)
+  socket.on('rejoinRoom', ({ roomCode, playerId, reconnectToken, playerName } = {}) => {
+    try {
+      const gameRoom = gameManager.getGameRoom(roomCode);
+      if (!gameRoom) {
+        socket.emit('rejoinFailed', { reason: 'That game has ended.' });
+        return;
+      }
+      const gameState = gameRoom.getGameState();
+
+      let player;
+      const knownPlayer = gameState.getPlayer(playerId) || gameState.getLeftPlayer(playerId);
+      if (!knownPlayer && gameState.phase === 'lobby') {
+        // Lobby disconnects remove the player entirely, so just join again under the saved name
+        player = gameManager.joinRoom(roomCode, playerName, socket.id);
+      } else {
+        const rejoin = gameManager.reconnectPlayer(socket.id, roomCode, playerId, reconnectToken);
+        player = rejoin.player;
+
+        // Drop the stale socket (frozen phone the server hadn't noticed yet, or an older tab)
+        if (rejoin.previousSocketId && rejoin.previousSocketId !== socket.id) {
+          const staleSocket = io.sockets.sockets.get(rejoin.previousSocketId);
+          if (staleSocket) staleSocket.disconnect(true);
+        }
+      }
+
+      socket.join(roomCode);
+
+      // Tell the room (host redraws the player grid and status tags)
+      const submittedPlayerIds = gameState.players.filter(p => gameState.submittedAnswers[p.id]).map(p => p.id);
+      const votedPlayerIds = gameState.players.filter(p => gameState.votes[p.id]).map(p => p.id);
+      io.to(roomCode).emit('playerJoined', {
+        players: gameState.getPlayersClientData(),
+        phase: gameState.phase,
+        totalPlayers: gameState.players.length,
+        submittedCount: submittedPlayerIds.length,
+        submittedPlayerIds,
+        voteCount: votedPlayerIds.length,
+        votedPlayerIds
+      });
+
+      // Send the rejoining player everything needed to redraw their screen
+      const snapshot = {
+        roomCode,
+        playerId: player.id,
+        playerName: player.name,
+        reconnectToken: player.reconnectToken,
+        players: gameState.getPlayersClientData(),
+        phase: gameState.phase,
+        gameTitle: config.GAME_TITLE,
+        timeRemaining: gameState.getTimeRemaining(),
+        hasSubmitted: !!gameState.submittedAnswers[player.id],
+        hasVoted: gameState.hasVoted(player.id)
+      };
+
+      if (gameState.currentQuestion) {
+        snapshot.question = gameState.currentQuestion.question;
+        snapshot.questionIndex = gameState.currentQuestionIndex;
+        snapshot.totalQuestions = gameState.selectedQuestionIds.length;
+      }
+
+      if (gameState.phase === 'voting') {
+        snapshot.votingAnswers = filterAnswersForPlayer(gameRoom.getShuffledAnswers(), player.id);
+      } else if (gameState.phase === 'gameOver') {
+        snapshot.finalScores = gameState.getPlayersClientData().sort((a, b) => b.score - a.score);
+      }
+
+      socket.emit('rejoinSuccess', snapshot);
+    } catch (error) {
+      socket.emit('rejoinFailed', { reason: error.message });
+      logError('rejoining room', error);
     }
   });
 }

@@ -499,3 +499,21 @@ body {
 .error-message.show {
   display: block;
 }
+
+/* "Reconnecting…" strip while the socket is down */
+.connection-banner {
+  --tilt: 1deg;
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  z-index: 2000;
+  max-width: calc(100vw - 32px);
+  font-size: 15px;
+  padding: 0.5em 1em 0.45em;
+  translate: -50% 0;
+  display: none;
+}
+
+.connection-banner.show {
+  display: block;
+}

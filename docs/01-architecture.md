@@ -84,7 +84,7 @@ socket/events/*.js  ──►  GameManager  ──►  GameRoom  ──►  Game
 
 - **Host**: whichever socket emitted `createRoom`. Its socket id is `gameState.hostId`, and it is **not** a `Player`. Host-only actions (`startGame`, `nextQuestion`, `changePackage`) compare `socket.id === hostId`.
 - **Player**: created on `joinRoom`, with an id like `player_<timestamp>_<rand>`. `GameManager.socketToPlayer` maps the socket id to `{roomCode, playerId}`.
-- **There's no reconnect.** A refreshed player tab is a new socket with no mapping. Mid-game, the old name is blocked (see `leftPlayers` in [04-server.md](04-server.md)).
+- **Reconnect** is by token, not socket id. Each player gets a secret `reconnectToken`; the phone keeps `{roomCode, playerId, playerName, reconnectToken}` in `localStorage` and sends `rejoinRoom` on every connect, which rebinds the player to the new socket (see [07-player-client.md](07-player-client.md#reconnect-and-rejoin)). The host has no reconnect.
 - Rooms are addressed with Socket.io rooms named by the room code: `io.to(roomCode)` reaches the host and every player. Per-player messages use `io.to(player.socketId)`.
 
 ## Deployment constraints

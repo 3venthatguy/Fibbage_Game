@@ -35,6 +35,7 @@ When a vote targets a comma id, the calculator takes the **first** id, looks up 
 - Their answer stays in `submittedAnswers`, so it can still be voted for and still appears in results as "NAME (left)".
 - They're added to `roundScores` and `voteCounts` for display, but `addScore` only runs for **active** `players`, so **they get nothing**.
 - In a duplicate group, the active co-authors still get the full duplicate amount.
+- A player who **rejoins** (see [07-player-client.md](07-player-client.md#reconnect-and-rejoin)) gets their `Player` object back with its score, so earlier rounds count. If they were away when `calculateResults` ran, they miss **that** round's points only.
 
 ## Return value (`results`)
 

@@ -121,6 +121,8 @@ The comments in `GameState.js` and `config.js` still describe the old 8-question
 - **Join**: allowed in `lobby`, `reading` and `submit` (checked in both [roomEvents.js:94](../server/socket/events/roomEvents.js#L94) and `GameRoom.addPlayer`). A mid-game joiner gets `gameState{joinedMidGame:true, …}`, then `phaseChange` and `newQuestion` for the current phase. Everyone gets `playerJoined`, and the host redraws its submit status tags.
 - **Leave in the lobby**: the player is removed completely and the name becomes free again.
 - **Leave mid-game**: `GameState.markPlayerLeft`. The player is removed from `players` but goes into `leftPlayers`. Their **submitted lie stays** in voting and results (shown as "NAME (left)"), they get **no points**, their vote is deleted, and **the name stays taken** for the rest of the game. The handler then checks whether the current phase is now complete (see the triggers above).
+- **Rejoin**: a player whose phone saved a session sends `rejoinRoom` on every (re)connect, in **any** phase. `GameState.restoreLeftPlayer` puts them back in their old list position with their score, lie and (during voting) vote, and they get a `rejoinSuccess` snapshot. Details in [07-player-client.md](07-player-client.md#reconnect-and-rejoin).
+- **Game end**: after the last question, `showLeaderboardNow` sets the phase to `gameOver` before emitting `gameOver`.
 - **Host leaves**: nothing reacts to it. See [12-known-issues.md](12-known-issues.md#host-disconnect-orphans-the-room).
 
 ## Play Again

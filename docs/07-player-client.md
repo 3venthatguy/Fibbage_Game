@@ -19,6 +19,7 @@ body.theme-*                  background theme (title on join/lobby/game over, p
     │     #watchScreen   (#watchAvatar + "Look at the TV!", shown right after voting and during results)
     ├── #gameOverScreen(.active) #thanksMessage #finalLeaderboard
     ├── #errorMessage(.show)
+    ├── #connectionBanner(.show)  "Reconnecting…" while the socket is down
     └── #multiplierOverlay.round-card  (same markup and JS as the host)
 ```
 
@@ -28,7 +29,7 @@ Avatars match the host: `avatarFor(index in the players list)`. `playerState.pla
 
 ## Script load order (classic globals)
 
-`/socket.io/socket.io.js` → `js/config.js` → `js/shared/theme.js` (shared helpers, see [06-host-client.md](06-host-client.md#script-load-order-and-globals)) → `js/player/ui/uiUpdater.js` (`updatePlayersList`, `myAvatar`, `updatePlayerTimer`, `showPlayerError`, `updateCharCounter`, `showPlayerNameBadge`, `updateMiniLeaderboard` (dead)) → `ui/timer.js` (`showPlayerTimer`, `hidePlayerTimer`) → `js/shared/roundCard.js` (shared with the host) → `screens/joinScreen.js` → `lobbyScreen.js` → `submitScreen.js` → `votingScreen.js` → `resultsScreen.js` → `gameOverScreen.js` → `socketHandlers.js` → `playerMain.js` (`playerState`, `socket`).
+`/socket.io/socket.io.js` → `js/config.js` → `js/shared/theme.js` (shared helpers, see [06-host-client.md](06-host-client.md#script-load-order-and-globals)) → `js/player/ui/uiUpdater.js` (`updatePlayersList`, `myAvatar`, `updatePlayerTimer`, `showPlayerError`, `showConnectionBanner`, `hideConnectionBanner`, `updateCharCounter`, `showPlayerNameBadge`, `updateMiniLeaderboard` (dead)) → `ui/timer.js` (`showPlayerTimer`, `hidePlayerTimer`) → `js/shared/roundCard.js` (shared with the host) → `screens/joinScreen.js` → `lobbyScreen.js` → `submitScreen.js` → `votingScreen.js` → `resultsScreen.js` → `gameOverScreen.js` → `socketHandlers.js` → `playerMain.js` (`playerState`, `socket`, `savePlayerSession` / `loadPlayerSession` / `clearPlayerSession`).
 
 `js/player/animations/resultsAnimations.js` is an ES module that is **never loaded**. It's dead code from an earlier per-player results view.
 
@@ -36,9 +37,9 @@ Function names are prefixed (`showPlayerSubmitPhase`, `hidePlayerTimer`, …) to
 
 ## playerState
 ```js
-{ roomCode, playerName, playerId, players, currentPhase:'join', submittedAnswer, submittedVote, selectedAnswerId }
+{ roomCode, playerName, playerId, reconnectToken, players, currentPhase:'join', submittedAnswer, submittedVote, selectedAnswerId, replaced }
 ```
-(`players` is added by the `playerJoined` handler.)
+(`players` is added by the `playerJoined` handler. `reconnectToken` and `replaced` are for [rejoin](#reconnect-and-rejoin).)
 It's also exposed as `window.playerState` for the screen modules.
 
 ## Lifecycle
@@ -53,11 +54,19 @@ It's also exposed as `window.playerState` for the screen modules.
 7. **Results**: every `results:*` handler is a no-op ([resultsScreen.js](../public/js/player/screens/resultsScreen.js)). The player stays on the watch screen.
 8. **gameOver** → `showPlayerGameOverScreen`: plain `index+1` ranks (no tie handling), a "You finished Nth" sticker, and tape-bar rows with avatars (own row outlined).
 
-## No reconnect
+## Reconnect and rejoin
 
-Refreshing or locking the phone (if the browser drops the socket) gives a **new** socket with no saved identity:
-- In the lobby, the old player is removed and they can rejoin with the same name.
-- Mid-game, the old player moves to `leftPlayers` and **the name is blocked** until a new room is made. They have to rejoin under a different name, and only during reading or submit.
+Phones drop the socket when they sleep or switch networks, and Socket.io reconnects with a **new socket id**. Without a rejoin, the server has already moved the player to `leftPlayers` (or still has them on the dead socket), the new socket never joins the room, and the screen freezes. So the player re-identifies on **every** connect:
+
+1. On `gameState{playerId, reconnectToken}` (first join), `savePlayerSession()` ([playerMain.js](../public/js/player/playerMain.js)) stores `{roomCode, playerName, playerId, reconnectToken}` in `localStorage['fibbageSession']`. All storage calls are in try/catch; without storage the game works, just without rejoin after a refresh.
+2. On load, `setupReconnect()` copies a saved session into `playerState`. The `socket.on('connect')` handler (first connect **and** every auto-reconnect) emits `rejoinRoom` and shows the `#connectionBanner` ("Rejoining…").
+3. `rejoinSuccess` carries a snapshot. `restorePlayerScreen` (inside `setupPlayerSocketHandlers`) redraws the right screen with the existing screen functions: lobby; question + reading; question + submit (locked if `hasSubmitted`); question + voting answers (or the watch screen if `hasVoted`); the watch screen for results; the game-over screen.
+4. `rejoinFailed{reason}` (room gone, bad token, name taken in the lobby): the session is cleared and the join screen comes back with the code and name filled in.
+5. `disconnect` shows "Reconnecting…". If the reason is `io server disconnect`, another tab took over the same seat: `playerState.replaced` stops this tab from reconnecting, and the banner says to refresh to play here.
+6. `visibilitychange` calls `socket.connect()` when the page becomes visible while disconnected.
+7. `gameOver` clears the session, so a refresh after the game goes to the join screen for the next game.
+
+What the server keeps: the same id, score, list position (avatar), submitted lie, and the vote if voting is still open. A player away when `calculateResults` runs misses that round's points. A lobby rejoin is a fresh `joinRoom` under the saved name (lobby leavers are removed, not kept).
 
 ## Round cards on phones
 

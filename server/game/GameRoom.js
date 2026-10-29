@@ -15,6 +15,7 @@ class GameRoom {
   constructor(roomCode, hostId, selectedQuestionIds, questionLoader) {
     this.gameState = new GameState(roomCode, hostId, selectedQuestionIds);
     this.questionLoader = questionLoader;
+    this.emptySince = null; // When the room was first seen with only left players (see isEmpty)
   }
 
   /**
@@ -38,7 +39,7 @@ class GameRoom {
     }
 
     const playerId = Player.generateId();
-    const player = new Player(playerId, sanitizedName, socketId);
+    const player = new Player(playerId, sanitizedName, socketId, this.gameState.nextJoinOrder++);
 
     this.gameState.addPlayer(player);
     logPlayerJoined(sanitizedName, this.gameState.roomCode);
@@ -261,10 +262,43 @@ class GameRoom {
 
   /**
    * Gets shuffled answers for voting.
+   * Shuffled once per round so a player who rejoins sees the same order.
    * @returns {Array} Shuffled answers
    */
   getShuffledAnswers() {
-    return getShuffledAnswers(this.gameState);
+    if (!this.gameState.shuffledAnswers) {
+      this.gameState.shuffledAnswers = getShuffledAnswers(this.gameState);
+    }
+    return this.gameState.shuffledAnswers;
+  }
+
+  /**
+   * Puts a returning player back in their seat on a new socket.
+   * Works whether the server already marked them as left, or still has them
+   * bound to an old socket it hasn't noticed is dead.
+   * @param {string} playerId - Player ID saved on the phone
+   * @param {string} reconnectToken - Secret token saved on the phone
+   * @param {string} socketId - New socket ID
+   * @returns {{player: Player, previousSocketId: string|null}}
+   */
+  rejoinPlayer(playerId, reconnectToken, socketId) {
+    const activePlayer = this.gameState.getPlayer(playerId);
+    const leftPlayer = this.gameState.getLeftPlayer(playerId);
+    const player = activePlayer || (leftPlayer && leftPlayer.player);
+
+    if (!player || !reconnectToken || player.reconnectToken !== reconnectToken) {
+      throw new Error('Session expired');
+    }
+
+    const previousSocketId = activePlayer ? player.socketId : null;
+    if (!activePlayer) {
+      this.gameState.restoreLeftPlayer(playerId);
+    }
+    player.reconnect(socketId);
+    this.emptySince = null;
+
+    logPlayerJoined(player.name + ' (rejoined)', this.gameState.roomCode);
+    return { player, previousSocketId };
   }
 
   /**
@@ -325,10 +359,22 @@ class GameRoom {
 
   /**
    * Checks if room is empty.
-   * @returns {boolean} True if no connected players
+   * A room whose players all left mid-game stays alive for REJOIN_GRACE_PERIOD
+   * so they can come back.
+   * @returns {boolean} True if no connected players and nobody can still rejoin
    */
   isEmpty() {
-    return this.gameState.getConnectedPlayers().length === 0;
+    if (this.gameState.getConnectedPlayers().length > 0) {
+      this.emptySince = null;
+      return false;
+    }
+    if (this.gameState.leftPlayers.size === 0) {
+      return true;
+    }
+    if (!this.emptySince) {
+      this.emptySince = Date.now();
+    }
+    return Date.now() - this.emptySince >= config.REJOIN_GRACE_PERIOD;
   }
 }
 
